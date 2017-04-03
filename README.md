@@ -27,9 +27,7 @@ The basic CRUD methods take a second argiment, lets call it query-configuration 
                                "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
                               "comparisonOp"=>"AND",              
                              ]
-                      
-                          )
-                          
+                          )                          
                        )
 
 say we now do
