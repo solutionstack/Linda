@@ -8,10 +8,10 @@ Its built over PHP's PDO, so enabling multi data-server access, and safe transac
 Lets look at a basic select operation
 <br/>
 ```php
- ` $l = new Linda();`<br/>
- `$l->setTable("some_db_table");`<br/>
- ` $l->fecthAll("*"); //fetch all rows in the Table`<br/>
- ` $result = $l->getAll(); //returns all rows as an associatove array or NULL if no rows where returned`
+  $l = new Linda();>
+ $l->setTable("some_db_table");
+  $l->fecthAll("*"); //fetch all rows in the Table
+  $result = $l->getAll(); //returns all rows as an associatove array or NULL if no rows where returned
 ```
 
 # More advanced selections with where clauses and joins
@@ -21,7 +21,7 @@ Since most SQl statements support filtering results by Sub-queries, Where clause
 The basic CRUD methods take a second argiment, lets call it query-configuration where u can specify these, so as an example
 
 ```php
-`say we wanted to add a where clause to our sql execution statement, `
+say we wanted to add a where clause to our sql execution statement, 
 
  $queryConfig = array( "whereGroup" => array(  
                             [
@@ -68,3 +68,37 @@ SELECT * FROM `some_db-table` WHERE(actor_id=5 AND last_name LIKE '%ER') OR (act
 ```
 As you can see multiple where clauses can be specified in a whereGroupm, for each distict index in the whereGroup array,
 specifying a nextOp key, tells how you want the current where CLAUSE to compare to the next (usuall AND or OR)
+
+also for WHERE IN clauses
+
+```php
+  $queryConfig = array( "whereGroup" => array(  
+                            [
+                                "actor_id"=>array("value"=>5, "operator"=>"="),
+                                "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
+                                "comparisonOp"=>"AND", 
+                                "nextOp"=>"OR
+                             ],
+                                   [
+                                    "last_name"=>array("value"=>"foo", "operator"=>"LIKE")
+    
+                                 ] 
+                          ),
+                          
+                            "where_in"=>array(
+                                  "fieldName" => "id",
+                                  "options" => " 10, 15, 22,
+                                    "query" => "",
+                                   "operator" = > "AND"
+      
+                               ),
+                       )
+   //and then we do
+   $l->fetch("*", $queryConfig);
+  ```
+  The executed SQL statement would be
+```mysql
+SELECT * FROM `some_db-table` WHERE(actor_id=5 AND last_name LIKE '%ER') OR (actor_id LIKE 'foo') AND id IN (10,15,20);
+```
+There can be multiple where_in parameters, and a sub-query can be specified in the query sub-index, instead of specifying static values.
+
