@@ -40,8 +40,31 @@ say we now do
  
   SELECT * FROM `some_db-table` WHERE(actor_id=5 AND last_name LIKE '%ER');
  is executed
- 
+ ```
  The whereGroup as shown has each index also as an array where CLAUSES for a single where statement are specified
  the compatrisonOp, just defines what operator to use in camparing each parameter in the where group
  
+ If we had the query configure array as
+ 
+ ```php
+  $queryConfig = array( "whereGroup" => array(  
+                            [
+                                "actor_id"=>array("value"=>5, "operator"=>"="),
+                                "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
+                                "comparisonOp"=>"AND", 
+                                "nextOp"=>"OR
+                             ],
+                                   [
+                                    "last_name"=>array("value"=>"foo", "operator"=>"LIKE")
+    
+                                 ] 
+                          )                          
+                       )
+ 
 ```
+The executed SQL statement would be
+```mysql
+SELECT * FROM `some_db-table` WHERE(actor_id=5 AND last_name LIKE '%ER') OR (actor_id LIKE 'foo');
+```
+As you can see multiple where clauses can be specified in a whereGroupm, for each distict index in the whereGroup array,
+specifying a nextOp key, tells how you want the current where CLAUSE to compare to the next (usuall AND or OR)
