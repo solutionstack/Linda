@@ -7,6 +7,7 @@ Its built over PHP's PDO, so enabling multi data-server access, and safe transac
 
 Lets look at a basic select operation
 <br/>
+```php
  ` $l = new Linda();`<br/>
  `$l->setTable("some_db_table");`<br/>
  ` $l->fecthAll("*"); //fetch all rows in the Table`<br/>
@@ -24,8 +25,8 @@ The basic CRUD methods take a second argiment, lets call it query-configuration 
  $queryConfig = array( "whereGroup" => array(  
                             [
                                 "actor_id"=>array("value"=>5, "operator"=>"="),
-                               "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
-                              "comparisonOp"=>"AND",              
+                                "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
+                                "comparisonOp"=>"AND",              
                              ]
                           )                          
                        )
