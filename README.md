@@ -25,8 +25,7 @@ The basic CRUD methods take a second argiment, lets call it query-configuration 
                             [
                                 "actor_id"=>array("value"=>5, "operator"=>"="),
                                "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
-                              "comparisonOp"=>"AND",
-                             
+                              "comparisonOp"=>"AND",              
                              ]
                       
                           )
