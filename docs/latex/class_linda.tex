@@ -1,0 +1,792 @@
+\hypertarget{class_linda}{}\section{Linda Class Reference}
+\label{class_linda}\index{Linda@{Linda}}
+
+
+\hyperlink{class_linda}{Linda} is a Database Abstraction Layer for P\+H\+P Built on top P\+D\+O.  
+
+
+Inheritance diagram for Linda\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_linda}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_linda_a095c5d389db211932136b53f25f39685}{\+\_\+\+\_\+construct} ()
+\item 
+\hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} (\$table\+Name)
+\item 
+\hyperlink{class_linda_a87d58413379d402e5dee4f5825b686fd}{fetch} (\$fields, \$query\+Config=array())
+\item 
+\hyperlink{class_linda_ac000dfba7a410bb147dc77571d1e2ed5}{update} (\$fields, \$query\+Config)
+\item 
+\hyperlink{class_linda_af5a8f159a27ca700aa869092a5696be1}{put} (\$fields, \$values)
+\item 
+\hyperlink{class_linda_a8a141e762ceb79165d9a049eaa718d38}{delete} (\$query\+Config)
+\item 
+\hyperlink{class_linda_ad2e4fa0b57c9acdf15cd932346381af5}{run\+Query} ()
+\item 
+\hyperlink{class_linda_a3292920004f4f0eb71524e2e871fd9cc}{count} (\$column\+Name, \$val, \$operator=\char`\"{}=\char`\"{})
+\item 
+\hyperlink{class_linda_a9405f06abe08887d915b8c0a98885cb2}{max\+\_\+in\+\_\+column} (\$column\+Name)
+\item 
+\hyperlink{class_linda_ace93ec905a1eba8f431c1d6bb279ac20}{max\+Row} (\$field\+Name)
+\item 
+\hyperlink{class_linda_a47a8d3c75c7454aca40d3b7808465ab6}{min\+\_\+in\+\_\+column} (\$column\+Name)
+\item 
+\hyperlink{class_linda_a94e9b7b94a61bc48ad5d866bc93670ce}{min\+Row} (\$column\+Name)
+\item 
+\hyperlink{class_linda_ab39eb2457d23f38ac50e0af64a55f6e9}{sum} (\$field\+Name)
+\item 
+\hyperlink{class_linda_aba0d5b303383fb5b1fabb5fd01cd3800}{get\+All} ()
+\item 
+\hyperlink{class_linda_a15fff7e5f77cd6a7e7656e3e46b20a5c}{get\+Row\+At\+Index} (\$index)
+\item 
+\hyperlink{class_linda_af37433a300db1f607ee789d22828a0a0}{num\+Rows} ()
+\item 
+\hyperlink{class_linda_af0d2b98b49496eaef856a5b277fa775b}{peek} ()
+\item 
+\hyperlink{class_linda_a45fd7828ad0376368f5c32b64d5dbac4}{tail} ()
+\item 
+\hyperlink{class_linda_a046b5f5e8b171d4724f2780303239825}{even} ()
+\item 
+\hyperlink{class_linda_a666c4ea82d473f0e68ad97e3f33d1e83}{odd} ()
+\item 
+\hyperlink{class_linda_a421831a265621325e1fdd19aace0c758}{\+\_\+\+\_\+destruct} ()
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_linda_ab7d7da38a7a04e1f95bc46697f8d80e3}{\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R} = N\+U\+L\+L
+\item 
+\hyperlink{class_linda_a5ed9b689dc54a1e48103d904af6885a5}{\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y}
+\item 
+const \hyperlink{class_linda_a4771733014ade9011a85f4d01b24f2fe}{Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T} = \hyperlink{_linda_8inc_a86b40c589d474db371ea58296a5eeb12}{L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T}
+\item 
+const \hyperlink{class_linda_aab80e54270eaebb370e54ec5232be43a}{Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E} = \hyperlink{_linda_8inc_a4e480c562d1f6701e89f603607ddbb54}{L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E}
+\item 
+const \hyperlink{class_linda_af392abe38a40b56515eb835fa3c39d8c}{Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E} = \hyperlink{_linda_8inc_a75c0048bcb27b8bf9d4e9fd1b9eb023b}{L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E}
+\item 
+const \hyperlink{class_linda_a73fe432dd03d1c21aa74940da5c04dc0}{Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R} = \hyperlink{_linda_8inc_a713707c7fea371f7f3892136c1e852f0}{L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R}
+\item 
+const \hyperlink{class_linda_a392451b719cb6bb9b0c372832ad9e6d8}{Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W} = \hyperlink{_linda_8inc_aef9b254dff90502b875151a93b462df1}{L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_linda_a3749f401c64588bfbecbcc3b2c1a24e4}{parse\+Model} ()
+\item 
+\hyperlink{class_linda_a0cee7c433eda5db6e7610d4e0dcedf99}{sanitize} (\$inp)
+\item 
+\hyperlink{class_linda_a190c686da9f77d10964e06f0480c9b44}{create\+Insert} (\$fields, \$inserts)
+\item 
+\hyperlink{class_linda_a9aa9a275e880b4446ec390cc2ba351cd}{string\+\_\+or\+\_\+int} (\$val)
+\item 
+\hyperlink{class_linda_aeb66ebf99ca730ea67c612735a6576b4}{query\+Builder} (\$mode, \$fields, \$query\+Config)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_linda_a11c2781ac527a1c951d9035f2d0197cc}{\$\+D\+B\+\_\+\+L\+I\+N\+K}
+\item 
+\hyperlink{class_linda_a486c281995ea6cdb9fb0367b6e260b76}{\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L}
+\item 
+\hyperlink{class_linda_a46c628c6bd56ec5880da2515cf352183}{\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A} = array()
+\item 
+\hyperlink{class_linda_a97365f1875db5efbdefc5faa71249ff1}{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T} = 1000
+\item 
+\hyperlink{class_linda_a803cce07cc3e3f9937b6e5faba4100fe}{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X} = 0
+\item 
+\hyperlink{class_linda_a64270a514fbca17fe7347df6320fc4ba}{\$result\+Object} = N\+U\+L\+L
+\item 
+\hyperlink{class_linda_a038edab690e03aff9c70a1f63c06f27e}{\$last\+Affected\+Row\+Count} = 0
+\item 
+\hyperlink{class_linda_aea7d038e46660f55592569906cf09494}{\$query\+Config} = array()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_linda}{Linda} is a Database Abstraction Layer for P\+H\+P Built on top P\+D\+O. 
+
+\begin{DoxyAuthor}{Author}
+Olubodun Agbalaya. 
+\end{DoxyAuthor}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 11 of file Linda.\+php.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_linda_a095c5d389db211932136b53f25f39685}{}\index{Linda@{Linda}!\+\_\+\+\_\+construct@{\+\_\+\+\_\+construct}}
+\index{\+\_\+\+\_\+construct@{\+\_\+\+\_\+construct}!Linda@{Linda}}
+\subsubsection[{\+\_\+\+\_\+construct()}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+construct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_a095c5d389db211932136b53f25f39685}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 30 of file Linda.\+php.
+
+\hypertarget{class_linda_a421831a265621325e1fdd19aace0c758}{}\index{Linda@{Linda}!\+\_\+\+\_\+destruct@{\+\_\+\+\_\+destruct}}
+\index{\+\_\+\+\_\+destruct@{\+\_\+\+\_\+destruct}!Linda@{Linda}}
+\subsubsection[{\+\_\+\+\_\+destruct()}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+destruct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_a421831a265621325e1fdd19aace0c758}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 718 of file Linda.\+php.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_linda_a3292920004f4f0eb71524e2e871fd9cc}{}\index{Linda@{Linda}!count@{count}}
+\index{count@{count}!Linda@{Linda}}
+\subsubsection[{count(\$column\+Name, \$val, \$operator=""="")}]{\setlength{\rightskip}{0pt plus 5cm}count (
+\begin{DoxyParamCaption}
+\item[{}]{\$column\+Name, }
+\item[{}]{\$val, }
+\item[{}]{\$operator = {\ttfamily \char`\"{}=\char`\"{}}}
+\end{DoxyParamCaption}
+)}\label{class_linda_a3292920004f4f0eb71524e2e871fd9cc}
+Count the number of rows matching a value in a field, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to count values from \\
+\hline
+string & {\em \$val} & value to be matched \\
+\hline
+string & {\em \$operator} & Optional operator to be used default in matching defaults to equals (=), other candidates are ( $<$, $>$ , $<$$>$) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\$this 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 547 of file Linda.\+php.
+
+\hypertarget{class_linda_a190c686da9f77d10964e06f0480c9b44}{}\index{Linda@{Linda}!create\+Insert@{create\+Insert}}
+\index{create\+Insert@{create\+Insert}!Linda@{Linda}}
+\subsubsection[{create\+Insert(\$fields, \$inserts)}]{\setlength{\rightskip}{0pt plus 5cm}create\+Insert (
+\begin{DoxyParamCaption}
+\item[{}]{\$fields, }
+\item[{}]{\$inserts}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a190c686da9f77d10964e06f0480c9b44}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 234 of file Linda.\+php.
+
+\hypertarget{class_linda_a8a141e762ceb79165d9a049eaa718d38}{}\index{Linda@{Linda}!delete@{delete}}
+\index{delete@{delete}!Linda@{Linda}}
+\subsubsection[{delete(\$query\+Config)}]{\setlength{\rightskip}{0pt plus 5cm}delete (
+\begin{DoxyParamCaption}
+\item[{}]{\$query\+Config}
+\end{DoxyParamCaption}
+)}\label{class_linda_a8a141e762ceb79165d9a049eaa718d38}
+Deletes data from a table
+
+
+\begin{DoxyParams}[1]{Parameters}
+type & {\em \$query\+Config,see} & \#insert for structure of the query\+Config parameter \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 203 of file Linda.\+php.
+
+\hypertarget{class_linda_a046b5f5e8b171d4724f2780303239825}{}\index{Linda@{Linda}!even@{even}}
+\index{even@{even}!Linda@{Linda}}
+\subsubsection[{even()}]{\setlength{\rightskip}{0pt plus 5cm}even (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_a046b5f5e8b171d4724f2780303239825}
+Returns even indexes from the stored result set \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 691 of file Linda.\+php.
+
+\hypertarget{class_linda_a87d58413379d402e5dee4f5825b686fd}{}\index{Linda@{Linda}!fetch@{fetch}}
+\index{fetch@{fetch}!Linda@{Linda}}
+\subsubsection[{fetch(\$fields, \$query\+Config=array())}]{\setlength{\rightskip}{0pt plus 5cm}fetch (
+\begin{DoxyParamCaption}
+\item[{}]{\$fields, }
+\item[{}]{\$query\+Config = {\ttfamily array()}}
+\end{DoxyParamCaption}
+)}\label{class_linda_a87d58413379d402e5dee4f5825b686fd}
+The get method fetches data from the table 
+\begin{DoxyParams}{Parameters}
+{\em array()} & $\vert$ string \$feilds An associative array containing fields to get from the table, or the string $\ast$ \\
+\hline
+{\em array()} & \$query\+Config A configuration array, that contains option for the get operation\\
+\hline
+\end{DoxyParams}
+@ \$query\+Config = array( \begin{DoxyVerb}               "whereGroup" => array(  
+                 [
+                     "actor_id"=>array("value"=>5, "operator"=>"="),
+                    "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
+                    "comparisonOp"=>"AND",
+                    "nextOp"=>"OR"
+                  ],
+
+               [
+     "actor_id"=>array("value"=>"last_name", "operator"=>"LIKE")
+
+               ] ),
+
+
+
+
+                "where_in"=>array(
+                       fieldName => "id",
+                       options => " 10, 15, 22,
+                         query => "",
+                        operator = > "AND"
+
+                    ),
+
+               "innerJoinGroup" => array(
+                 [
+                 table => "table_name",
+                 conditional_column_a => "column name" 
+                 conditional_column_b => "column name" 
+                 ],
+                 [
+               table => "table_name",
+                 conditional_column => "column name" 
+                 ]
+
+
+               ) ,
+
+                "limit" =>[
+                         index => 2,
+                         count =>18
+
+                       ],
+
+          )\end{DoxyVerb}
+ \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 144 of file Linda.\+php.
+
+\hypertarget{class_linda_aba0d5b303383fb5b1fabb5fd01cd3800}{}\index{Linda@{Linda}!get\+All@{get\+All}}
+\index{get\+All@{get\+All}!Linda@{Linda}}
+\subsubsection[{get\+All()}]{\setlength{\rightskip}{0pt plus 5cm}get\+All (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_aba0d5b303383fb5b1fabb5fd01cd3800}
+Returns the entire result set as an array  array() \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 637 of file Linda.\+php.
+
+\hypertarget{class_linda_a15fff7e5f77cd6a7e7656e3e46b20a5c}{}\index{Linda@{Linda}!get\+Row\+At\+Index@{get\+Row\+At\+Index}}
+\index{get\+Row\+At\+Index@{get\+Row\+At\+Index}!Linda@{Linda}}
+\subsubsection[{get\+Row\+At\+Index(\$index)}]{\setlength{\rightskip}{0pt plus 5cm}get\+Row\+At\+Index (
+\begin{DoxyParamCaption}
+\item[{}]{\$index}
+\end{DoxyParamCaption}
+)}\label{class_linda_a15fff7e5f77cd6a7e7656e3e46b20a5c}
+Returns the row at a particular index in the result set \begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 652 of file Linda.\+php.
+
+\hypertarget{class_linda_a9405f06abe08887d915b8c0a98885cb2}{}\index{Linda@{Linda}!max\+\_\+in\+\_\+column@{max\+\_\+in\+\_\+column}}
+\index{max\+\_\+in\+\_\+column@{max\+\_\+in\+\_\+column}!Linda@{Linda}}
+\subsubsection[{max\+\_\+in\+\_\+column(\$column\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}max\+\_\+in\+\_\+column (
+\begin{DoxyParamCaption}
+\item[{}]{\$column\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_a9405f06abe08887d915b8c0a98885cb2}
+Returns the maximum value on a field, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to get the minimum value from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 563 of file Linda.\+php.
+
+\hypertarget{class_linda_ace93ec905a1eba8f431c1d6bb279ac20}{}\index{Linda@{Linda}!max\+Row@{max\+Row}}
+\index{max\+Row@{max\+Row}!Linda@{Linda}}
+\subsubsection[{max\+Row(\$field\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}max\+Row (
+\begin{DoxyParamCaption}
+\item[{}]{\$field\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_ace93ec905a1eba8f431c1d6bb279ac20}
+Returns row containing the maximum value of a particular column, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to get the maximum value from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 579 of file Linda.\+php.
+
+\hypertarget{class_linda_a47a8d3c75c7454aca40d3b7808465ab6}{}\index{Linda@{Linda}!min\+\_\+in\+\_\+column@{min\+\_\+in\+\_\+column}}
+\index{min\+\_\+in\+\_\+column@{min\+\_\+in\+\_\+column}!Linda@{Linda}}
+\subsubsection[{min\+\_\+in\+\_\+column(\$column\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}min\+\_\+in\+\_\+column (
+\begin{DoxyParamCaption}
+\item[{}]{\$column\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_a47a8d3c75c7454aca40d3b7808465ab6}
+Returns the minimum value on a field, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to get the minimum value from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 594 of file Linda.\+php.
+
+\hypertarget{class_linda_a94e9b7b94a61bc48ad5d866bc93670ce}{}\index{Linda@{Linda}!min\+Row@{min\+Row}}
+\index{min\+Row@{min\+Row}!Linda@{Linda}}
+\subsubsection[{min\+Row(\$column\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}min\+Row (
+\begin{DoxyParamCaption}
+\item[{}]{\$column\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_a94e9b7b94a61bc48ad5d866bc93670ce}
+Returns row containing the maximum value of a particular column,, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to get the minimum value from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 609 of file Linda.\+php.
+
+\hypertarget{class_linda_af37433a300db1f607ee789d22828a0a0}{}\index{Linda@{Linda}!num\+Rows@{num\+Rows}}
+\index{num\+Rows@{num\+Rows}!Linda@{Linda}}
+\subsubsection[{num\+Rows()}]{\setlength{\rightskip}{0pt plus 5cm}num\+Rows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_af37433a300db1f607ee789d22828a0a0}
+Returns the total number of rows in the result set, or the numbers of rows affected by the last update/delete operation \begin{DoxyReturn}{Returns}
+integer 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 662 of file Linda.\+php.
+
+\hypertarget{class_linda_a666c4ea82d473f0e68ad97e3f33d1e83}{}\index{Linda@{Linda}!odd@{odd}}
+\index{odd@{odd}!Linda@{Linda}}
+\subsubsection[{odd()}]{\setlength{\rightskip}{0pt plus 5cm}odd (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_a666c4ea82d473f0e68ad97e3f33d1e83}
+Returns odd indexes from the stored result set \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 706 of file Linda.\+php.
+
+\hypertarget{class_linda_a3749f401c64588bfbecbcc3b2c1a24e4}{}\index{Linda@{Linda}!parse\+Model@{parse\+Model}}
+\index{parse\+Model@{parse\+Model}!Linda@{Linda}}
+\subsubsection[{parse\+Model()}]{\setlength{\rightskip}{0pt plus 5cm}parse\+Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a3749f401c64588bfbecbcc3b2c1a24e4}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 51 of file Linda.\+php.
+
+\hypertarget{class_linda_af0d2b98b49496eaef856a5b277fa775b}{}\index{Linda@{Linda}!peek@{peek}}
+\index{peek@{peek}!Linda@{Linda}}
+\subsubsection[{peek()}]{\setlength{\rightskip}{0pt plus 5cm}peek (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_af0d2b98b49496eaef856a5b277fa775b}
+Returns the first row in the result set \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 671 of file Linda.\+php.
+
+\hypertarget{class_linda_af5a8f159a27ca700aa869092a5696be1}{}\index{Linda@{Linda}!put@{put}}
+\index{put@{put}!Linda@{Linda}}
+\subsubsection[{put(\$fields, \$values)}]{\setlength{\rightskip}{0pt plus 5cm}put (
+\begin{DoxyParamCaption}
+\item[{}]{\$fields, }
+\item[{}]{\$values}
+\end{DoxyParamCaption}
+)}\label{class_linda_af5a8f159a27ca700aa869092a5696be1}
+put inserts data into the table 
+\begin{DoxyParams}[1]{Parameters}
+Array & {\em \$fields} & An associative array, containing column names that matches the actual table \\
+\hline
+Array & {\em \$values} & An associative array, values to be inserted per column, using N\+O\+W() or T\+I\+M\+E(), inserts the date/time in either Y\+M\+D format or Y\+M\+D H\+:m\+:s format \\
+\hline
+type & {\em \$fields} & \\
+\hline
+type & {\em \$query\+Config} & \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 187 of file Linda.\+php.
+
+\hypertarget{class_linda_aeb66ebf99ca730ea67c612735a6576b4}{}\index{Linda@{Linda}!query\+Builder@{query\+Builder}}
+\index{query\+Builder@{query\+Builder}!Linda@{Linda}}
+\subsubsection[{query\+Builder(\$mode, \$fields, \$query\+Config)}]{\setlength{\rightskip}{0pt plus 5cm}query\+Builder (
+\begin{DoxyParamCaption}
+\item[{}]{\$mode, }
+\item[{}]{\$fields, }
+\item[{}]{\$query\+Config}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_aeb66ebf99ca730ea67c612735a6576b4}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 262 of file Linda.\+php.
+
+\hypertarget{class_linda_ad2e4fa0b57c9acdf15cd932346381af5}{}\index{Linda@{Linda}!run\+Query@{run\+Query}}
+\index{run\+Query@{run\+Query}!Linda@{Linda}}
+\subsubsection[{run\+Query()}]{\setlength{\rightskip}{0pt plus 5cm}run\+Query (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_ad2e4fa0b57c9acdf15cd932346381af5}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 491 of file Linda.\+php.
+
+\hypertarget{class_linda_a0cee7c433eda5db6e7610d4e0dcedf99}{}\index{Linda@{Linda}!sanitize@{sanitize}}
+\index{sanitize@{sanitize}!Linda@{Linda}}
+\subsubsection[{sanitize(\$inp)}]{\setlength{\rightskip}{0pt plus 5cm}sanitize (
+\begin{DoxyParamCaption}
+\item[{}]{\$inp}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a0cee7c433eda5db6e7610d4e0dcedf99}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 220 of file Linda.\+php.
+
+\hypertarget{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{}\index{Linda@{Linda}!set\+Table@{set\+Table}}
+\index{set\+Table@{set\+Table}!Linda@{Linda}}
+\subsubsection[{set\+Table(\$table\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}set\+Table (
+\begin{DoxyParamCaption}
+\item[{}]{\$table\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 39 of file Linda.\+php.
+
+\hypertarget{class_linda_a9aa9a275e880b4446ec390cc2ba351cd}{}\index{Linda@{Linda}!string\+\_\+or\+\_\+int@{string\+\_\+or\+\_\+int}}
+\index{string\+\_\+or\+\_\+int@{string\+\_\+or\+\_\+int}!Linda@{Linda}}
+\subsubsection[{string\+\_\+or\+\_\+int(\$val)}]{\setlength{\rightskip}{0pt plus 5cm}string\+\_\+or\+\_\+int (
+\begin{DoxyParamCaption}
+\item[{}]{\$val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a9aa9a275e880b4446ec390cc2ba351cd}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 246 of file Linda.\+php.
+
+\hypertarget{class_linda_ab39eb2457d23f38ac50e0af64a55f6e9}{}\index{Linda@{Linda}!sum@{sum}}
+\index{sum@{sum}!Linda@{Linda}}
+\subsubsection[{sum(\$field\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}sum (
+\begin{DoxyParamCaption}
+\item[{}]{\$field\+Name}
+\end{DoxyParamCaption}
+)}\label{class_linda_ab39eb2457d23f38ac50e0af64a55f6e9}
+Returns the sum of values on a field/column, this method executes a query directly on the table and doesnt work on the retrieved/stored data -\/ so you must have set the table using the \hyperlink{class_linda_aaded27ecadbc8530b9b21cbb38dfa4a8}{set\+Table} method, prior to calling 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$column\+Name} & field to get the minimum value from \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 624 of file Linda.\+php.
+
+\hypertarget{class_linda_a45fd7828ad0376368f5c32b64d5dbac4}{}\index{Linda@{Linda}!tail@{tail}}
+\index{tail@{tail}!Linda@{Linda}}
+\subsubsection[{tail()}]{\setlength{\rightskip}{0pt plus 5cm}tail (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_a45fd7828ad0376368f5c32b64d5dbac4}
+Returns the last row in the result set \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 681 of file Linda.\+php.
+
+\hypertarget{class_linda_ac000dfba7a410bb147dc77571d1e2ed5}{}\index{Linda@{Linda}!update@{update}}
+\index{update@{update}!Linda@{Linda}}
+\subsubsection[{update(\$fields, \$query\+Config)}]{\setlength{\rightskip}{0pt plus 5cm}update (
+\begin{DoxyParamCaption}
+\item[{}]{\$fields, }
+\item[{}]{\$query\+Config}
+\end{DoxyParamCaption}
+)}\label{class_linda_ac000dfba7a410bb147dc77571d1e2ed5}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 169 of file Linda.\+php.
+
+
+
+\subsection{Field Documentation}
+\hypertarget{class_linda_a5ed9b689dc54a1e48103d904af6885a5}{}\index{Linda@{Linda}!\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y@{\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y}}
+\index{\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y@{\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y}!Linda@{Linda}}
+\subsubsection[{\$\+C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y}]{\setlength{\rightskip}{0pt plus 5cm}\$C\+U\+R\+R\+E\+N\+T\+\_\+\+Q\+U\+E\+R\+Y}\label{class_linda_a5ed9b689dc54a1e48103d904af6885a5}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 16 of file Linda.\+php.
+
+\hypertarget{class_linda_a11c2781ac527a1c951d9035f2d0197cc}{}\index{Linda@{Linda}!\$\+D\+B\+\_\+\+L\+I\+N\+K@{\$\+D\+B\+\_\+\+L\+I\+N\+K}}
+\index{\$\+D\+B\+\_\+\+L\+I\+N\+K@{\$\+D\+B\+\_\+\+L\+I\+N\+K}!Linda@{Linda}}
+\subsubsection[{\$\+D\+B\+\_\+\+L\+I\+N\+K}]{\setlength{\rightskip}{0pt plus 5cm}\$D\+B\+\_\+\+L\+I\+N\+K\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a11c2781ac527a1c951d9035f2d0197cc}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 14 of file Linda.\+php.
+
+\hypertarget{class_linda_a97365f1875db5efbdefc5faa71249ff1}{}\index{Linda@{Linda}!\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T@{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T}}
+\index{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T@{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T}!Linda@{Linda}}
+\subsubsection[{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T}]{\setlength{\rightskip}{0pt plus 5cm}\$D\+E\+F\+A\+U\+L\+T\+\_\+\+L\+I\+M\+I\+T = 1000\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a97365f1875db5efbdefc5faa71249ff1}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 18 of file Linda.\+php.
+
+\hypertarget{class_linda_a803cce07cc3e3f9937b6e5faba4100fe}{}\index{Linda@{Linda}!\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X@{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X}}
+\index{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X@{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X}!Linda@{Linda}}
+\subsubsection[{\$\+D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X}]{\setlength{\rightskip}{0pt plus 5cm}\$D\+E\+F\+A\+U\+L\+T\+\_\+\+S\+T\+A\+R\+T\+\_\+\+I\+N\+D\+E\+X = 0\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a803cce07cc3e3f9937b6e5faba4100fe}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 19 of file Linda.\+php.
+
+\hypertarget{class_linda_a038edab690e03aff9c70a1f63c06f27e}{}\index{Linda@{Linda}!\$last\+Affected\+Row\+Count@{\$last\+Affected\+Row\+Count}}
+\index{\$last\+Affected\+Row\+Count@{\$last\+Affected\+Row\+Count}!Linda@{Linda}}
+\subsubsection[{\$last\+Affected\+Row\+Count}]{\setlength{\rightskip}{0pt plus 5cm}\$last\+Affected\+Row\+Count = 0\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a038edab690e03aff9c70a1f63c06f27e}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 21 of file Linda.\+php.
+
+\hypertarget{class_linda_ab7d7da38a7a04e1f95bc46697f8d80e3}{}\index{Linda@{Linda}!\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R@{\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R}}
+\index{\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R@{\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R}!Linda@{Linda}}
+\subsubsection[{\$\+L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R}]{\setlength{\rightskip}{0pt plus 5cm}\$L\+I\+N\+D\+A\+\_\+\+E\+R\+R\+O\+R = N\+U\+L\+L}\label{class_linda_ab7d7da38a7a04e1f95bc46697f8d80e3}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 13 of file Linda.\+php.
+
+\hypertarget{class_linda_a46c628c6bd56ec5880da2515cf352183}{}\index{Linda@{Linda}!\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A@{\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A}}
+\index{\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A@{\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A}!Linda@{Linda}}
+\subsubsection[{\$\+M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A}]{\setlength{\rightskip}{0pt plus 5cm}\$M\+O\+D\+E\+L\+\_\+\+S\+C\+H\+E\+M\+A = array()\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a46c628c6bd56ec5880da2515cf352183}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 17 of file Linda.\+php.
+
+\hypertarget{class_linda_aea7d038e46660f55592569906cf09494}{}\index{Linda@{Linda}!\$query\+Config@{\$query\+Config}}
+\index{\$query\+Config@{\$query\+Config}!Linda@{Linda}}
+\subsubsection[{\$query\+Config}]{\setlength{\rightskip}{0pt plus 5cm}\$query\+Config = array()\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_aea7d038e46660f55592569906cf09494}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 22 of file Linda.\+php.
+
+\hypertarget{class_linda_a64270a514fbca17fe7347df6320fc4ba}{}\index{Linda@{Linda}!\$result\+Object@{\$result\+Object}}
+\index{\$result\+Object@{\$result\+Object}!Linda@{Linda}}
+\subsubsection[{\$result\+Object}]{\setlength{\rightskip}{0pt plus 5cm}\$result\+Object = N\+U\+L\+L\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a64270a514fbca17fe7347df6320fc4ba}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 20 of file Linda.\+php.
+
+\hypertarget{class_linda_a486c281995ea6cdb9fb0367b6e260b76}{}\index{Linda@{Linda}!\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L@{\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L}}
+\index{\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L@{\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L}!Linda@{Linda}}
+\subsubsection[{\$\+T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L}]{\setlength{\rightskip}{0pt plus 5cm}\$T\+A\+B\+L\+E\+\_\+\+M\+O\+D\+E\+L\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_a486c281995ea6cdb9fb0367b6e260b76}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 15 of file Linda.\+php.
+
+\hypertarget{class_linda_a4771733014ade9011a85f4d01b24f2fe}{}\index{Linda@{Linda}!Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T@{Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T}}
+\index{Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T@{Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T}!Linda@{Linda}}
+\subsubsection[{Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T}]{\setlength{\rightskip}{0pt plus 5cm}const Linda\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T = {\bf L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+H\+O\+S\+T}}\label{class_linda_a4771733014ade9011a85f4d01b24f2fe}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 24 of file Linda.\+php.
+
+\hypertarget{class_linda_aab80e54270eaebb370e54ec5232be43a}{}\index{Linda@{Linda}!Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E@{Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E}}
+\index{Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E@{Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E}!Linda@{Linda}}
+\subsubsection[{Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E}]{\setlength{\rightskip}{0pt plus 5cm}const Linda\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E = {\bf L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+N\+A\+M\+E}}\label{class_linda_aab80e54270eaebb370e54ec5232be43a}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 25 of file Linda.\+php.
+
+\hypertarget{class_linda_a392451b719cb6bb9b0c372832ad9e6d8}{}\index{Linda@{Linda}!Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W@{Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W}}
+\index{Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W@{Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W}!Linda@{Linda}}
+\subsubsection[{Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W}]{\setlength{\rightskip}{0pt plus 5cm}const Linda\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W = {\bf L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+P\+A\+S\+S\+W}}\label{class_linda_a392451b719cb6bb9b0c372832ad9e6d8}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 28 of file Linda.\+php.
+
+\hypertarget{class_linda_af392abe38a40b56515eb835fa3c39d8c}{}\index{Linda@{Linda}!Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E@{Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E}}
+\index{Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E@{Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E}!Linda@{Linda}}
+\subsubsection[{Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E}]{\setlength{\rightskip}{0pt plus 5cm}const Linda\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E = {\bf L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+T\+Y\+P\+E}}\label{class_linda_af392abe38a40b56515eb835fa3c39d8c}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 26 of file Linda.\+php.
+
+\hypertarget{class_linda_a73fe432dd03d1c21aa74940da5c04dc0}{}\index{Linda@{Linda}!Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R@{Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R}}
+\index{Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R@{Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R}!Linda@{Linda}}
+\subsubsection[{Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}const Linda\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R = {\bf L\+I\+N\+D\+A\+\_\+\+D\+B\+\_\+\+U\+S\+E\+R}}\label{class_linda_a73fe432dd03d1c21aa74940da5c04dc0}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{_c_1_2_apache24_2htdocs_2easygo_2process_2_linda_2_linda_8php-example}{C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\+Linda.\+php}.\end{Desc}
+
+
+Definition at line 27 of file Linda.\+php.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\hyperlink{_linda_8php}{Linda.\+php}\end{DoxyCompactItemize}
