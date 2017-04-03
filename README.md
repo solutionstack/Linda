@@ -102,3 +102,5 @@ SELECT * FROM `some_db-table` WHERE(actor_id=5 AND last_name LIKE '%ER') OR (act
 ```
 There can be multiple where_in parameters, and a sub-query can be specified in the query sub-index, instead of specifying static values.
 
+
+Also ist supports joins, and much more would be updating this Read me as time goes on
