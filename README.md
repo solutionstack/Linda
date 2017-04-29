@@ -151,12 +151,18 @@ This is a design decision, as thus all WHERE clauses would be processed before W
 
 # INNER JOIN CLAUSE
 Inner Joins are a common way to retrieve related data from multiple table and the <b> LindaModel</b> class provides a convinient method
- to perform such joins
+ to perform such joins<br/>
+ The INNER JOIn method signature is
+ <b> inner_join($table, $conditional_column_a, $conditional_column_b)</b><br/>
+ where <b>$table</b> is the table you want to JOIN with<br/>
+      <b> $conditional_column_a</b> is column on the current table you are operating on<br/>
+      <b> $conditional_column_b</b> is the column to match on the JOIN'ed table<br/>
+      
 ```php
 $l = new LindaModel("address");   //the address table is from the open-source sakila database
-$l->where_in_or("city_id", ["300", "400", "500"]); //wher the city_id is within that range)
-$l->where("city_id","<" ,100); //wher the city_id is within that range)
-
+$l->where("city_id","<" ,100) //wher the city_id is within that range)
+ ->inner_join("city", "city_id", "city_id");
+ 
 $rows = $l->get()->collection();
 ```
 
