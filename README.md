@@ -44,7 +44,7 @@ foreach($rows as $rows) echo $rows->address ."<br/>"; //this would print out the
 
 //that simple
 //so if i wanted to change the address on each column in the DB table (since all columns where returned), i'lll simply
-//set the new values on each row model
+//set the new values on each row model (see note on primary keys below)
 foreach($rows as $rows)$rows->address = "New Address to Set";
 
 //when setting column values on a row model, its initially set only in Memory, you commit back into the table by using the save
@@ -92,8 +92,17 @@ foreach($rows as $rows) $row->foo = "new value";
 $l->save(); //done
 
 ```
+Note that when updating columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
+You can specify the primary key as the second argument to the constructor..like
+ 
+```php
+$l = new LindaModel("address","pri_key_column_name");
+```
+else <b>LindaModel</b> classuses the first column of the table, which might not always be accurate, so always specify a primary key if update operations are going to be performed
 
-Multiple where clauses can be specified
+
+
+#Multiple where clauses can be specified
 
 ```php
 $l = new LindaModel("address");  
@@ -134,8 +143,8 @@ For where_in_or you are specifying that an OR comes before the where_in CLAUSE, 
 
 ```php
 $l = new LindaModel("address");   //the address table is from the open-source sakila database
-$l->where_in_or("city_id", ["300", "400", "500"]); //wher the city_id is within that range)
-$l->where("city_id","<" ,100); //wher the city_id is within that range)
+$l->where_in_or("city_id", ["300", "400", "500"]) //wher the city_id is within that range)
+  ->where("city_id","<" ,100); //wher the city_id is within that range)
 
 $rows = $l->get()->collection();
 ```
@@ -146,7 +155,7 @@ would translate to
 SELECT * FROM `address` WHERE( city_id < 100 ) OR city_id IN ('300', '400', '500') LIMIT 0, 1000;
 ```
 You'll notice that even though the <b>where_in</b> clause came first, the <b> where clause</b> was processed first<br/>
-This is a design decision, as thus all WHERE clauses would be processed before WHERE IN's, irrespective of the order the methods where called
+This is a design decision, as thus all WHERE clauses would be processed before WHERE IN's, irrespective of the order the methods where called, you can also pass a sub-query string as the second value of a <b> where_in</b> method call
   
 
 # INNER JOIN CLAUSE
@@ -159,16 +168,47 @@ Inner Joins are a common way to retrieve related data from multiple table and th
       <b> $conditional_column_b</b> is the column to match on the JOIN'ed table<br/>
       
 ```php
-$l = new LindaModel("address");   //the address table is from the open-source sakila database
+$l = new LindaModel("address");  
 $l->where("city_id","<" ,100) //wher the city_id is within that range)
  ->inner_join("city", "city_id", "city_id");
  
 $rows = $l->get()->collection();
 ```
+In the above an SQL query sililar to
+```sql
+SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id WHERE( T1.city_id < 100 ) LIMIT 0, 1000;
+```
+would be executed
 
+# PAGINATION
+LindaModel supports two methods #take() and #skip() for paginating reslts
+```php
+$l = new LindaModel("address");   
+$l->where_in_or("city_id", ["300", "400", "500"]) //wher the city_id is within that range)
+  ->where("city_id","<" ,100) //wher the city_id is within that range)
+  ->take(10)
+  ->skip(4);
+$rows = $l->get()->collection();
+```
+<br/>
+Would execute the Statement
+```sql
+SELECT * FROM `address` WHERE( city_id < 100 ) OR city_id IN (300,400,500) LIMIT 4, 10;
+```
 
+# Inserting rows
+To insert new rows use the create method, but make sure the argument count matches the number of columns
 
-  
+```php
+$l = new LindaModel("address");   
+$l->create(["val1", "val2",...]);
+```
+# Removing rows
+To remove rows from the table after fetching the object models using either <b>#fetchAll</b> or <b>#get</b>
+simply call <b> #remove</b> to delete those rows from a table
+
+<br/>
+<br/>
 #
 # Using Linda as an Abstraction Layer
 The Data Abstraction Layer provides a lower level abstraction for performing Db operations<br/>
