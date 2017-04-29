@@ -98,7 +98,7 @@ You can specify the primary key as the second argument to the constructor..like
 ```php
 $l = new LindaModel("address","pri_key_column_name");
 ```
-else <b>LindaModel</b> classuses the first column of the table, which might not always be accurate, so always specify a primary key if update operations are going to be performed
+else <b>LindaModel</b> class uses the first column of the table as the primary key, which might not always be accurate, so always specify a primary key if update operations are going to be performed
 
 
 
