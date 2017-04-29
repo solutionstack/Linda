@@ -118,13 +118,57 @@ $l->where_or("city_id", "<", 300)
   ->where("address", "LIKE", "%street"); //if theres another where clause after this, it would be related AND- wise, or u can use #where_or
   ```
   
+  # WHERE IN CLAUSE
+  the <b>where_in</b> and <b>where_in_or</b> methods provides means to apply WHERE IN clauses to your table operations
   
+  ```php
+//in theaddress table we used above, lets apply some where clauses
+$l = new LindaModel("address");   //the address table is from the open-source sakila database
+$l->where_in("city_id", ["300, 400, 500"]); //wher the city_id is within that range
+
+```
+<b>where_in_or</b> differs significantly, for <b>where_or</b><br/>
+For where_in_or you are specifying that an OR comes before the where_in CLAUSE, if multiple clauses exixts
+
+<br/><br/>so as an example
+
+```php
+$l = new LindaModel("address");   //the address table is from the open-source sakila database
+$l->where_in_or("city_id", ["300", "400", "500"]); //wher the city_id is within that range)
+$l->where("city_id","<" ,100); //wher the city_id is within that range)
+
+$rows = $l->get()->collection();
+```
+
+would translate to
+
+```sql
+SELECT * FROM `address` WHERE( city_id < 100 ) OR city_id IN ('300', '400', '500') LIMIT 0, 1000;
+```
+You'll notice that even though the <b>where_in</b> clause came first, the <b> where clause</b> was processed first<br/>
+This is a design decision, as thus all WHERE clauses would be processed before WHERE IN's, irrespective of the order the methods where called
   
+
+# INNER JOIN CLAUSE
+Inner Joins are a common way to retrieve related data from multiple table and the <b> LindaModel</b> class provides a convinient method
+ to perform such joins
+```php
+$l = new LindaModel("address");   //the address table is from the open-source sakila database
+$l->where_in_or("city_id", ["300", "400", "500"]); //wher the city_id is within that range)
+$l->where("city_id","<" ,100); //wher the city_id is within that range)
+
+$rows = $l->get()->collection();
+```
+
+
+
   
 #
 # Using Linda as an Abstraction Layer
-
+The Data Abstraction Layer provides a lower level abstraction for performing Db operations<br/>
+using the <b> Linda</b> Class
 Lets look at a basic select operation
+
 <br/>
 ```php
   $l = new Linda();
