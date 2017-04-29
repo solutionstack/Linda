@@ -50,8 +50,9 @@ class LindaRowModel {
     public function getValuesAsObject() {
         $r = new stdClass();
 
-        foreach ($this->model_fields as $key => $value)
+        foreach ($this->model_fields as $key => $value) {
             $r->{$key} = $value;
+        }
 
         return $r;
     }

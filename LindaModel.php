@@ -1,7 +1,7 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/process/Linda/Linda.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/process/Linda/LindaRowModel.php';
+require_once realpath(dirname(__FILE__)) ."/".'Linda.php';
+require_once realpath(dirname(__FILE__)) ."/".'LindaRowModel.php';
 
 /**
  
@@ -17,6 +17,7 @@ class LindaModel extends Linda {
     protected $tableColumnSchema;
     protected $virtualModelCollection = array();
     protected $virtualModelPrimaryKey;
+	protected $virtualModelPrimaryKeyColumnIndex;
     protected $modelName;
 
     /**
@@ -36,8 +37,18 @@ class LindaModel extends Linda {
             $this->modelName = $Model;
         }
 
-        if ($primaryKey)
-            $this->virtualModelPrimaryKey = $primaryKey;
+        if ($primaryKey){
+            $this->virtualModelPrimaryKey = $primaryKey; //store the primary key
+			
+			//get the column index on the table for this primary key
+			$keyColumnIndex =  array_search($primaryKey, $this->tableColumnSchema);
+			
+			if(FALSE === $keyColumnIndex)  throw new Exception('Primary Key '. $primaryKey. "  not found!");
+			
+		 $this->virtualModelPrimaryKeyColumnIndex  =$keyColumnIndex  ;
+	}else{
+		 $this->virtualModelPrimaryKeyColumnIndex =0; //default to colum 0 for primary key
+	} 
     }
 
     /**
@@ -65,8 +76,69 @@ class LindaModel extends Linda {
     public function first() {
 
 
-        return isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[0]: NULL;
+        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[0]: NULL;
     }
+	
+	  /**
+     * Returns the last model representing an active record, or NULL if no records where matched
+     * @return LindaRowModel
+     */
+    public function last () {
+
+
+        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[count($this->virtualModelCollection)-1]: NULL;
+    }
+	
+	 /**
+     *  Returns even indexes  representing an active record objects, or NULL if no records where matched
+     * @return array()
+     */
+    public function even() {
+        $resultArray = array();
+        if (count($this->virtualModelCollection)) {
+
+            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+                if ($i % 2 === 0) {
+                    $resultArray[] = $this->virtualModelCollection[$i];
+                }
+            }
+        }
+       return count($resultArray) ? $resultArray : NULL;
+    }
+
+  /**
+     *  Returns odd indexes  representing an active record objects, or NULL if no records where matched
+     * @return array()
+     */
+    public function odd() {
+
+        $resultArray = array();
+        if (count($this->virtualModelCollection)) {
+
+            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+                if ($i & 2 !== 0) {
+                    $resultArray[] = $this->virtualModelCollection[$i];
+                }
+            }
+        }
+        return count($resultArray) ? $resultArray : NULL;
+    }
+	
+	 /**
+     *  Returns the collection of object row modelsin a random order, or NULL if no records where matched
+     * @return array()
+     */
+    public function random() {
+
+       
+        if (count($this->virtualModelCollection)) {
+
+          shuffle($this->virtualModelCollection);
+		  return $this->virtualModelCollection;
+        }
+        return NULL;
+    }
+	
     /**
      * Returns a collections of models representing each active record, retrieved from the last call to #get
 	 * Retruns NULL if no records are available
@@ -103,7 +175,7 @@ class LindaModel extends Linda {
             $this->update($tableData, array(
                 "whereGroup" => array(
                         [
-                        $PK => array("value" => $fieldsData[0])
+                        $PK => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex])
                     ]
                 )
             ));
@@ -133,29 +205,23 @@ class LindaModel extends Linda {
     }
 
     public function where_in_or($col, $val) {
-        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "'" . implode("','", $val) . "'", "operator" => "OR"];
+        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . implode(",", $val) . "", "operator" => "OR"];
 
         return $this;
     }
 
     public function where_in($col, $val) {
-        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "'" . implode("','", $val) . "'", "operator" => "AND"];
 
+		if(0 === stripos(trim($val),"select")){ //they want to perform a sub-query
+			  $this->queryConfig["where_in"] = ["fieldName" => $col, "query" => $val , "operator" => "AND"];
+
+		}else{
+        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . implode(",", $val) . "", "operator" => "AND"];
+		}
         return $this;
     }
 
-    public function where_in_numeric_or($col, $val) {
-        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => implode(",", $val), "operator" => "OR"];
-
-        return $this;
-    }
-
-    public function where_in_numeric($col, $val) {
-        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => implode(",", $val), "operator" => "AND"];
-
-        return $this;
-    }
-
+ 
     public function inner_join($table, $conditional_column_a, $conditional_column_b) {
         $this->queryConfig["innerJoinGroup"][] = ["table" => $table, "conditional_column_a" => $conditional_column_a, "conditional_column_b" => $conditional_column_b];
 

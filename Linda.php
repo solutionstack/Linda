@@ -1,7 +1,8 @@
 <?php
 
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/process/Linda/Linda.inc';
+
+require_once realpath(dirname(__FILE__)) ."/".'Linda.inc';
 
 /**
  * 
@@ -39,8 +40,9 @@ class Linda {
     public function setTable($tableName) {
 
 
-        if (is_string($tableName))
+        if (is_string($tableName)) {
             $this->TABLE_MODEL = $tableName;
+        }
     }
 
     /**
@@ -80,7 +82,7 @@ class Linda {
 
             return TRUE;
         } catch (PDOException $pe) {
-            $this->$LINDA_ERROR = "DB_CONNECT_ERROR";
+            $this->LINDA_ERROR = "DB_CONNECT_ERROR";
             throw $pe;
         }
     }
@@ -162,7 +164,7 @@ class Linda {
      *                        email = "example.example.org
      *                    )
      *  using NOW() or TIME() as values, inserts the date/time
-     * @param type $queryConfig, see #insert for structure of the queryConfig parameter
+     * @param type $queryConfig see #insert for structure of the queryConfig parameter
 
      *
      */
@@ -264,6 +266,8 @@ class Linda {
         switch ($mode) {
 
             case "select":
+			
+			$inner_join_prefix = ""; //to be set fot table 1 if we have a join
 
 
                 $this->CURRENT_QUERY .= " SELECT " . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "`";
@@ -275,6 +279,7 @@ class Linda {
                     if (FALSE !== strpos($index, "innerJoinGroup")) {
 
                         $this->CURRENT_QUERY .= " AS T1 ";
+						$inner_join_prefix = "T1.";
                         foreach ($item as $key => $val) {
                             $this->CURRENT_QUERY .= "INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
                         }
@@ -301,7 +306,7 @@ class Linda {
                                         $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
 
                                     if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " " . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
+                                        $this->CURRENT_QUERY .= " " .$inner_join_prefix . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
                                 };
                             }
 
@@ -323,7 +328,8 @@ class Linda {
 
                         $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    } else {
+                    }
+                    else {
 
                         $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
@@ -335,7 +341,8 @@ class Linda {
                 if (isset($queryConfig['limit'])) {
                     $this->CURRENT_QUERY .= " LIMIT " . $queryConfig['limit']['index'];
                     $this->CURRENT_QUERY .= ",  " . $queryConfig['limit']['count'];
-                } else {
+                }
+                else {
                     $this->CURRENT_QUERY .= " LIMIT " . $this->DEFAULT_START_INDEX;
                     $this->CURRENT_QUERY .= ", " . $this->DEFAULT_LIMIT;
                 }
@@ -402,7 +409,8 @@ class Linda {
 
                         $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    } else {
+                    }
+                    else {
 
                         $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
@@ -427,8 +435,9 @@ class Linda {
                 $in_where_clause = 1;
                 foreach ($queryConfig as $index => $item) {//loop through each where Groups
                     if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
-                        if ($where_clause_counter++ === 1)
+                        if ($where_clause_counter++ === 1) {
                             $this->CURRENT_QUERY .= " WHERE(";
+                        }
 
                         foreach ($item as $key => $whereGroupIndex) {//loop through each where Groups
                             $nextComparisonOp = isset($whereGroupIndex["nextOp"]) ? $whereGroupIndex["nextOp"] : "AND";
@@ -438,17 +447,20 @@ class Linda {
 
                             foreach ($whereGroupIndex as $key2 => $val2) {//loop through each whereGroups
                                 if ($key2 !== "comparisonOp" && $key2 !== "nextOp") {
-                                    if ($in_where_clause++ > 1)
+                                    if ($in_where_clause++ > 1) {
                                         $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
+                                    }
 
-                                    if ($key2 !== "operator") //this key shouldnt be added as a value
+                                    if ($key2 !== "operator") { //this key shouldnt be added as a value
                                         $this->CURRENT_QUERY .= " " . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
-                                };
+                                    }
+                                }
                             }
 
                             $this->CURRENT_QUERY .= " )";
-                            if (next($item))
+                            if (next($item)) {
                                 $this->CURRENT_QUERY .= " " . $nextComparisonOp . " (";
+                            }
                         }
                     }
                 }
@@ -463,7 +475,8 @@ class Linda {
 
                         $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    } else {
+                    }
+                    else {
 
                         $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
@@ -489,12 +502,12 @@ class Linda {
      * @return $this
      */
     public function runQuery() {
-        $this->CURRENT_QUERY = str_replace("NOW()", StringHelper::toYMD("now"), $this->CURRENT_QUERY);
-        $this->CURRENT_QUERY = str_replace("TIME()", StringHelper::toYMDHMS("now"), $this->CURRENT_QUERY);
+        $this->CURRENT_QUERY = str_replace("NOW()", date("Y-m-d"), $this->CURRENT_QUERY);
+        $this->CURRENT_QUERY = str_replace("TIME()", date("Y-m-d H:i:s"), $this->CURRENT_QUERY);
         $this->LINDA_ERROR = "";
         $this->lastAffectedRowCount = 0;
 
-        //echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
+       echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
         $stmnt;
 
 
@@ -506,8 +519,9 @@ class Linda {
                     $this->resultObject = NULL;
                 }
 
-                if ($stmnt->rowCount())
+                if ($stmnt->rowCount()) {
                     $this->lastAffectedRowCount = $stmnt->rowCount();
+                }
 
 
                 $this->resultObject = $stmnt->fetchAll(PDO::FETCH_ASSOC);
@@ -518,13 +532,16 @@ class Linda {
                 }
 
                 //set the number of rows returned for select ops
-                if (!$this->lastAffectedRowCount && count($this->resultObject))
+                if (!$this->lastAffectedRowCount && count($this->resultObject)) {
                     $this->lastAffectedRowCount = count($this->resultObject);
+                }
 
-                if (count($this->resultObject) || $this->lastAffectedRowCount)
-                    ;
-                else
+                if (count($this->resultObject) || $this->lastAffectedRowCount) {
+                    
+                }
+                else {
                     $this->resultObject = NULL;
+                }
             }
         } catch (PDOException $e) {
 
@@ -537,7 +554,7 @@ class Linda {
 
     //+===================================================================================================
     /**
-     * Count the number of rows matching a value in a field, this method executes a query directly on the table and doesnt
+     * Count the number of rows matching a value in a field, this method executes a query directly on the table and doesn't
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
      * @param string $columnName field to count values from 
      * @param string $val value to be matched
@@ -608,7 +625,7 @@ class Linda {
      */
     public function minRow($columnName) {
 
-        $this->CURRENT_QUERY = "SELECT * FROM " . $this->TABLE_MODEL . " WHERE " . $columnName . " = (SELECT MIN(" . $fieldName . ") FROM " . $this->TABLE_MODEL . ")";
+        $this->CURRENT_QUERY = "SELECT * FROM " . $this->TABLE_MODEL . " WHERE " . $columnName . " = (SELECT MIN(" . $columnName . ") FROM " . $this->TABLE_MODEL . ")";
         $this->runQuery();
 
         return $this->getAll()[0];
@@ -621,9 +638,9 @@ class Linda {
      * @param string $columnName field to get the minimum value from 
      * 
      */
-    public function sum($fieldName) {
+    public function sum($columnName) {
 
-        $this->CURRENT_QUERY = "SELECT SUM(" . $fieldName . ") AS DAL_sum FROM " . $this->TABLE_MODEL;
+        $this->CURRENT_QUERY = "SELECT SUM(" . $columnName . ") AS DAL_sum FROM " . $this->TABLE_MODEL;
         $this->runQuery();
 
         return $this->getAll()[0]['DAL_sum'];
@@ -651,8 +668,9 @@ class Linda {
      */
     public function getRowAtIndex($index) {
 
-        if ($this->resultObject && count($this->resultObject) >= $index)
+        if ($this->resultObject && count($this->resultObject) >= $index) {
             return $this->resultObject[$index];
+        }
     }
 
     /**
@@ -670,8 +688,9 @@ class Linda {
      */
     public function peek() {
 
-        if (count($this->resultObject))
+        if (count($this->resultObject)) {
             return $this->resultObject(0);
+        }
     }
 
     /**
@@ -680,8 +699,9 @@ class Linda {
      */
     public function tail() {
 
-        if (count($this->resultObject))
+        if (count($this->resultObject)) {
             return $this->resultObject(count($this->resultObject) - 1);
+        }
     }
 
     /**
@@ -692,9 +712,11 @@ class Linda {
         $resultArray = array();
         if (count($this->resultObject)) {
 
-            for ($i = 0; $i < count($this->resultObject); $i++)
-                if ($i % 2 === 0)
+            for ($i = 0; $i < count($this->resultObject); $i++) {
+                if ($i % 2 === 0) {
                     $resultArray[] = $this->resultObject[$i];
+                }
+            }
         }
         return $resultArray;
     }
@@ -708,12 +730,18 @@ class Linda {
         $resultArray = array();
         if ($this->resultObject) {
 
-            for ($i = 0; $i < count($this->resultObject); $i++)
-                if ($i & 2 !== 0)
+            for ($i = 0; $i < count($this->resultObject); $i++) {
+                if ($i & 2 !== 0) {
                     $resultArray[] = $this->resultObject[$i];
+                }
+            }
         }
         return $resultArray;
     }
+	
+	public function hasErrors(){
+		return ($this->LINDA_ERROR && strpos( "SQLSTATE[HY000]: General error", $this->LINDA_ERROR) === FALSE);
+	}
 
     public function __destruct() {
         
