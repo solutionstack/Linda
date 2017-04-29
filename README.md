@@ -208,8 +208,9 @@ To remove rows from the table after fetching the object models using either <b>f
 simply call <b> remove()</b> to delete those rows from a table
 
 <br/>
-<br/>
-#
+
+
+
 # Using Linda as an Abstraction Layer
 The Data Abstraction Layer provides a lower level abstraction for performing Db operations<br/>
 using the <b> Linda</b> Class
