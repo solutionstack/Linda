@@ -216,10 +216,9 @@ The Data Abstraction Layer provides a lower level abstraction for performing Db 
 using the <b> Linda</b> Class
 Lets look at a basic select operation
 
-<br/>
 ```php
   $l = new Linda();
- $l->setTable("some_db_table");
+  $l->setTable("some_db_table");
   $l->fecth("*"); //fetch all rows in the Table
   $result = $l->getAll(); //returns all rows as an associatove array or NULL if no rows where returned
 ```
