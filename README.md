@@ -53,7 +53,7 @@ $l->save();   //by now all address columns in the address table, would have been
 
 
 ```
-#After using #fecthAll as above say we didnt want to retrieve the entire row models with #collection
+After using fetchAll() as above say we didnt want to retrieve the entire row models with #collection
 <br/>other methods exists including... first(), last(), even(), odd(), random();  
 ```php
 $l->first(); //retuns the object model for first row of the collection
@@ -66,7 +66,7 @@ $l->random(); //like #collection but the row models are sorted in a random order
 
 ```
 
-In the above examples we use #fectAll to first retrieve all rows of the table as objects in memory<br/>
+In the above examples we use fetchAll() to first retrieve all rows of the table as objects in memory<br/>
 This isnt what you do in most cases as data retrieval from tables are usually filtered by clauses
 like WHERE clauses, WHERE IN, JOINS etc, the LindaModel class provides for an increasing number of this clauses
 
@@ -181,7 +181,7 @@ SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id
 would be executed
 
 # PAGINATION
-LindaModel supports two methods #take() and #skip() for paginating reslts
+LindaModel supports two methods take() and skip() for paginating reslts
 ```php
 $l = new LindaModel("address");   
 $l->where_in_or("city_id", ["300", "400", "500"]) //wher the city_id is within that range)
@@ -204,8 +204,8 @@ $l = new LindaModel("address");
 $l->create(["val1", "val2",...]);
 ```
 # Removing rows
-To remove rows from the table after fetching the object models using either <b>#fetchAll</b> or <b>#get</b>
-simply call <b> #remove</b> to delete those rows from a table
+To remove rows from the table after fetching the object models using either <b>fetchAll()</b> or <b>get()</b>
+simply call <b> remove()</b> to delete those rows from a table
 
 <br/>
 <br/>
