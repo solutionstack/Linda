@@ -125,7 +125,7 @@ class LindaModel extends Linda {
     }
 	
 	 /**
-     *  Returns the collection of object row modelsin a random order, or NULL if no records where matched
+     *  Returns the collection of object row modelsin a random order, or NULL if no records are available
      * @return array()
      */
     public function random() {
@@ -184,6 +184,7 @@ class LindaModel extends Linda {
         return $this;
     }
 
+	//update properties on the row model
     public function set($data = array()) {
         for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
 
@@ -292,7 +293,7 @@ class LindaModel extends Linda {
             $this->delete(array(
                 "whereGroup" => array(
                         [
-                        $PK => array("value" => $fieldsData[0])
+                        $PK => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex])
                     ]
                 )
             ));
