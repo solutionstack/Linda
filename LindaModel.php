@@ -26,7 +26,7 @@ class LindaModel extends Linda {
      * 
      * 
      */
-    public function __construct($Model, $primaryKey = NULL) {
+    public function __construct($Model=NULL, $primaryKey = NULL) {
 
         parent::__construct();
 
@@ -37,7 +37,7 @@ class LindaModel extends Linda {
             $this->modelName = $Model;
         }
 
-        if ($primaryKey){
+        if ($primaryKey !== NULL){
             $this->virtualModelPrimaryKey = $primaryKey; //store the primary key
 			
 			//get the column index on the table for this primary key
@@ -68,6 +68,7 @@ class LindaModel extends Linda {
 
         return $this;
     }
+
 
     /**
      * Returns first model representing an active record, or NULL if no records where matched
@@ -123,6 +124,43 @@ class LindaModel extends Linda {
         }
         return count($resultArray) ? $resultArray : NULL;
     }
+
+ /**
+     *  Returns the values in the internal relst set as an array
+     * @return array() | NULL
+     */
+    public function getValues() {
+
+      
+        if(count($this->virtualModelCollection)){
+			for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+            
+                    $resultArray[] = $this->virtualModelCollection[$i]->getValues();
+			}
+			return $resultArray;
+		} 
+		
+		return NULL;
+    }
+	
+ /**
+     *  Returns the values in the internal result set as an atdClass object
+     * @return stdClass() | NULL
+     */
+    public function getValuesAsObject() {
+
+      
+        if(count($this->virtualModelCollection)){
+			for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+            
+                    $resultArray[] = $this->virtualModelCollection[$i]->getValuesAsObject();
+			}
+			return $resultArray;
+		} 
+		
+		return NULL;
+    }
+	
 	
 	 /**
      *  Returns the collection of object row modelsin a random order, or NULL if no records are available
@@ -231,20 +269,36 @@ class LindaModel extends Linda {
 
     /**
      * Fetches data from the table based on the CLAUSES set, and stores them in memory as distinct object models of each row/record
+	 * @param $columns array Optional columns to fetch daata from
      * @return $this
      */
-    public function get() {
+    public function get($columns="*") {
         $this->virtualModelCollection = [];
-        $this->fetch("*", $this->queryConfig);
+		
+		
+        $this->fetch($columns, $this->queryConfig);
 
-      
+		     if(!$this->resultObject) return $this;
+
+		//after getting the results from the DB before we create row-models, we need to check if the DB operation had Joins
+		//in which case we need to alter the table schema to include the joined columns
+		if(array_key_exists("innerJoinGroup",$this->queryConfig)){
+			$this->tableColumnSchema = array_keys($this->resultObject[0]);
+		}
+		
+		//if we have results, populate the virtualModelCollection
+		
         for ($i = 0; $i < count($this->resultObject); $i++) {
 
             $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
-        }
+        };
 
+		//reset the column schema for this LindaModel object, incase we modified it for joined reslts
+		 $this->tableColumnSchema = $this->parseModel();
         return $this;
     }
+	
+	
 
     public function skip($param) {
 

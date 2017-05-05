@@ -77,6 +77,8 @@ $l->where("city_id", "<", 300); //this basically would apply an SQL where clause
 
 $l->get(); //after using a clause, use #get(), to fetch the matching row models into memory, after which you can use #collection, #first() etc to fetch the row-models u need
 
+//#get also take an optional argument containing just the coulmns to retrieve instead of retrieving all columns
+// get(["column1", "column2",...]);
 
 //so say i wanted to update a column named foo on the address table for each row where the city_id column value < 300
 //i'll do it this way

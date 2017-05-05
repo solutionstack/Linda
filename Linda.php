@@ -195,6 +195,8 @@ class Linda {
         return $this;
     }
 
+
+	
     //+=========================================================================================================
     /**
      *  Deletes data from a table
@@ -507,7 +509,7 @@ class Linda {
         $this->LINDA_ERROR = "";
         $this->lastAffectedRowCount = 0;
 
-       echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
+    //  echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
         $stmnt;
 
 
@@ -525,6 +527,7 @@ class Linda {
 
 
                 $this->resultObject = $stmnt->fetchAll(PDO::FETCH_ASSOC);
+				
 
                 if (FALSE === $this->resultObject) {
                     $this->LINDA_ERROR = "ERROR_EXECUTING_QUERY";
