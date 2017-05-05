@@ -210,6 +210,19 @@ simply call <b> remove()</b> to delete those rows from a table
 
 <br/>
 
+# DISTINCT rows
+To ensure the returned result set/models contains unique, values for the columns, use 
+
+```php
+$l = new LindaModel("address");   
+$l->where("city_id","<" ,100) //wher the city_id is within that range)
+  ->take(10)
+  ->skip(4)
+  ->distinct() //ensure rows column values are unique
+  ->get(["address"]); //we are getting just this column data
+```
+
+<br/>
 
 
 # Using Linda as an Abstraction Layer

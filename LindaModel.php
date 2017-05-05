@@ -177,6 +177,17 @@ class LindaModel extends Linda {
         return NULL;
     }
 	
+	 /**
+     *  Should the data retreival be unique
+     * 
+     */
+    public function distinct() {
+
+       
+        $this->DISTINCT = true;
+        return $this;;
+    }
+	
     /**
      * Returns a collections of models representing each active record, retrieved from the last call to #get
 	 * Retruns NULL if no records are available

@@ -18,6 +18,7 @@ class Linda {
     protected $MODEL_SCHEMA = array();
     protected $DEFAULT_LIMIT = 1000;
     protected $DEFAULT_START_INDEX = 0;
+    protected $DISTINCT = FALSE;
     protected $resultObject = NULL;
     protected $lastAffectedRowCount = 0;
     protected $queryConfig = array();
@@ -272,7 +273,7 @@ class Linda {
 			$inner_join_prefix = ""; //to be set fot table 1 if we have a join
 
 
-                $this->CURRENT_QUERY .= " SELECT " . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "`";
+                $this->CURRENT_QUERY .= " SELECT " .($this->DISTINCT ?"DISTINCT ":"") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "`";
 
                 //handle joins  
 
@@ -552,6 +553,9 @@ class Linda {
             $this->resultObject = NULL;
             // echo $this->LINDA_ERROR;
         }
+		$this->DEFAULT_LIMIT = 1000;
+		$this->DEFAULT_START_INDEX = 0;
+		$this->DISTINCT = FALSE;
         return $this;
     }
 
