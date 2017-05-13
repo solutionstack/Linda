@@ -93,8 +93,9 @@ foreach($rows as $rows) $row->foo = "new value";
 $l->save(); //done
 
 ```
-Note that when updating columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
-You can specify the primary key as the second argument to the constructor..like
+#A note on Updates and Deletes
+Note that when updating or deleting columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
+You can specify the primary key as the second argument to the LindaModel constructor..like
  
 ```php
 $l = new LindaModel("address","pri_key_column_name");
