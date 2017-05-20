@@ -276,13 +276,13 @@ class Linda {
                 $this->CURRENT_QUERY .= " SELECT " .($this->DISTINCT ?"DISTINCT ":"") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "`";
 
                 //handle joins  
-
+				 $join_count = 0; //
                 foreach ($queryConfig as $index => $item) {//loop through each inner join array argument
-                    $join_count = 1; //
+                   
                     if (FALSE !== strpos($index, "innerJoinGroup")) {
 
-                        $this->CURRENT_QUERY .= " AS T1 ";
-						$inner_join_prefix = "T1.";
+                        $this->CURRENT_QUERY .= " AS T". ( ++$join_count);
+						
                         foreach ($item as $key => $val) {
                             $this->CURRENT_QUERY .= "INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
                         }
@@ -292,6 +292,8 @@ class Linda {
                 //handle where clause
                 $where_clause_counter = 1;
                 $in_where_clause = 1;
+				$inner_join_prefix_where = "T1."; //table prefix:  if we have table joins, columns in where clauses are always prefixed with the main table i.e T1
+				
                 foreach ($queryConfig as $index => $item) {//loop through each where Groups
                     if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
                         if ($where_clause_counter++ === 1)
@@ -304,12 +306,23 @@ class Linda {
                             }
 
                             foreach ($whereGroupIndex as $key2 => $val2) {//loop through each whereGroups
-                                if ($key2 !== "comparisonOp" && $key2 !== "nextOp") {
+                                if ($key2 !== "comparisonOp" && $key2 !== "nextOp" && $key2 !== "join_index") {
                                     if ($in_where_clause++ > 1)
                                         $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
 
                                     if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " " .$inner_join_prefix . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
+                                        $this->CURRENT_QUERY .= " " 
+										
+										//if we have inner joins, we check if they have set a joined table index to use as the where column prefix
+										
+											.($join_count ? ($whereGroupIndex['join_index']!== NULL ? "T".$whereGroupIndex['join_index'].".": $inner_join_prefix_where):"")
+										
+											
+										//add the column name and comparison operator
+										. $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " 
+										
+										//add the column value we are comparing with
+										. $this->sanitize($this->string_or_int($val2 ['value']));
                                 };
                             }
 
@@ -510,7 +523,7 @@ class Linda {
         $this->LINDA_ERROR = "";
         $this->lastAffectedRowCount = 0;
 
-    //  echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
+  // echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
         $stmnt;
 
 
