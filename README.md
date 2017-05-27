@@ -206,7 +206,7 @@ $l = new LindaModel("address");
 $l->create(["val1", "val2",...]);
 ```
 
-To insert column data that takes a MySql DATE or DATETIME use the string NOW() or TIME()
+To insert column data that takes a MySql <b>DATE</b> or <b>DATETIME</b> use the string <b>NOW()</b> or <b>TIME()</b>
 ```php
 $l = new LindaModel("address");   
 $l->create(["NOW()", "TIME()",...]);
