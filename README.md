@@ -205,6 +205,14 @@ To insert new rows use the create method, but make sure the argument count match
 $l = new LindaModel("address");   
 $l->create(["val1", "val2",...]);
 ```
+
+To insert column data that takes a MySql DATE or DATETIME use the string NOW() or TIME()
+```php
+$l = new LindaModel("address");   
+$l->create(["NOW()", "TIME()",...]);
+```
+
+
 # Removing rows
 To remove rows from the table after fetching the object models using either <b>fetchAll()</b> or <b>get()</b>
 simply call <b> remove()</b> to delete those rows from a table
