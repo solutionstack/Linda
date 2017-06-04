@@ -343,7 +343,7 @@ class LindaModel extends Linda {
         $values = array_map(array($this, "string_or_int"), array_values($values));
         //  $keys = array_keys($inserts);
 
-        $this->CURRENT_QUERY = "INSERT INTO `" . $this->TABLE_MODEL . "` (" . implode(',', $this->tableColumnSchema) . ") VALUES (" . implode(", ", $values) . ")";
+        $this->CURRENT_QUERY = "INSERT INTO `" . $this->TABLE_MODEL . "` (`" . implode('`,`', $this->tableColumnSchema) . "`) VALUES (" . implode(", ", $values) . ")";
 
 
         $this->runQuery();
