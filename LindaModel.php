@@ -61,10 +61,11 @@ class LindaModel extends Linda {
         $this->fetch("*");
 
 
-        for ($i = 0; $i < count($this->resultObject); $i++) {
+        if ($this->getAll())
+            for ($i = 0; $i < count($this->resultObject); $i++) {
 
-            $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
-        }
+                $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
+            };
 
         return $this;
     }
@@ -282,11 +283,11 @@ class LindaModel extends Linda {
      * specified in the constructor this is necessary if, new updates to the table are to be sucesfull, and to avoid
      * ambigous  column errors
      */
-    public function resetSchema(){
-       
+    public function resetSchema() {
+
         $this->tableColumnSchema = $this->parseModel();
-        
     }
+
     /**
      * Fetches data from the table based on the CLAUSES set, and stores them in memory as distinct object models of each row/record
      * @param $columns array Optional columns to fetch daata from
@@ -296,7 +297,7 @@ class LindaModel extends Linda {
 
         $this->virtualModelCollection = [];
 
-        if($columns !== "*"){
+        if ($columns !== "*") {
             $this->tableColumnSchema = $columns; //they sent custom column schema to fetch
         }
         $this->fetch($columns, $this->queryConfig);
@@ -317,7 +318,7 @@ class LindaModel extends Linda {
             $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
         };
 
-        
+
 
 
         return $this;

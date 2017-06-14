@@ -36,7 +36,7 @@ class Linda {
 
     /**
      * @ignore
-     * @internal 
+     * @internal  
      */
     public function setTable($tableName) {
 
@@ -53,7 +53,8 @@ class Linda {
     //+========================================================================================
     protected function parseModel() {
 
-
+       $this->MODEL_SCHEMA = [];//always reset;
+       
         $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table";
         try {
             $core = $this->DB_LINK;
@@ -251,6 +252,8 @@ class Linda {
     protected function string_or_int($val) {
 
         if (!is_numeric($val) || "+" === substr($val, 0, 1)) {
+            
+            if($val !== NULL)
 
             return "'" . $val . "'"; //add quotes
         }
@@ -273,7 +276,7 @@ class Linda {
 			$inner_join_prefix = ""; //to be set fot table 1 if we have a join
 
 
-                $this->CURRENT_QUERY .= " SELECT " .($this->DISTINCT ?"DISTINCT ":"") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "`";
+                $this->CURRENT_QUERY .= " SELECT " .($this->DISTINCT ?"DISTINCT ":"") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "` ";
 
                 //handle joins  
 				 $join_count = 0; //
@@ -284,7 +287,7 @@ class Linda {
                         $this->CURRENT_QUERY .= " AS T". ( ++$join_count);
 						
                         foreach ($item as $key => $val) {
-                            $this->CURRENT_QUERY .= "INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
+                            $this->CURRENT_QUERY .= " INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
                         }
                     }
                 }
@@ -370,18 +373,18 @@ class Linda {
             case "update":
 
                 $update_column_count = 1;
-                $this->CURRENT_QUERY = "UPDATE `" . $this->TABLE_MODEL . "` SET ";
+                $this->CURRENT_QUERY = "UPDATE `" . $this->TABLE_MODEL . "` SET `";
 
 
                 foreach ($fields as $key => $val) {
 
                     if ($update_column_count++ > 1)
-                        $this->CURRENT_QUERY .= ","; //seperate the next row feild/value
+                        $this->CURRENT_QUERY .= ",`"; //seperate the next row feild/value
 
                     if (is_array($val))
-                        $this->CURRENT_QUERY .= $key . " = (" . $val[0] . " )";
+                        $this->CURRENT_QUERY .= $key . "` = (" . $val[0] . " )";
                     else
-                        $this->CURRENT_QUERY .= $key . " = " . $this->sanitize($this->string_or_int(($val))) . " ";
+                        $this->CURRENT_QUERY .= $key . "` = " . $this->sanitize($this->string_or_int(($val))) . " ";
                 }
 
 
@@ -405,7 +408,7 @@ class Linda {
                                         $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
 
                                     if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " " . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
+                                        $this->CURRENT_QUERY .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
                                 };
                             }
 
@@ -468,7 +471,7 @@ class Linda {
                                     }
 
                                     if ($key2 !== "operator") { //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " " . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
+                                        $this->CURRENT_QUERY .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
                                     }
                                 }
                             }
@@ -523,7 +526,7 @@ class Linda {
         $this->LINDA_ERROR = "";
         $this->lastAffectedRowCount = 0;
 
-  // echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
+// echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
         $stmnt;
 
 
