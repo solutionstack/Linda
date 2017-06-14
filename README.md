@@ -1,4 +1,4 @@
-# Linda is a Database Abstraction Layer and an ORM for PHP
+# Linda is an Active-record based  ORM for PHP
 
 Its built over PHP's PDO, so enabling multi data-server access, and safe transactions.
 
