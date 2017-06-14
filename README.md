@@ -3,8 +3,8 @@
 Its built over PHP's PDO, so enabling multi data-server access, and safe transactions.
 
 
-# Using Linda as an ORM
-The first thing in setting up Linda to as an ORM is editing the Linda.inc file, this file contains database connection
+# Using Linda
+The first thing in setting up Linda is editing the Linda.inc file, this file contains database connection
 parameters/constants.
 The file contains the following constants, edit to your needs
 
