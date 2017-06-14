@@ -93,8 +93,9 @@ foreach($rows as $rows) $row->foo = "new value";
 $l->save(); //done
 
 ```
-Note that when updating columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
-You can specify the primary key as the second argument to the constructor..like
+# A note on Updates and Deletes
+Note that when updating or deleting columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
+You can specify the primary key as the second argument to the LindaModel constructor..like
  
 ```php
 $l = new LindaModel("address","pri_key_column_name");
@@ -204,6 +205,14 @@ To insert new rows use the create method, but make sure the argument count match
 $l = new LindaModel("address");   
 $l->create(["val1", "val2",...]);
 ```
+
+To insert column data that takes a MySql <b>DATE</b> or <b>DATETIME</b> use the string <b>NOW()</b> or <b>TIME()</b>
+```php
+$l = new LindaModel("address");   
+$l->create(["NOW()", "TIME()",...]);
+```
+
+
 # Removing rows
 To remove rows from the table after fetching the object models using either <b>fetchAll()</b> or <b>get()</b>
 simply call <b> remove()</b> to delete those rows from a table
