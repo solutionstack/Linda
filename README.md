@@ -177,6 +177,7 @@ Inner Joins are a common way to retrieve related data from multiple table and th
 $l = new LindaModel("address");  
 $l->where("city_id","<" ,100) //wher the city_id is within that range)
  ->inner_join("city", "city_id", "city_id");
+
  
 $rows = $l->get()->collection();
 ```
@@ -184,7 +185,26 @@ In the above an SQL query sililar to
 ```sql
 SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id WHERE( T1.city_id < 100 ) LIMIT 0, 1000;
 ```
-would be executed
+would be executed, multiple inner joins are also supported
+
+```php
+$l = new LindaModel("address");  
+$l->where("city_id","<" ,100) //wher the city_id is within that range)
+ ->where("county_id", ">", 10, 3)
+ ->inner_join("city", "city_id", "city_id");
+ ->inner_join("county", "county_id", "county_id"
+ 
+$rows = $l->get()->collection();
+```
+On the second call to where, the third argument, is the index of the join table the where clause shoule associate with
+Which means the second where clause should evaluate the column on the third joined table. In a join'ed statement,
+The base table is taken as the first table i.e T1, the others, T2. , T3. ...
+```sql
+SELECT *  FROM `address`  AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id  INNER JOIN `county` AS T3 ON T1.county_id = T3.county_id  WHERE( T1.city_id < 100 ) AND ( T3.county_id > 10 ) LIMIT 0, 1000;
+```
+As you can see the second where statement evaluated to T3.county_id, since the county table is the third table in the Join and
+we specified the join index for the where clause as 3 above
+
 
 # PAGINATION
 LindaModel supports two methods take() and skip() for paginating reslts
