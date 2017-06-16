@@ -1,6 +1,6 @@
 # Linda is an Active-record based  ORM for PHP
 
-Its built over PHP's PDO, so enabling multi data-server access, and safe transactions.
+Its built over PHP's PDO, so enabling multi database access, and safe transactions.
 
 
 # Using Linda
@@ -20,7 +20,7 @@ define('LINDA_DB_PASSW', 'password' );
 After this step, simply begin using the LindaModel class which contains the ORM interface.<br/>
 For the examples here i'll be using the freely available sakila database.
 
-My test file exists in the folder is the Linda classes, so'ill just include the LindaModel file
+My test file exists in the same folder as the Linda classes, so'ill just include the LindaModel file
 ```php
 require_once realpath(dirname(__FILE__)) ."/".'LindaModel.php';
 ```
@@ -54,6 +54,7 @@ $l->save();   //by now all address columns in the address table, would have been
 ```
 After using fetchAll() as above say we didnt want to retrieve the entire row models with #collection
 <br/>other methods exists including... first(), last(), even(), odd(), random();  
+They all return null if no results where retrieved from the table
 ```php
 $l->first(); //retuns the object model for first row of the collection
 $l->last(); //retuns the object model for last row of the collection
@@ -61,7 +62,10 @@ $l->even(); //retuns the collection of even rows object models
 $l->odd(); //retuns the collection of odd rows object models
 $l->random(); //like #collection but the row models are sorted in a random order
 
-//all this methods return NULL if no row models are available
+//others include
+$l->count(); //count all rows on the table
+$l->numRows(); // indicating the number of rows retrieved or affected by the last operation
+$l->hasErrors(); // if the last operation raised an Exception
 
 ```
 
