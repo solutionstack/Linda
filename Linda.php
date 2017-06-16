@@ -1,8 +1,6 @@
 <?php
 
-
-
-require_once realpath(dirname(__FILE__)) ."/".'Linda.inc';
+require_once realpath(dirname(__FILE__)) . "/" . 'Linda.inc';
 
 /**
  * 
@@ -53,8 +51,8 @@ class Linda {
     //+========================================================================================
     protected function parseModel() {
 
-       $this->MODEL_SCHEMA = [];//always reset;
-       
+        $this->MODEL_SCHEMA = []; //always reset;
+
         $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table";
         try {
             $core = $this->DB_LINK;
@@ -197,8 +195,6 @@ class Linda {
         return $this;
     }
 
-
-	
     //+=========================================================================================================
     /**
      *  Deletes data from a table
@@ -252,10 +248,9 @@ class Linda {
     protected function string_or_int($val) {
 
         if (!is_numeric($val) || "+" === substr($val, 0, 1)) {
-            
-            if($val !== NULL)
 
-            return "'" . $val . "'"; //add quotes
+            if ($val !== NULL)
+                return "'" . $val . "'"; //add quotes
         }
 
         return $val;
@@ -272,20 +267,19 @@ class Linda {
         switch ($mode) {
 
             case "select":
-			
-			$inner_join_prefix = ""; //to be set fot table 1 if we have a join
+
+                $inner_join_prefix = ""; //to be set fot table 1 if we have a join
 
 
-                $this->CURRENT_QUERY .= " SELECT " .($this->DISTINCT ?"DISTINCT ":"") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "` ";
+                $this->CURRENT_QUERY .= " SELECT " . ($this->DISTINCT ? "DISTINCT " : "") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "` ";
 
                 //handle joins  
-				 $join_count = 0; //
+                $join_count = 0; //
                 foreach ($queryConfig as $index => $item) {//loop through each inner join array argument
-                   
                     if (FALSE !== strpos($index, "innerJoinGroup")) {
 
-                        $this->CURRENT_QUERY .= " AS T". ( ++$join_count);
-						
+                        $this->CURRENT_QUERY .= " AS T" . ( ++$join_count);
+
                         foreach ($item as $key => $val) {
                             $this->CURRENT_QUERY .= " INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
                         }
@@ -295,8 +289,8 @@ class Linda {
                 //handle where clause
                 $where_clause_counter = 1;
                 $in_where_clause = 1;
-				$inner_join_prefix_where = "T1."; //table prefix:  if we have table joins, columns in where clauses are always prefixed with the main table i.e T1
-				
+                $inner_join_prefix_where = "T1."; //table prefix:  if we have table joins, columns in where clauses are always prefixed with the main table i.e T1
+
                 foreach ($queryConfig as $index => $item) {//loop through each where Groups
                     if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
                         if ($where_clause_counter++ === 1)
@@ -314,18 +308,17 @@ class Linda {
                                         $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
 
                                     if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " " 
-										
-										//if we have inner joins, we check if they have set a joined table index to use as the where column prefix
-										
-											.($join_count ? ($whereGroupIndex['join_index']!== NULL ? "T".$whereGroupIndex['join_index'].".": $inner_join_prefix_where):"")
-										
-											
-										//add the column name and comparison operator
-										. $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " 
-										
-										//add the column value we are comparing with
-										. $this->sanitize($this->string_or_int($val2 ['value']));
+                                        $this->CURRENT_QUERY .= " "
+
+                                                //if we have inner joins, we check if they have set a joined table index to use as the where column prefix
+                                                . ($join_count ? ($whereGroupIndex['join_index'] !== NULL ? "T" . $whereGroupIndex['join_index'] . "." : $inner_join_prefix_where) : "")
+
+
+                                                //add the column name and comparison operator
+                                                . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " "
+
+                                                //add the column value we are comparing with
+                                                . $this->sanitize($this->string_or_int($val2 ['value']));
                                 };
                             }
 
@@ -544,7 +537,7 @@ class Linda {
 
 
                 $this->resultObject = $stmnt->fetchAll(PDO::FETCH_ASSOC);
-				
+
 
                 if (FALSE === $this->resultObject) {
                     $this->LINDA_ERROR = "ERROR_EXECUTING_QUERY";
@@ -569,10 +562,23 @@ class Linda {
             $this->resultObject = NULL;
             // echo $this->LINDA_ERROR;
         }
-		$this->DEFAULT_LIMIT = 1000;
-		$this->DEFAULT_START_INDEX = 0;
-		$this->DISTINCT = FALSE;
+        $this->DEFAULT_LIMIT = 1000;
+        $this->DEFAULT_START_INDEX = 0;
+        $this->DISTINCT = FALSE;
         return $this;
+    }
+
+    //+===================================================================================================
+    /**
+     * Counts the total number of rows in the table
+     * @return integer The total row count
+     */
+    public function count() {
+        $this->CURRENT_QUERY = "SELECT COUNT(*) AS DAL_counter FROM " . $this->TABLE_MODEL . ";";
+        $this->runQuery();
+
+
+        return $this->getAll()[0]['DAL_counter'];
     }
 
     //+===================================================================================================
@@ -582,10 +588,9 @@ class Linda {
      * @param string $columnName field to count values from 
      * @param string $val value to be matched
      * @param string $operator Optional operator to be used default in matching defaults to equals (=), other candidates are ( <, > , <>) 
-     * @return $this
+     * @return integer The number of rows matching the value
      */
-    public function count($columnName, $val, $operator = "=") {
-
+    public function countMatching($columnName, $val, $operator = "=") {
         $this->CURRENT_QUERY = "SELECT COUNT(*) AS DAL_counter FROM " . $this->TABLE_MODEL . " WHERE " . $columnName . " " . $operator . " " . $val . ";";
         $this->runQuery();
 
@@ -600,7 +605,7 @@ class Linda {
      * @param string $columnName field to get the minimum value from 
      *  @return integer
      */
-    public function max_in_column($columnName) {
+    public function maxInColumn($columnName) {
 
         $this->CURRENT_QUERY = "SELECT MAX(" . $columnName . ") AS DAL_max FROM " . $this->TABLE_MODEL;
         $this->runQuery();
@@ -761,10 +766,10 @@ class Linda {
         }
         return $resultArray;
     }
-	
-	public function hasErrors(){
-		return ($this->LINDA_ERROR && strpos( "SQLSTATE[HY000]: General error", $this->LINDA_ERROR) === FALSE);
-	}
+
+    public function hasErrors() {
+        return ($this->LINDA_ERROR && strpos("SQLSTATE[HY000]: General error", $this->LINDA_ERROR) === FALSE);
+    }
 
     public function __destruct() {
         
