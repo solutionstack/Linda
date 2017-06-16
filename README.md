@@ -1,6 +1,6 @@
 # Linda is an Active-record based  ORM for PHP
 
-Its built over PHP's PDO, so enabling multi data-server access, and safe transactions.
+Its built over PHP's PDO, so enabling multi database access, and safe transactions.
 
 
 # Using Linda
@@ -20,7 +20,7 @@ define('LINDA_DB_PASSW', 'password' );
 After this step, simply begin using the LindaModel class which contains the ORM interface.<br/>
 For the examples here i'll be using the freely available sakila database.
 
-My test file exists in the folder is the Linda classes, so'ill just include the LindaModel file
+My test file exists in the same folder as the Linda classes, so'ill just include the LindaModel file
 ```php
 require_once realpath(dirname(__FILE__)) ."/".'LindaModel.php';
 ```
@@ -54,6 +54,7 @@ $l->save();   //by now all address columns in the address table, would have been
 ```
 After using fetchAll() as above say we didnt want to retrieve the entire row models with #collection
 <br/>other methods exists including... first(), last(), even(), odd(), random();  
+They all return null if no results where retrieved from the table
 ```php
 $l->first(); //retuns the object model for first row of the collection
 $l->last(); //retuns the object model for last row of the collection
@@ -61,7 +62,10 @@ $l->even(); //retuns the collection of even rows object models
 $l->odd(); //retuns the collection of odd rows object models
 $l->random(); //like #collection but the row models are sorted in a random order
 
-//all this methods return NULL if no row models are available
+//others include
+$l->count(); //count all rows on the table
+$l->numRows(); // indicating the number of rows retrieved or affected by the last operation
+$l->hasErrors(); // if the last operation raised an Exception
 
 ```
 
@@ -173,6 +177,7 @@ Inner Joins are a common way to retrieve related data from multiple table and th
 $l = new LindaModel("address");  
 $l->where("city_id","<" ,100) //wher the city_id is within that range)
  ->inner_join("city", "city_id", "city_id");
+
  
 $rows = $l->get()->collection();
 ```
@@ -180,7 +185,26 @@ In the above an SQL query sililar to
 ```sql
 SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id WHERE( T1.city_id < 100 ) LIMIT 0, 1000;
 ```
-would be executed
+would be executed, multiple inner joins are also supported
+
+```php
+$l = new LindaModel("address");  
+$l->where("city_id","<" ,100) //wher the city_id is within that range)
+ ->where("county_id", ">", 10, 3)
+ ->inner_join("city", "city_id", "city_id");
+ ->inner_join("county", "county_id", "county_id"
+ 
+$rows = $l->get()->collection();
+```
+On the second call to where, the third argument, is the index of the join table the where clause shoule associate with
+Which means the second where clause should evaluate the column on the third joined table. In a join'ed statement,
+The base table is taken as the first table i.e T1, the others, T2. , T3. ...
+```sql
+SELECT *  FROM `address`  AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id  INNER JOIN `county` AS T3 ON T1.county_id = T3.county_id  WHERE( T1.city_id < 100 ) AND ( T3.county_id > 10 ) LIMIT 0, 1000;
+```
+As you can see the second where statement evaluated to T3.county_id, since the county table is the third table in the Join and
+we specified the join index for the where clause as 3 above
+
 
 # PAGINATION
 LindaModel supports two methods take() and skip() for paginating reslts
