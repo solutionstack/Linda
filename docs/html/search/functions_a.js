@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['odd',['odd',['../class_linda.html#a666c4ea82d473f0e68ad97e3f33d1e83',1,'Linda']]]
+  ['numrows',['numRows',['../class_linda.html#af37433a300db1f607ee789d22828a0a0',1,'Linda']]]
 ];

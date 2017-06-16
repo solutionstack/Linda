@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Linda: C:/Apache24/htdocs/easygo/process/Linda/Linda.php</title>
+<title>Linda: C:/Apache24/htdocs/Linda/Linda.php</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -78,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="header">
   <div class="headertitle">
-<div class="title">C:/Apache24/htdocs/easygo/process/Linda/Linda.php</div>  </div>
+<div class="title">C:/Apache24/htdocs/Linda/Linda.php</div>  </div>
 </div><!--header-->
 <div class="contents">
 <p>Update fields in the DB</p>
@@ -90,14 +91,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <p>$fields = array( id= "1", email = "example.example.org ) using NOW() or TIME() as values, inserts the date/time </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">type</td><td class="paramname">$queryConfig,see</td><td>#insert for structure of the queryConfig parameter</td></tr>
+    <tr><td class="paramtype">type</td><td class="paramname">$queryConfig</td><td>see #insert for structure of the queryConfig parameter</td></tr>
   </table>
   </dd>
 </dl>
 <div class="fragment"><div class="line">&lt;?php</div>
 <div class="line"></div>
-<div class="line"></div>
-<div class="line">include_once $_SERVER[<span class="stringliteral">&#39;DOCUMENT_ROOT&#39;</span>] . <span class="stringliteral">&#39;/process/Linda/Linda.inc&#39;</span>;</div>
+<div class="line">require_once realpath(dirname(__FILE__)) . <span class="stringliteral">&quot;/&quot;</span> . <span class="stringliteral">&#39;Linda.inc&#39;</span>;</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">class </span><a name="_a0"></a><a class="code" href="class_linda.html">Linda</a> {</div>
 <div class="line"></div>
@@ -108,31 +108,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="keyword">protected</span> <a name="a5"></a><a class="code" href="class_linda.html#a46c628c6bd56ec5880da2515cf352183">$MODEL_SCHEMA</a> = array();</div>
 <div class="line">    <span class="keyword">protected</span> <a name="a6"></a><a class="code" href="class_linda.html#a97365f1875db5efbdefc5faa71249ff1">$DEFAULT_LIMIT</a> = 1000;</div>
 <div class="line">    <span class="keyword">protected</span> <a name="a7"></a><a class="code" href="class_linda.html#a803cce07cc3e3f9937b6e5faba4100fe">$DEFAULT_START_INDEX</a> = 0;</div>
-<div class="line">    <span class="keyword">protected</span> <a name="a8"></a><a class="code" href="class_linda.html#a64270a514fbca17fe7347df6320fc4ba">$resultObject</a> = NULL;</div>
-<div class="line">    <span class="keyword">protected</span> <a name="a9"></a><a class="code" href="class_linda.html#a038edab690e03aff9c70a1f63c06f27e">$lastAffectedRowCount</a> = 0;</div>
-<div class="line">    <span class="keyword">protected</span> <a name="a10"></a><a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> = array();</div>
+<div class="line">    <span class="keyword">protected</span> <a name="a8"></a><a class="code" href="class_linda.html#a8df0f16d4226b986c460429c8784ee3e">$DISTINCT</a> = FALSE;</div>
+<div class="line">    <span class="keyword">protected</span> <a name="a9"></a><a class="code" href="class_linda.html#a64270a514fbca17fe7347df6320fc4ba">$resultObject</a> = NULL;</div>
+<div class="line">    <span class="keyword">protected</span> <a name="a10"></a><a class="code" href="class_linda.html#a038edab690e03aff9c70a1f63c06f27e">$lastAffectedRowCount</a> = 0;</div>
+<div class="line">    <span class="keyword">protected</span> <a name="a11"></a><a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> = array();</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">const</span> <a name="a11"></a><a class="code" href="class_linda.html#a4771733014ade9011a85f4d01b24f2fe">Linda_DB_HOST</a> = <a name="a12"></a><a class="code" href="_linda_8inc.html#a86b40c589d474db371ea58296a5eeb12">LINDA_DB_HOST</a>;</div>
-<div class="line">    <span class="keyword">const</span> <a name="a13"></a><a class="code" href="class_linda.html#aab80e54270eaebb370e54ec5232be43a">Linda_DB_NAME</a> = <a name="a14"></a><a class="code" href="_linda_8inc.html#a4e480c562d1f6701e89f603607ddbb54">LINDA_DB_NAME</a>;</div>
-<div class="line">    <span class="keyword">const</span> <a name="a15"></a><a class="code" href="class_linda.html#af392abe38a40b56515eb835fa3c39d8c">Linda_DB_TYPE</a> = <a name="a16"></a><a class="code" href="_linda_8inc.html#a75c0048bcb27b8bf9d4e9fd1b9eb023b">LINDA_DB_TYPE</a>;</div>
-<div class="line">    <span class="keyword">const</span> <a name="a17"></a><a class="code" href="class_linda.html#a73fe432dd03d1c21aa74940da5c04dc0">Linda_DB_USER</a> = <a name="a18"></a><a class="code" href="_linda_8inc.html#a713707c7fea371f7f3892136c1e852f0">LINDA_DB_USER</a>;</div>
-<div class="line">    <span class="keyword">const</span> <a name="a19"></a><a class="code" href="class_linda.html#a392451b719cb6bb9b0c372832ad9e6d8">Linda_DB_PASSW</a> = <a name="a20"></a><a class="code" href="_linda_8inc.html#aef9b254dff90502b875151a93b462df1">LINDA_DB_PASSW</a>;</div>
+<div class="line">    <span class="keyword">const</span> <a name="a12"></a><a class="code" href="class_linda.html#a4771733014ade9011a85f4d01b24f2fe">Linda_DB_HOST</a> = <a name="a13"></a><a class="code" href="_linda_8inc.html#a86b40c589d474db371ea58296a5eeb12">LINDA_DB_HOST</a>;</div>
+<div class="line">    <span class="keyword">const</span> <a name="a14"></a><a class="code" href="class_linda.html#aab80e54270eaebb370e54ec5232be43a">Linda_DB_NAME</a> = <a name="a15"></a><a class="code" href="_linda_8inc.html#a4e480c562d1f6701e89f603607ddbb54">LINDA_DB_NAME</a>;</div>
+<div class="line">    <span class="keyword">const</span> <a name="a16"></a><a class="code" href="class_linda.html#af392abe38a40b56515eb835fa3c39d8c">Linda_DB_TYPE</a> = <a name="a17"></a><a class="code" href="_linda_8inc.html#a75c0048bcb27b8bf9d4e9fd1b9eb023b">LINDA_DB_TYPE</a>;</div>
+<div class="line">    <span class="keyword">const</span> <a name="a18"></a><a class="code" href="class_linda.html#a73fe432dd03d1c21aa74940da5c04dc0">Linda_DB_USER</a> = <a name="a19"></a><a class="code" href="_linda_8inc.html#a713707c7fea371f7f3892136c1e852f0">LINDA_DB_USER</a>;</div>
+<div class="line">    <span class="keyword">const</span> <a name="a20"></a><a class="code" href="class_linda.html#a392451b719cb6bb9b0c372832ad9e6d8">Linda_DB_PASSW</a> = <a name="a21"></a><a class="code" href="_linda_8inc.html#aef9b254dff90502b875151a93b462df1">LINDA_DB_PASSW</a>;</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a21"></a><a class="code" href="class_linda.html#a095c5d389db211932136b53f25f39685">__construct</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a22"></a><a class="code" href="class_linda.html#a095c5d389db211932136b53f25f39685">__construct</a>() {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;initConnnection();</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a22"></a><a class="code" href="class_linda.html#aaded27ecadbc8530b9b21cbb38dfa4a8">setTable</a>($tableName) {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a23"></a><a class="code" href="class_linda.html#aaded27ecadbc8530b9b21cbb38dfa4a8">setTable</a>($tableName) {</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> (is_string($tableName))</div>
+<div class="line">        <span class="keywordflow">if</span> (is_string($tableName)) {</div>
 <div class="line">            $this-&gt;TABLE_MODEL = $tableName;</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+========================================================================================</span></div>
-<div class="line">    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a23"></a><a class="code" href="class_linda.html#a3749f401c64588bfbecbcc3b2c1a24e4">parseModel</a>() {</div>
+<div class="line">    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a24"></a><a class="code" href="class_linda.html#a3749f401c64588bfbecbcc3b2c1a24e4">parseModel</a>() {</div>
 <div class="line"></div>
+<div class="line">        $this-&gt;MODEL_SCHEMA = []; <span class="comment">//always reset;</span></div>
 <div class="line"></div>
 <div class="line">        $sql = <span class="stringliteral">&quot;SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table&quot;</span>;</div>
 <div class="line">        <span class="keywordflow">try</span> {</div>
@@ -159,25 +162,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">            <span class="keywordflow">return</span> TRUE;</div>
 <div class="line">        } <span class="keywordflow">catch</span> (PDOException $pe) {</div>
-<div class="line">            $this-&gt;<a class="code" href="class_linda.html#ab7d7da38a7a04e1f95bc46697f8d80e3">$LINDA_ERROR</a> = <span class="stringliteral">&quot;DB_CONNECT_ERROR&quot;</span>;</div>
+<div class="line">            $this-&gt;LINDA_ERROR = <span class="stringliteral">&quot;DB_CONNECT_ERROR&quot;</span>;</div>
 <div class="line">            <span class="keywordflow">throw</span> $pe;</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//+=========================================================================================================</span></div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a24"></a><a class="code" href="class_linda.html#a87d58413379d402e5dee4f5825b686fd">fetch</a>($fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> = array()) {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a25"></a><a class="code" href="class_linda.html#a87d58413379d402e5dee4f5825b686fd">fetch</a>($fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> = array()) {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;resultObject = null;</div>
-<div class="line">        $this-&gt;<a name="a25"></a><a class="code" href="class_linda.html#aeb66ebf99ca730ea67c612735a6576b4">queryBuilder</a>(<span class="stringliteral">&quot;select&quot;</span>, $fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>);</div>
+<div class="line">        $this-&gt;<a name="a26"></a><a class="code" href="class_linda.html#aeb66ebf99ca730ea67c612735a6576b4">queryBuilder</a>(<span class="stringliteral">&quot;select&quot;</span>, $fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>);</div>
 <div class="line"></div>
-<div class="line">        $this-&gt;<a name="a26"></a><a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
+<div class="line">        $this-&gt;<a name="a27"></a><a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line">        <span class="keywordflow">return</span> $this;</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+=========================================================================================================</span></div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a27"></a><a class="code" href="class_linda.html#ac000dfba7a410bb147dc77571d1e2ed5">update</a>($fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>) {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a28"></a><a class="code" href="class_linda.html#ac000dfba7a410bb147dc77571d1e2ed5">update</a>($fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>) {</div>
 <div class="line">        $this-&gt;resultObject = NULL;</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#aeb66ebf99ca730ea67c612735a6576b4">queryBuilder</a>(<span class="stringliteral">&quot;update&quot;</span>, $fields, <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>);</div>
@@ -187,10 +190,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+=========================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a28"></a><a class="code" href="class_linda.html#af5a8f159a27ca700aa869092a5696be1">put</a>($fields, $values) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a29"></a><a class="code" href="class_linda.html#af5a8f159a27ca700aa869092a5696be1">put</a>($fields, $values) {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;resultObject = NULL;</div>
-<div class="line">        $this-&gt;<a name="a29"></a><a class="code" href="class_linda.html#a190c686da9f77d10964e06f0480c9b44">createInsert</a>($fields, $values);</div>
+<div class="line">        $this-&gt;<a name="a30"></a><a class="code" href="class_linda.html#a190c686da9f77d10964e06f0480c9b44">createInsert</a>($fields, $values);</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line">        <span class="keywordflow">return</span> $this;</div>
@@ -209,7 +212,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+======================================================+</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a30"></a><a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($inp) {<span class="comment">//escape values for database query</span></div>
+<div class="line"><span class="comment"></span>    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a31"></a><a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($inp) {<span class="comment">//escape values for database query</span></div>
 <div class="line">        <span class="keywordflow">if</span> (is_array($inp))</div>
 <div class="line">            <span class="keywordflow">return</span> array_map(__METHOD__, $inp);</div>
 <div class="line"></div>
@@ -235,11 +238,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="comment">//+==================================================================+</span></div>
 <div class="line">    <span class="comment">//this method checks if a value is a string and quotes it if it is</span></div>
-<div class="line">    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a31"></a><a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val) {</div>
+<div class="line">    <span class="keyword">protected</span> <span class="keyword">function</span> <a name="a32"></a><a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val) {</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">if</span> (!is_numeric($val) || <span class="stringliteral">&quot;+&quot;</span> === substr($val, 0, 1)) {</div>
 <div class="line"></div>
-<div class="line">            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&#39;&quot;</span> . $val . <span class="stringliteral">&quot;&#39;&quot;</span>; <span class="comment">//add quotes</span></div>
+<div class="line">            <span class="keywordflow">if</span> ($val !== NULL)</div>
+<div class="line">                <span class="keywordflow">return</span> <span class="stringliteral">&quot;&#39;&quot;</span> . $val . <span class="stringliteral">&quot;&#39;&quot;</span>; <span class="comment">//add quotes</span></div>
 <div class="line">        }</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">return</span> $val;</div>
@@ -252,18 +256,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">            <span class="keywordflow">case</span> <span class="stringliteral">&quot;select&quot;</span>:</div>
 <div class="line"></div>
+<div class="line">                $inner_join_prefix = <span class="stringliteral">&quot;&quot;</span>; <span class="comment">//to be set fot table 1 if we have a join</span></div>
 <div class="line"></div>
-<div class="line">                $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; SELECT &quot;</span> . ( is_string($fields) ? <span class="stringliteral">&quot;* &quot;</span> : implode(<span class="stringliteral">&quot;,&quot;</span>, $fields)) . <span class="stringliteral">&quot; FROM `&quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;`&quot;</span>;</div>
+<div class="line"></div>
+<div class="line">                $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; SELECT &quot;</span> . ($this-&gt;DISTINCT ? <span class="stringliteral">&quot;DISTINCT &quot;</span> : <span class="stringliteral">&quot;&quot;</span>) . ( is_string($fields) ? <span class="stringliteral">&quot;* &quot;</span> : implode(<span class="stringliteral">&quot;,&quot;</span>, $fields)) . <span class="stringliteral">&quot; FROM `&quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;` &quot;</span>;</div>
 <div class="line"></div>
 <div class="line">                <span class="comment">//handle joins  </span></div>
-<div class="line"></div>
+<div class="line">                $join_count = 0; <span class="comment">//</span></div>
 <div class="line">                <span class="keywordflow">foreach</span> (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> as $index =&gt; $item) {<span class="comment">//loop through each inner join array argument</span></div>
-<div class="line">                    $join_count = 1; <span class="comment">//</span></div>
 <div class="line">                    <span class="keywordflow">if</span> (FALSE !== strpos($index, <span class="stringliteral">&quot;innerJoinGroup&quot;</span>)) {</div>
 <div class="line"></div>
-<div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; AS T1 &quot;</span>;</div>
+<div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; AS T&quot;</span> . ( ++$join_count);</div>
+<div class="line"></div>
 <div class="line">                        <span class="keywordflow">foreach</span> ($item as $key =&gt; $val) {</div>
-<div class="line">                            $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot;INNER JOIN `&quot;</span> . $val[<span class="stringliteral">&#39;table&#39;</span>] . <span class="stringliteral">&quot;` AS T&quot;</span> . ( ++$join_count) . <span class="stringliteral">&quot; ON T1.&quot;</span> . $val[<span class="stringliteral">&#39;conditional_column_a&#39;</span>] . <span class="stringliteral">&quot; = T&quot;</span> . ($join_count) . <span class="stringliteral">&quot;.&quot;</span> . $val[<span class="stringliteral">&#39;conditional_column_b&#39;</span>] . <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line">                            $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; INNER JOIN `&quot;</span> . $val[<span class="stringliteral">&#39;table&#39;</span>] . <span class="stringliteral">&quot;` AS T&quot;</span> . ( ++$join_count) . <span class="stringliteral">&quot; ON T1.&quot;</span> . $val[<span class="stringliteral">&#39;conditional_column_a&#39;</span>] . <span class="stringliteral">&quot; = T&quot;</span> . ($join_count) . <span class="stringliteral">&quot;.&quot;</span> . $val[<span class="stringliteral">&#39;conditional_column_b&#39;</span>] . <span class="stringliteral">&quot; &quot;</span>;</div>
 <div class="line">                        }</div>
 <div class="line">                    }</div>
 <div class="line">                }</div>
@@ -271,6 +277,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                <span class="comment">//handle where clause</span></div>
 <div class="line">                $where_clause_counter = 1;</div>
 <div class="line">                $in_where_clause = 1;</div>
+<div class="line">                $inner_join_prefix_where = <span class="stringliteral">&quot;T1.&quot;</span>; <span class="comment">//table prefix:  if we have table joins, columns in where clauses are always prefixed with the main table i.e T1</span></div>
+<div class="line"></div>
 <div class="line">                <span class="keywordflow">foreach</span> (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> as $index =&gt; $item) {<span class="comment">//loop through each where Groups</span></div>
 <div class="line">                    <span class="keywordflow">if</span> (FALSE !== strpos($index, <span class="stringliteral">&quot;whereGroup&quot;</span>)) { <span class="comment">//HANDLE WHERE CLUASE </span></div>
 <div class="line">                        <span class="keywordflow">if</span> ($where_clause_counter++ === 1)</div>
@@ -283,12 +291,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                            }</div>
 <div class="line"></div>
 <div class="line">                            <span class="keywordflow">foreach</span> ($whereGroupIndex as $key2 =&gt; $val2) {<span class="comment">//loop through each whereGroups</span></div>
-<div class="line">                                <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;comparisonOp&quot;</span> &amp;&amp; $key2 !== <span class="stringliteral">&quot;nextOp&quot;</span>) {</div>
+<div class="line">                                <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;comparisonOp&quot;</span> &amp;&amp; $key2 !== <span class="stringliteral">&quot;nextOp&quot;</span> &amp;&amp; $key2 !== <span class="stringliteral">&quot;join_index&quot;</span>) {</div>
 <div class="line">                                    <span class="keywordflow">if</span> ($in_where_clause++ &gt; 1)</div>
 <div class="line">                                        $this-&gt;CURRENT_QUERY .= isset($whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>]) ? <span class="stringliteral">&quot; &quot;</span> . $whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>] . <span class="stringliteral">&quot; &quot;</span> : <span class="stringliteral">&quot; AND &quot;</span>;</div>
 <div class="line"></div>
 <div class="line">                                    <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;operator&quot;</span>) <span class="comment">//this key shouldnt be added as a value</span></div>
-<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; &quot;</span> . $key2 . <span class="stringliteral">&quot; &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
+<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"></div>
+<div class="line">                                                <span class="comment">//if we have inner joins, we check if they have set a joined table index to use as the where column prefix</span></div>
+<div class="line">                                                . ($join_count ? ($whereGroupIndex[<span class="stringliteral">&#39;join_index&#39;</span>] !== NULL ? <span class="stringliteral">&quot;T&quot;</span> . $whereGroupIndex[<span class="stringliteral">&#39;join_index&#39;</span>] . <span class="stringliteral">&quot;.&quot;</span> : $inner_join_prefix_where) : <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line">                                                <span class="comment">//add the column name and comparison operator</span></div>
+<div class="line">                                                . $key2 . <span class="stringliteral">&quot; &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"></div>
+<div class="line">                                                <span class="comment">//add the column value we are comparing with</span></div>
+<div class="line">                                                . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
 <div class="line">                                };</div>
 <div class="line">                            }</div>
 <div class="line"></div>
@@ -310,7 +328,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= $where_operator . <span class="stringliteral">&quot; &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (isset(<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>]) ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line">                    } <span class="keywordflow">else</span> {</div>
+<div class="line">                    }</div>
+<div class="line">                    <span class="keywordflow">else</span> {</div>
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; WHERE &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (isset(<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>]) ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
@@ -322,7 +341,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                <span class="keywordflow">if</span> (isset(<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;limit&#39;</span>])) {</div>
 <div class="line">                    $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; LIMIT &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;limit&#39;</span>][<span class="stringliteral">&#39;index&#39;</span>];</div>
 <div class="line">                    $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot;,  &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;limit&#39;</span>][<span class="stringliteral">&#39;count&#39;</span>];</div>
-<div class="line">                } <span class="keywordflow">else</span> {</div>
+<div class="line">                }</div>
+<div class="line">                <span class="keywordflow">else</span> {</div>
 <div class="line">                    $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; LIMIT &quot;</span> . <a class="code" href="class_linda.html#a803cce07cc3e3f9937b6e5faba4100fe">$this-&gt;DEFAULT_START_INDEX</a>;</div>
 <div class="line">                    $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot;, &quot;</span> . <a class="code" href="class_linda.html#a97365f1875db5efbdefc5faa71249ff1">$this-&gt;DEFAULT_LIMIT</a>;</div>
 <div class="line">                }</div>
@@ -334,18 +354,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">            <span class="keywordflow">case</span> <span class="stringliteral">&quot;update&quot;</span>:</div>
 <div class="line"></div>
 <div class="line">                $update_column_count = 1;</div>
-<div class="line">                $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;UPDATE `&quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;` SET &quot;</span>;</div>
+<div class="line">                $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;UPDATE `&quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;` SET `&quot;</span>;</div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line">                <span class="keywordflow">foreach</span> ($fields as $key =&gt; $val) {</div>
 <div class="line"></div>
 <div class="line">                    <span class="keywordflow">if</span> ($update_column_count++ &gt; 1)</div>
-<div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot;,&quot;</span>; <span class="comment">//seperate the next row feild/value</span></div>
+<div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot;,`&quot;</span>; <span class="comment">//seperate the next row feild/value</span></div>
 <div class="line"></div>
 <div class="line">                    <span class="keywordflow">if</span> (is_array($val))</div>
-<div class="line">                        $this-&gt;CURRENT_QUERY .= $key . <span class="stringliteral">&quot; = (&quot;</span> . $val[0] . <span class="stringliteral">&quot; )&quot;</span>;</div>
+<div class="line">                        $this-&gt;CURRENT_QUERY .= $key . <span class="stringliteral">&quot;` = (&quot;</span> . $val[0] . <span class="stringliteral">&quot; )&quot;</span>;</div>
 <div class="line">                    <span class="keywordflow">else</span></div>
-<div class="line">                        $this-&gt;CURRENT_QUERY .= $key . <span class="stringliteral">&quot; = &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>(($val))) . <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line">                        $this-&gt;CURRENT_QUERY .= $key . <span class="stringliteral">&quot;` = &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>(($val))) . <span class="stringliteral">&quot; &quot;</span>;</div>
 <div class="line">                }</div>
 <div class="line"></div>
 <div class="line"></div>
@@ -369,7 +389,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                                        $this-&gt;CURRENT_QUERY .= isset($whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>]) ? <span class="stringliteral">&quot; &quot;</span> . $whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>] . <span class="stringliteral">&quot; &quot;</span> : <span class="stringliteral">&quot; AND &quot;</span>;</div>
 <div class="line"></div>
 <div class="line">                                    <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;operator&quot;</span>) <span class="comment">//this key shouldnt be added as a value</span></div>
-<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; &quot;</span> . $key2 . <span class="stringliteral">&quot; &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
+<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; `&quot;</span> . $key2 . <span class="stringliteral">&quot;` &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
 <div class="line">                                };</div>
 <div class="line">                            }</div>
 <div class="line"></div>
@@ -389,7 +409,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= $where_operator . <span class="stringliteral">&quot; &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line">                    } <span class="keywordflow">else</span> {</div>
+<div class="line">                    }</div>
+<div class="line">                    <span class="keywordflow">else</span> {</div>
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; WHERE &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
@@ -414,8 +435,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                $in_where_clause = 1;</div>
 <div class="line">                <span class="keywordflow">foreach</span> (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a> as $index =&gt; $item) {<span class="comment">//loop through each where Groups</span></div>
 <div class="line">                    <span class="keywordflow">if</span> (FALSE !== strpos($index, <span class="stringliteral">&quot;whereGroup&quot;</span>)) { <span class="comment">//HANDLE WHERE CLUASE </span></div>
-<div class="line">                        <span class="keywordflow">if</span> ($where_clause_counter++ === 1)</div>
+<div class="line">                        <span class="keywordflow">if</span> ($where_clause_counter++ === 1) {</div>
 <div class="line">                            $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; WHERE(&quot;</span>;</div>
+<div class="line">                        }</div>
 <div class="line"></div>
 <div class="line">                        <span class="keywordflow">foreach</span> ($item as $key =&gt; $whereGroupIndex) {<span class="comment">//loop through each where Groups</span></div>
 <div class="line">                            $nextComparisonOp = isset($whereGroupIndex[<span class="stringliteral">&quot;nextOp&quot;</span>]) ? $whereGroupIndex[<span class="stringliteral">&quot;nextOp&quot;</span>] : <span class="stringliteral">&quot;AND&quot;</span>;</div>
@@ -425,17 +447,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">                            <span class="keywordflow">foreach</span> ($whereGroupIndex as $key2 =&gt; $val2) {<span class="comment">//loop through each whereGroups</span></div>
 <div class="line">                                <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;comparisonOp&quot;</span> &amp;&amp; $key2 !== <span class="stringliteral">&quot;nextOp&quot;</span>) {</div>
-<div class="line">                                    <span class="keywordflow">if</span> ($in_where_clause++ &gt; 1)</div>
+<div class="line">                                    <span class="keywordflow">if</span> ($in_where_clause++ &gt; 1) {</div>
 <div class="line">                                        $this-&gt;CURRENT_QUERY .= isset($whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>]) ? <span class="stringliteral">&quot; &quot;</span> . $whereGroupIndex[<span class="stringliteral">&#39;comparisonOp&#39;</span>] . <span class="stringliteral">&quot; &quot;</span> : <span class="stringliteral">&quot; AND &quot;</span>;</div>
+<div class="line">                                    }</div>
 <div class="line"></div>
-<div class="line">                                    <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;operator&quot;</span>) <span class="comment">//this key shouldnt be added as a value</span></div>
-<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; &quot;</span> . $key2 . <span class="stringliteral">&quot; &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
-<div class="line">                                };</div>
+<div class="line">                                    <span class="keywordflow">if</span> ($key2 !== <span class="stringliteral">&quot;operator&quot;</span>) { <span class="comment">//this key shouldnt be added as a value</span></div>
+<div class="line">                                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; `&quot;</span> . $key2 . <span class="stringliteral">&quot;` &quot;</span> . (isset($val2[<span class="stringliteral">&#39;operator&#39;</span>]) ? $val2[<span class="stringliteral">&#39;operator&#39;</span>] : <span class="stringliteral">&quot;=&quot;</span>) . <span class="stringliteral">&quot; &quot;</span> . $this-&gt;<a class="code" href="class_linda.html#a0cee7c433eda5db6e7610d4e0dcedf99">sanitize</a>($this-&gt;<a class="code" href="class_linda.html#a9aa9a275e880b4446ec390cc2ba351cd">string_or_int</a>($val2 [<span class="stringliteral">&#39;value&#39;</span>]));</div>
+<div class="line">                                    }</div>
+<div class="line">                                }</div>
 <div class="line">                            }</div>
 <div class="line"></div>
 <div class="line">                            $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; )&quot;</span>;</div>
-<div class="line">                            <span class="keywordflow">if</span> (next($item))</div>
+<div class="line">                            <span class="keywordflow">if</span> (next($item)) {</div>
 <div class="line">                                $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; &quot;</span> . $nextComparisonOp . <span class="stringliteral">&quot; (&quot;</span>;</div>
+<div class="line">                            }</div>
 <div class="line">                        }</div>
 <div class="line">                    }</div>
 <div class="line">                }</div>
@@ -450,7 +475,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= $where_operator . <span class="stringliteral">&quot; &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line">                    } <span class="keywordflow">else</span> {</div>
+<div class="line">                    }</div>
+<div class="line">                    <span class="keywordflow">else</span> {</div>
 <div class="line"></div>
 <div class="line">                        $this-&gt;CURRENT_QUERY .= <span class="stringliteral">&quot; WHERE &quot;</span> . <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;fieldName&#39;</span>] . <span class="stringliteral">&quot; IN (&quot;</span> .</div>
 <div class="line">                                (<a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] ? <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;query&#39;</span>] : <a class="code" href="class_linda.html#aea7d038e46660f55592569906cf09494">$queryConfig</a>[<span class="stringliteral">&#39;where_in&#39;</span>][<span class="stringliteral">&#39;options&#39;</span>]) . <span class="stringliteral">&quot;)&quot;</span>;</div>
@@ -471,12 +497,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//+===========================================================================================</span></div>
 <div class="line">    <span class="comment">//run the query and set the return object</span></div>
 <div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>() {</div>
-<div class="line">        $this-&gt;CURRENT_QUERY = str_replace(<span class="stringliteral">&quot;NOW()&quot;</span>, StringHelper::toYMD(<span class="stringliteral">&quot;now&quot;</span>), $this-&gt;CURRENT_QUERY);</div>
-<div class="line">        $this-&gt;CURRENT_QUERY = str_replace(<span class="stringliteral">&quot;TIME()&quot;</span>, StringHelper::toYMDHMS(<span class="stringliteral">&quot;now&quot;</span>), $this-&gt;CURRENT_QUERY);</div>
+<div class="line">        $this-&gt;CURRENT_QUERY = str_replace(<span class="stringliteral">&quot;NOW()&quot;</span>, date(<span class="stringliteral">&quot;Y-m-d&quot;</span>), $this-&gt;CURRENT_QUERY);</div>
+<div class="line">        $this-&gt;CURRENT_QUERY = str_replace(<span class="stringliteral">&quot;TIME()&quot;</span>, date(<span class="stringliteral">&quot;Y-m-d H:i:s&quot;</span>), $this-&gt;CURRENT_QUERY);</div>
 <div class="line">        $this-&gt;LINDA_ERROR = <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line">        $this-&gt;lastAffectedRowCount = 0;</div>
 <div class="line"></div>
-<div class="line">        <span class="comment">//echo &quot;&lt;br/&gt;&lt;br/&gt;&quot;.$this-&gt;CURRENT_QUERY.&quot;&lt;br/&gt;&lt;br/&gt;&quot;;</span></div>
+<div class="line"><span class="comment">// echo &quot;&lt;br/&gt;&lt;br/&gt;&quot;.$this-&gt;CURRENT_QUERY.&quot;&lt;br/&gt;&lt;br/&gt;&quot;;</span></div>
 <div class="line">        $stmnt;</div>
 <div class="line"></div>
 <div class="line"></div>
@@ -488,11 +514,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                    $this-&gt;resultObject = NULL;</div>
 <div class="line">                }</div>
 <div class="line"></div>
-<div class="line">                <span class="keywordflow">if</span> ($stmnt-&gt;rowCount())</div>
+<div class="line">                <span class="keywordflow">if</span> ($stmnt-&gt;rowCount()) {</div>
 <div class="line">                    $this-&gt;lastAffectedRowCount = $stmnt-&gt;rowCount();</div>
+<div class="line">                }</div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line">                $this-&gt;resultObject = $stmnt-&gt;fetchAll(PDO::FETCH_ASSOC);</div>
+<div class="line"></div>
 <div class="line"></div>
 <div class="line">                <span class="keywordflow">if</span> (FALSE === $this-&gt;resultObject) {</div>
 <div class="line">                    $this-&gt;LINDA_ERROR = <span class="stringliteral">&quot;ERROR_EXECUTING_QUERY&quot;</span>;</div>
@@ -500,13 +528,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">                }</div>
 <div class="line"></div>
 <div class="line">                <span class="comment">//set the number of rows returned for select ops</span></div>
-<div class="line">                <span class="keywordflow">if</span> (!$this-&gt;lastAffectedRowCount &amp;&amp; <a name="a32"></a><a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject))</div>
-<div class="line">                    $this-&gt;lastAffectedRowCount = <a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject);</div>
+<div class="line">                <span class="keywordflow">if</span> (!$this-&gt;lastAffectedRowCount &amp;&amp; <a name="a33"></a><a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject)) {</div>
+<div class="line">                    $this-&gt;lastAffectedRowCount = <a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject);</div>
+<div class="line">                }</div>
 <div class="line"></div>
-<div class="line">                <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject) || $this-&gt;lastAffectedRowCount)</div>
-<div class="line">                    ;</div>
-<div class="line">                <span class="keywordflow">else</span></div>
+<div class="line">                <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject) || $this-&gt;lastAffectedRowCount) {</div>
+<div class="line">                    </div>
+<div class="line">                }</div>
+<div class="line">                <span class="keywordflow">else</span> {</div>
 <div class="line">                    $this-&gt;resultObject = NULL;</div>
+<div class="line">                }</div>
 <div class="line">            }</div>
 <div class="line">        } <span class="keywordflow">catch</span> (PDOException $e) {</div>
 <div class="line"></div>
@@ -514,21 +545,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">            $this-&gt;resultObject = NULL;</div>
 <div class="line">            <span class="comment">// echo $this-&gt;LINDA_ERROR;</span></div>
 <div class="line">        }</div>
+<div class="line">        $this-&gt;DEFAULT_LIMIT = 1000;</div>
+<div class="line">        $this-&gt;DEFAULT_START_INDEX = 0;</div>
+<div class="line">        $this-&gt;DISTINCT = FALSE;</div>
 <div class="line">        <span class="keywordflow">return</span> $this;</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($columnName, $val, $operator = <span class="stringliteral">&quot;=&quot;</span>) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>() {</div>
+<div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT COUNT(*) AS DAL_counter FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;;&quot;</span>;</div>
+<div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line"></div>
+<div class="line"></div>
+<div class="line">        <span class="keywordflow">return</span> $this-&gt;<a name="a34"></a><a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>()[0][<span class="stringliteral">&#39;DAL_counter&#39;</span>];</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">//+===================================================================================================</span></div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a35"></a><a class="code" href="class_linda.html#ad119b26c518197ce516ac2f4bf7a07ab">countMatching</a>($columnName, $val, $operator = <span class="stringliteral">&quot;=&quot;</span>) {</div>
 <div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT COUNT(*) AS DAL_counter FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot; WHERE &quot;</span> . $columnName . <span class="stringliteral">&quot; &quot;</span> . $operator . <span class="stringliteral">&quot; &quot;</span> . $val . <span class="stringliteral">&quot;;&quot;</span>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">return</span> $this-&gt;<a name="a33"></a><a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>()[0][<span class="stringliteral">&#39;DAL_counter&#39;</span>];</div>
+<div class="line">        <span class="keywordflow">return</span> $this-&gt;<a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>()[0][<span class="stringliteral">&#39;DAL_counter&#39;</span>];</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a34"></a><a class="code" href="class_linda.html#a9405f06abe08887d915b8c0a98885cb2">max_in_column</a>($columnName) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a36"></a><a class="code" href="class_linda.html#a34d160ad28ce16c5906d2d911fbda77d">maxInColumn</a>($columnName) {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT MAX(&quot;</span> . $columnName . <span class="stringliteral">&quot;) AS DAL_max FROM &quot;</span> . <a class="code" href="class_linda.html#a486c281995ea6cdb9fb0367b6e260b76">$this-&gt;TABLE_MODEL</a>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
@@ -538,7 +580,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a35"></a><a class="code" href="class_linda.html#ace93ec905a1eba8f431c1d6bb279ac20">maxRow</a>($fieldName) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a37"></a><a class="code" href="class_linda.html#ace93ec905a1eba8f431c1d6bb279ac20">maxRow</a>($fieldName) {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT * FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot; WHERE &quot;</span> . $fieldName . <span class="stringliteral">&quot; = (SELECT MAX(&quot;</span> . $fieldName . <span class="stringliteral">&quot;) FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;)&quot;</span>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
@@ -547,7 +589,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a36"></a><a class="code" href="class_linda.html#a47a8d3c75c7454aca40d3b7808465ab6">min_in_column</a>($columnName) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a38"></a><a class="code" href="class_linda.html#a47a8d3c75c7454aca40d3b7808465ab6">min_in_column</a>($columnName) {</div>
 <div class="line"></div>
 <div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT MIN(&quot;</span> . $columnName . <span class="stringliteral">&quot;) AS Linda_min FROM &quot;</span> . <a class="code" href="class_linda.html#a486c281995ea6cdb9fb0367b6e260b76">$this-&gt;TABLE_MODEL</a>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
@@ -556,18 +598,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a37"></a><a class="code" href="class_linda.html#a94e9b7b94a61bc48ad5d866bc93670ce">minRow</a>($columnName) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a39"></a><a class="code" href="class_linda.html#a94e9b7b94a61bc48ad5d866bc93670ce">minRow</a>($columnName) {</div>
 <div class="line"></div>
-<div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT * FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot; WHERE &quot;</span> . $columnName . <span class="stringliteral">&quot; = (SELECT MIN(&quot;</span> . $fieldName . <span class="stringliteral">&quot;) FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT * FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot; WHERE &quot;</span> . $columnName . <span class="stringliteral">&quot; = (SELECT MIN(&quot;</span> . $columnName . <span class="stringliteral">&quot;) FROM &quot;</span> . $this-&gt;TABLE_MODEL . <span class="stringliteral">&quot;)&quot;</span>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">return</span> $this-&gt;<a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>()[0];</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a38"></a><a class="code" href="class_linda.html#ab39eb2457d23f38ac50e0af64a55f6e9">sum</a>($fieldName) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a40"></a><a class="code" href="class_linda.html#ab3cd1f43979f64ef99b52795f616df32">sum</a>($columnName) {</div>
 <div class="line"></div>
-<div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT SUM(&quot;</span> . $fieldName . <span class="stringliteral">&quot;) AS DAL_sum FROM &quot;</span> . <a class="code" href="class_linda.html#a486c281995ea6cdb9fb0367b6e260b76">$this-&gt;TABLE_MODEL</a>;</div>
+<div class="line">        $this-&gt;CURRENT_QUERY = <span class="stringliteral">&quot;SELECT SUM(&quot;</span> . $columnName . <span class="stringliteral">&quot;) AS DAL_sum FROM &quot;</span> . <a class="code" href="class_linda.html#a486c281995ea6cdb9fb0367b6e260b76">$this-&gt;TABLE_MODEL</a>;</div>
 <div class="line">        $this-&gt;<a class="code" href="class_linda.html#ad2e4fa0b57c9acdf15cd932346381af5">runQuery</a>();</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">return</span> $this-&gt;<a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>()[0][<span class="stringliteral">&#39;DAL_sum&#39;</span>];</div>
@@ -576,7 +618,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
 <div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_linda.html#aba0d5b303383fb5b1fabb5fd01cd3800">getAll</a>() {</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject)) {</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject)) {</div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line">            <span class="keywordflow">return</span> <a class="code" href="class_linda.html#a64270a514fbca17fe7347df6320fc4ba">$this-&gt;resultObject</a>;</div>
@@ -585,53 +627,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//+===================================================================================================</span></div>
-<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a39"></a><a class="code" href="class_linda.html#a15fff7e5f77cd6a7e7656e3e46b20a5c">getRowAtIndex</a>($index) {</div>
+<div class="line"><span class="comment"></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a41"></a><a class="code" href="class_linda.html#a15fff7e5f77cd6a7e7656e3e46b20a5c">getRowAtIndex</a>($index) {</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> ($this-&gt;resultObject &amp;&amp; <a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject) &gt;= $index)</div>
+<div class="line">        <span class="keywordflow">if</span> ($this-&gt;resultObject &amp;&amp; <a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject) &gt;= $index) {</div>
 <div class="line">            <span class="keywordflow">return</span> $this-&gt;resultObject[$index];</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a40"></a><a class="code" href="class_linda.html#af37433a300db1f607ee789d22828a0a0">numRows</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a42"></a><a class="code" href="class_linda.html#af37433a300db1f607ee789d22828a0a0">numRows</a>() {</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code" href="class_linda.html#a038edab690e03aff9c70a1f63c06f27e">$this-&gt;lastAffectedRowCount</a>;</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a41"></a><a class="code" href="class_linda.html#af0d2b98b49496eaef856a5b277fa775b">peek</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a43"></a><a class="code" href="class_linda.html#af0d2b98b49496eaef856a5b277fa775b">peek</a>() {</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject))</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject)) {</div>
 <div class="line">            <span class="keywordflow">return</span> $this-&gt;resultObject(0);</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a42"></a><a class="code" href="class_linda.html#a45fd7828ad0376368f5c32b64d5dbac4">tail</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a44"></a><a class="code" href="class_linda.html#a45fd7828ad0376368f5c32b64d5dbac4">tail</a>() {</div>
 <div class="line"></div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject))</div>
-<div class="line">            <span class="keywordflow">return</span> $this-&gt;resultObject(<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject) - 1);</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject)) {</div>
+<div class="line">            <span class="keywordflow">return</span> $this-&gt;resultObject(<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject) - 1);</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a43"></a><a class="code" href="class_linda.html#a046b5f5e8b171d4724f2780303239825">even</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a45"></a><a class="code" href="class_linda.html#a046b5f5e8b171d4724f2780303239825">even</a>() {</div>
 <div class="line">        $resultArray = array();</div>
-<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject)) {</div>
+<div class="line">        <span class="keywordflow">if</span> (<a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject)) {</div>
 <div class="line"></div>
-<div class="line">            <span class="keywordflow">for</span> ($i = 0; $i &lt; <a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject); $i++)</div>
-<div class="line">                <span class="keywordflow">if</span> ($i % 2 === 0)</div>
+<div class="line">            <span class="keywordflow">for</span> ($i = 0; $i &lt; <a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject); $i++) {</div>
+<div class="line">                <span class="keywordflow">if</span> ($i % 2 === 0) {</div>
 <div class="line">                    $resultArray[] = $this-&gt;resultObject[$i];</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> $resultArray;</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a44"></a><a class="code" href="class_linda.html#a666c4ea82d473f0e68ad97e3f33d1e83">odd</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a46"></a><a class="code" href="class_linda.html#a666c4ea82d473f0e68ad97e3f33d1e83">odd</a>() {</div>
 <div class="line"></div>
 <div class="line">        $resultArray = array();</div>
 <div class="line">        <span class="keywordflow">if</span> ($this-&gt;resultObject) {</div>
 <div class="line"></div>
-<div class="line">            <span class="keywordflow">for</span> ($i = 0; $i &lt; <a class="code" href="class_linda.html#a3292920004f4f0eb71524e2e871fd9cc">count</a>($this-&gt;resultObject); $i++)</div>
-<div class="line">                <span class="keywordflow">if</span> ($i &amp; 2 !== 0)</div>
+<div class="line">            <span class="keywordflow">for</span> ($i = 0; $i &lt; <a class="code" href="class_linda.html#ac751e87b3d4c4bf2feb03bee8b092755">count</a>($this-&gt;resultObject); $i++) {</div>
+<div class="line">                <span class="keywordflow">if</span> ($i &amp; 2 !== 0) {</div>
 <div class="line">                    $resultArray[] = $this-&gt;resultObject[$i];</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> $resultArray;</div>
 <div class="line">    }</div>
 <div class="line"></div>
-<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a45"></a><a class="code" href="class_linda.html#a421831a265621325e1fdd19aace0c758">__destruct</a>() {</div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a47"></a><a class="code" href="class_linda.html#aada71735dcc56f4cae3b82c55e090e8d">hasErrors</a>() {</div>
+<div class="line">        <span class="keywordflow">return</span> ($this-&gt;LINDA_ERROR &amp;&amp; strpos(<span class="stringliteral">&quot;SQLSTATE[HY000]: General error&quot;</span>, $this-&gt;LINDA_ERROR) === FALSE);</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">    <span class="keyword">public</span> <span class="keyword">function</span> <a name="a48"></a><a class="code" href="class_linda.html#a421831a265621325e1fdd19aace0c758">__destruct</a>() {</div>
 <div class="line">        </div>
 <div class="line">    }</div>
 <div class="line"></div>

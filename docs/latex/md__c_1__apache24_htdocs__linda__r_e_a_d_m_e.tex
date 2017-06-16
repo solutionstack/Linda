@@ -1,0 +1,276 @@
+Its built over P\+H\+P\textquotesingle{}s P\+D\+O, so enabling multi database access, and safe transactions.
+
+\section*{Using \hyperlink{class_linda}{Linda}}
+
+The first thing in setting up \hyperlink{class_linda}{Linda} is editing the \hyperlink{_linda_8inc}{Linda.\+inc} file, this file contains database connection parameters/constants. The file contains the following constants, edit to your needs
+
+
+\begin{DoxyCode}
+define(\textcolor{stringliteral}{'LINDA\_DB\_HOST'}, \textcolor{stringliteral}{'hostname'});
+define(\textcolor{stringliteral}{'LINDA\_DB\_TYPE'}, \textcolor{stringliteral}{'dbtype'} ); \textcolor{comment}{//mysql, pgsql etc}
+define(\textcolor{stringliteral}{'LINDA\_DB\_NAME'}, \textcolor{stringliteral}{'dbname'});
+define(\textcolor{stringliteral}{'LINDA\_DB\_USER'}, \textcolor{stringliteral}{'user'} );
+define(\textcolor{stringliteral}{'LINDA\_DB\_PASSW'}, \textcolor{stringliteral}{'password'} );
+\end{DoxyCode}
+
+
+After this step, simply begin using the \hyperlink{class_linda_model}{Linda\+Model} class which contains the O\+R\+M interface.~\newline
+ For the examples here i\textquotesingle{}ll be using the freely available sakila database.
+
+My test file exists in the same folder as the \hyperlink{class_linda}{Linda} classes, so\textquotesingle{}ill just include the \hyperlink{class_linda_model}{Linda\+Model} file 
+\begin{DoxyCode}
+require\_once realpath(dirname(\_\_FILE\_\_)) .\textcolor{stringliteral}{"/"}.\textcolor{stringliteral}{'LindaModel.php'};
+\end{DoxyCode}
+ Lets look at performing a select operation 
+\begin{DoxyCode}
+\textcolor{comment}{//First create a LindaModel instance and send the table name as its constructor argument}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   \textcolor{comment}{//the address table is from the open-source sakila database}
+
+$l->fetchAll();  \textcolor{comment}{//this retrieves all rows from the database and stores them in memory}
+\end{DoxyCode}
+ Each row returned is represented as an object with getter and setter features, as \hyperlink{class_linda_model}{Linda\+Model} implements an Active\+Record interface To work with this row models, you need to first retrve the models into a variable...
+
+
+\begin{DoxyCode}
+\textcolor{comment}{//using the #collection method, i can do..}
+$rows = $l->collection(); \textcolor{comment}{//returns collection of models in an array, returns null if an empty set was
+       returned from the DB}
+
+\textcolor{comment}{//and you could access them as maybe..}
+\textcolor{keywordflow}{foreach}($rows as $rows) echo $rows->address .\textcolor{stringliteral}{"<br/>"}; \textcolor{comment}{//this would print out the value of each address
+       column}
+
+\textcolor{comment}{//that simple}
+\textcolor{comment}{//so if i wanted to change the address on each column in the DB table (since all columns where returned),
+       i'lll simply}
+\textcolor{comment}{//set the new values on each row model (see note on primary keys below)}
+\textcolor{keywordflow}{foreach}($rows as $rows)$rows->address = \textcolor{stringliteral}{"New Address to Set"};
+
+\textcolor{comment}{//when setting column values on a row model, its initially set only in Memory, you commit back into the
+       table by using the save}
+\textcolor{comment}{//method}
+$l->save();   \textcolor{comment}{//by now all address columns in the address table, would have been updated}
+\end{DoxyCode}
+ After using fetch\+All() as above say we didnt want to retrieve the entire row models with \#collection ~\newline
+other methods exists including... first(), last(), even(), odd(), random(); They all return null if no results where retrieved from the table 
+\begin{DoxyCode}
+$l->first(); \textcolor{comment}{//retuns the object model for first row of the collection}
+$l->last(); \textcolor{comment}{//retuns the object model for last row of the collection}
+$l->even(); \textcolor{comment}{//retuns the collection of even rows object models}
+$l->odd(); \textcolor{comment}{//retuns the collection of odd rows object models}
+$l->random(); \textcolor{comment}{//like #collection but the row models are sorted in a random order}
+
+\textcolor{comment}{//others include}
+$l->count(); \textcolor{comment}{//count all rows on the table}
+$l->numRows(); \textcolor{comment}{// indicating the number of rows retrieved or affected by the last operation}
+$l->hasErrors(); \textcolor{comment}{// if the last operation raised an Exception}
+\end{DoxyCode}
+
+
+In the above examples we use fetch\+All() to first retrieve all rows of the table as objects in memory~\newline
+ This isnt what you do in most cases as data retrieval from tables are usually filtered by clauses like W\+H\+E\+R\+E clauses, W\+H\+E\+R\+E I\+N, J\+O\+I\+N\+S etc, the \hyperlink{class_linda_model}{Linda\+Model} class provides for an increasing number of this clauses
+
+\# W\+H\+E\+R\+E C\+L\+A\+U\+S\+E 
+\begin{DoxyCode}
+\textcolor{comment}{//in theaddress table we used above, lets apply some where clauses}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   \textcolor{comment}{//the address table is from the open-source sakila database}
+$l->where(\textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"<"}, 300); \textcolor{comment}{//this basically would apply an SQL where clause similar to ...
+       WHERE(`city\_id` < 300)}
+
+$l->get(); \textcolor{comment}{//after using a clause, use #get(), to fetch the matching row models into memory, after which
+       you can use #collection, #first() etc to fetch the row-models u need}
+
+\textcolor{comment}{//#get also take an optional argument containing just the coulmns to retrieve instead of retrieving all
+       columns}
+\textcolor{comment}{// get(["column1", "column2",...]);}
+
+\textcolor{comment}{//so say i wanted to update a column named foo on the address table for each row where the city\_id column
+       value < 300}
+\textcolor{comment}{//i'll do it this way}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});  
+$l->where(\textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"<"}, 300); 
+
+$rows = $l->get()->collection();
+
+\textcolor{keywordflow}{foreach}($rows as $rows) $row->foo = \textcolor{stringliteral}{"new value"};
+
+\textcolor{comment}{//then commit changes to the table}
+$l->save(); \textcolor{comment}{//done}
+\end{DoxyCode}
+ \section*{A note on Updates and Deletes}
+
+Note that when updating or deleting columns, a unique index is usually needed to reference each column, usually this is the tables primary key. You can specify the primary key as the second argument to the \hyperlink{class_linda_model}{Linda\+Model} constructor..like
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"},\textcolor{stringliteral}{"pri\_key\_column\_name"});
+\end{DoxyCode}
+ else {\bfseries \hyperlink{class_linda_model}{Linda\+Model}} class uses the first column of the table as the primary key, which might not always be accurate, so always specify a primary key if update operations are going to be performed
+
+\#\+Multiple where clauses can be specified
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});  
+$l->where(\textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"<"}, 300)
+  ->where(\textcolor{stringliteral}{"address"}, \textcolor{stringliteral}{"LIKE"}, \textcolor{stringliteral}{"%street"});
+
+
+$rows = $l->get()->collection();
+\end{DoxyCode}
+ Multiple where clauses are related using A\+N\+D, the A\+B\+O\+V\+E would translate to something like
+
+
+\begin{DoxyCode}
+1 ... WHERE (`city\_id` < 300) AND (`address` LIKE '%street)...
+\end{DoxyCode}
+ If u need to relate multiple {\bfseries W\+H\+E\+R\+E} clauses O\+R wise, use
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});  
+$l->where\_or(\textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"<"}, 300)
+  ->where(\textcolor{stringliteral}{"address"}, \textcolor{stringliteral}{"LIKE"}, \textcolor{stringliteral}{"%street"}); \textcolor{comment}{//if theres another where clause after this, it would be related
+       AND- wise, or u can use #where\_or}
+\end{DoxyCode}
+
+
+\section*{W\+H\+E\+R\+E I\+N C\+L\+A\+U\+S\+E}
+
+the {\bfseries where\+\_\+in} and {\bfseries where\+\_\+in\+\_\+or} methods provides means to apply W\+H\+E\+R\+E I\+N clauses to your table operations
+
+
+\begin{DoxyCode}
+\textcolor{comment}{//in theaddress table we used above, lets apply some where clauses}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   \textcolor{comment}{//the address table is from the open-source sakila database}
+$l->where\_in(\textcolor{stringliteral}{"city\_id"}, [\textcolor{stringliteral}{"300, 400, 500"}]); \textcolor{comment}{//wher the city\_id is within that range}
+\end{DoxyCode}
+ {\bfseries where\+\_\+in\+\_\+or} differs significantly, for {\bfseries where\+\_\+or}~\newline
+ For where\+\_\+in\+\_\+or you are specifying that an O\+R comes before the where\+\_\+in C\+L\+A\+U\+S\+E, if multiple clauses exixts
+
+~\newline
+~\newline
+so as an example
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   \textcolor{comment}{//the address table is from the open-source sakila database}
+$l->where\_in\_or(\textcolor{stringliteral}{"city\_id"}, [\textcolor{stringliteral}{"300"}, \textcolor{stringliteral}{"400"}, \textcolor{stringliteral}{"500"}]) \textcolor{comment}{//wher the city\_id is within that range)}
+  ->where(\textcolor{stringliteral}{"city\_id"},\textcolor{stringliteral}{"<"} ,100); \textcolor{comment}{//wher the city\_id is within that range)}
+
+$rows = $l->get()->collection();
+\end{DoxyCode}
+
+
+would translate to
+
+
+\begin{DoxyCode}
+1 SELECT * FROM `address` WHERE( city\_id < 100 ) OR city\_id IN ('300', '400', '500') LIMIT 0, 1000;
+\end{DoxyCode}
+ You\textquotesingle{}ll notice that even though the {\bfseries where\+\_\+in} clause came first, the {\bfseries  where clause} was processed first~\newline
+ This is a design decision, as thus all W\+H\+E\+R\+E clauses would be processed before W\+H\+E\+R\+E I\+N\textquotesingle{}s, irrespective of the order the methods where called, you can also pass a sub-\/query string as the second value of a {\bfseries  where\+\_\+in} method call
+
+\section*{I\+N\+N\+E\+R J\+O\+I\+N C\+L\+A\+U\+S\+E}
+
+Inner Joins are a common way to retrieve related data from multiple table and the {\bfseries  \hyperlink{class_linda_model}{Linda\+Model}} class provides a convinient method to perform such joins~\newline
+ The I\+N\+N\+E\+R J\+O\+In method signature is {\bfseries  inner\+\_\+join(\$table, \$conditional\+\_\+column\+\_\+a, \$conditional\+\_\+column\+\_\+b)}~\newline
+ where {\bfseries \$table} is the table you want to J\+O\+I\+N with~\newline
+ {\bfseries  \$conditional\+\_\+column\+\_\+a} is column on the current table you are operating on~\newline
+ {\bfseries  \$conditional\+\_\+column\+\_\+b} is the column to match on the J\+O\+I\+N\textquotesingle{}ed table~\newline
+
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});  
+$l->where(\textcolor{stringliteral}{"city\_id"},\textcolor{stringliteral}{"<"} ,100) \textcolor{comment}{//wher the city\_id is within that range)}
+ ->inner\_join(\textcolor{stringliteral}{"city"}, \textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"city\_id"});
+
+
+$rows = $l->get()->collection();
+\end{DoxyCode}
+ In the above an S\+Q\+L query sililar to 
+\begin{DoxyCode}
+1 SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city\_id = T2.city\_id WHERE( T1.city\_id < 100 )
+       LIMIT 0, 1000;
+\end{DoxyCode}
+ would be executed, multiple inner joins are also supported
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});  
+$l->where(\textcolor{stringliteral}{"city\_id"},\textcolor{stringliteral}{"<"} ,100) \textcolor{comment}{//wher the city\_id is within that range)}
+ ->where(\textcolor{stringliteral}{"county\_id"}, \textcolor{stringliteral}{">"}, 10, 3)
+ ->inner\_join(\textcolor{stringliteral}{"city"}, \textcolor{stringliteral}{"city\_id"}, \textcolor{stringliteral}{"city\_id"});
+ ->inner\_join(\textcolor{stringliteral}{"county"}, \textcolor{stringliteral}{"county\_id"}, \textcolor{stringliteral}{"county\_id"}
+
+$rows = $l->get()->collection();
+\end{DoxyCode}
+ On the second call to where, the third argument, is the index of the join table the where clause shoule associate with Which means the second where clause should evaluate the column on the third joined table. In a join\textquotesingle{}ed statement, The base table is taken as the first table i.\+e T1, the others, T2. , T3. ... 
+\begin{DoxyCode}
+1 SELECT *  FROM `address`  AS T1 INNER JOIN `city` AS T2 ON T1.city\_id = T2.city\_id  INNER JOIN `county` AS
+       T3 ON T1.county\_id = T3.county\_id  WHERE( T1.city\_id < 100 ) AND ( T3.county\_id > 10 ) LIMIT 0, 1000;
+\end{DoxyCode}
+ As you can see the second where statement evaluated to T3.\+county\+\_\+id, since the county table is the third table in the Join and we specified the join index for the where clause as 3 above
+
+\section*{P\+A\+G\+I\+N\+A\+T\+I\+O\+N}
+
+\hyperlink{class_linda_model}{Linda\+Model} supports two methods take() and skip() for paginating reslts 
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   
+$l->where\_in\_or(\textcolor{stringliteral}{"city\_id"}, [\textcolor{stringliteral}{"300"}, \textcolor{stringliteral}{"400"}, \textcolor{stringliteral}{"500"}]) \textcolor{comment}{//wher the city\_id is within that range)}
+  ->where(\textcolor{stringliteral}{"city\_id"},\textcolor{stringliteral}{"<"} ,100) \textcolor{comment}{//wher the city\_id is within that range)}
+  ->take(10)
+  ->skip(4);
+$rows = $l->get()->collection();
+\end{DoxyCode}
+ ~\newline
+ Would execute the Statement 
+\begin{DoxyCode}
+1 SELECT * FROM `address` WHERE( city\_id < 100 ) OR city\_id IN (300,400,500) LIMIT 4, 10;
+\end{DoxyCode}
+
+
+\section*{Inserting rows}
+
+To insert new rows use the create method, but make sure the argument count matches the number of columns
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   
+$l->create([\textcolor{stringliteral}{"val1"}, \textcolor{stringliteral}{"val2"},...]);
+\end{DoxyCode}
+
+
+To insert column data that takes a My\+Sql {\bfseries D\+A\+T\+E} or {\bfseries D\+A\+T\+E\+T\+I\+M\+E} use the string {\bfseries N\+O\+W()} or {\bfseries T\+I\+M\+E()} 
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   
+$l->create([\textcolor{stringliteral}{"NOW()"}, \textcolor{stringliteral}{"TIME()"},...]);
+\end{DoxyCode}
+
+
+\section*{Removing rows}
+
+To remove rows from the table after fetching the object models using either {\bfseries fetch\+All()} or {\bfseries get()} simply call {\bfseries  remove()} to delete those rows from a table
+
+~\newline
+
+
+\section*{D\+I\+S\+T\+I\+N\+C\+T rows}
+
+To ensure the returned result set/models contains unique, values for the columns, use
+
+
+\begin{DoxyCode}
+$l = \textcolor{keyword}{new} \hyperlink{class_linda_model}{LindaModel}(\textcolor{stringliteral}{"address"});   
+$l->where(\textcolor{stringliteral}{"city\_id"},\textcolor{stringliteral}{"<"} ,100) \textcolor{comment}{//wher the city\_id is within that range)}
+  ->take(10)
+  ->skip(4)
+  ->distinct() \textcolor{comment}{//ensure rows column values are unique}
+  ->get([\textcolor{stringliteral}{"address"}]); \textcolor{comment}{//we are getting just this column data}
+\end{DoxyCode}
+
+
+~\newline
+ ~\newline
+ 

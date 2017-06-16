@@ -14,11 +14,25 @@ Inheritance diagram for Linda\+Model\+:\begin{figure}[H]
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_linda_model_a776f84c759a8aa1820e5c65719897d8d}{\+\_\+\+\_\+construct} (\$Model, \$primary\+Key=N\+U\+L\+L)
+\hyperlink{class_linda_model_a390733a9383147df82148a7039976906}{\+\_\+\+\_\+construct} (\$Model=N\+U\+L\+L, \$primary\+Key=N\+U\+L\+L)
 \item 
 \hyperlink{class_linda_model_af008f367d5ca054454dacc1e8830d7fd}{fetch\+All} ()
 \item 
 \hyperlink{class_linda_model_ac73eef9ff76ea330c0dab36ca448b90d}{first} ()
+\item 
+\hyperlink{class_linda_model_ac90cadb327363232bb2d83a4f8ebd613}{last} ()
+\item 
+\hyperlink{class_linda_model_a046b5f5e8b171d4724f2780303239825}{even} ()
+\item 
+\hyperlink{class_linda_model_a666c4ea82d473f0e68ad97e3f33d1e83}{odd} ()
+\item 
+\hyperlink{class_linda_model_a70a0fe08035189260c72e32a9e20d30c}{get\+Values} ()
+\item 
+\hyperlink{class_linda_model_aa21c070bc4453dc79caa7f30a53ea7a2}{get\+Values\+As\+Object} ()
+\item 
+\hyperlink{class_linda_model_a357721c0ac543c54de90e0355b7fa8ca}{random} ()
+\item 
+\hyperlink{class_linda_model_ae4874fb37e48bd82b312d994b357fad8}{distinct} ()
 \item 
 \hyperlink{class_linda_model_ab24fa179a41ab9c933c32181e3d3ed84}{collection} ()
 \item 
@@ -26,21 +40,19 @@ Inheritance diagram for Linda\+Model\+:\begin{figure}[H]
 \item 
 \hyperlink{class_linda_model_a6b574d6569f95f11d7b1ba119185ac6d}{set} (\$data=array())
 \item 
-\hyperlink{class_linda_model_a7acfd032bb2a094c5e81d0183f713991}{where} (\$col, \$op, \$val)
+\hyperlink{class_linda_model_ae3e762679001a1b37d112d30b8b2996c}{where} (\$col, \$op, \$val, \$join\+\_\+table\+\_\+index=N\+U\+L\+L)
 \item 
-\hyperlink{class_linda_model_a4c127fc509d13b318bc343c4753617ea}{where\+\_\+or} (\$col, \$op, \$val)
+\hyperlink{class_linda_model_a521053bce6277525c2429b30db0b083e}{where\+\_\+or} (\$col, \$op, \$val, \$join\+\_\+table\+\_\+index=N\+U\+L\+L)
 \item 
 \hyperlink{class_linda_model_af2cd4e8ab564012941e2e5837a64419a}{where\+\_\+in\+\_\+or} (\$col, \$val)
 \item 
 \hyperlink{class_linda_model_a6978f186be10e963c0bbec845bad0347}{where\+\_\+in} (\$col, \$val)
 \item 
-\hyperlink{class_linda_model_aadb1463eecf640b9480079f5a0862ed3}{where\+\_\+in\+\_\+numeric\+\_\+or} (\$col, \$val)
-\item 
-\hyperlink{class_linda_model_a89f82f99daba9a8cc4c4f5756f05054c}{where\+\_\+in\+\_\+numeric} (\$col, \$val)
-\item 
 \hyperlink{class_linda_model_a208a1a59285ee5a95a90c5328f3ee31e}{inner\+\_\+join} (\$table, \$conditional\+\_\+column\+\_\+a, \$conditional\+\_\+column\+\_\+b)
 \item 
-\hyperlink{class_linda_model_ac33ee765f5ad9f134540bac393721cfe}{get} ()
+\hyperlink{class_linda_model_a25419fa27bd8ae0cbb5a8e8022166c37}{reset\+Schema} ()
+\item 
+\hyperlink{class_linda_model_ae245ebfad08a4ad7e5196900032eb0af}{get} (\$columns=\char`\"{}$\ast$\char`\"{})
 \item 
 \hyperlink{class_linda_model_a65cd50a6fdf5ce1f4a0e45ab930af5fa}{skip} (\$param)
 \item 
@@ -58,6 +70,8 @@ Inheritance diagram for Linda\+Model\+:\begin{figure}[H]
 \hyperlink{class_linda_model_a1b40070fc765a8a4f2af137240160b50}{\$virtual\+Model\+Collection} = array()
 \item 
 \hyperlink{class_linda_model_ac155ae9a10f7fe23e69866ef520cc40a}{\$virtual\+Model\+Primary\+Key}
+\item 
+\hyperlink{class_linda_model_aa95536b6b03272be51030ebe03626f38}{\$virtual\+Model\+Primary\+Key\+Column\+Index}
 \item 
 \hyperlink{class_linda_model_ac2d5e104b8970095b9463776a94eede0}{\$model\+Name}
 \end{DoxyCompactItemize}
@@ -77,14 +91,14 @@ Definition at line 15 of file Linda\+Model.\+php.
 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_linda_model_a776f84c759a8aa1820e5c65719897d8d}{}\index{Linda\+Model@{Linda\+Model}!\+\_\+\+\_\+construct@{\+\_\+\+\_\+construct}}
+\hypertarget{class_linda_model_a390733a9383147df82148a7039976906}{}\index{Linda\+Model@{Linda\+Model}!\+\_\+\+\_\+construct@{\+\_\+\+\_\+construct}}
 \index{\+\_\+\+\_\+construct@{\+\_\+\+\_\+construct}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{\+\_\+\+\_\+construct(\$\+Model, \$primary\+Key=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+construct (
+\subsubsection[{\+\_\+\+\_\+construct(\$\+Model=\+N\+U\+L\+L, \$primary\+Key=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+construct (
 \begin{DoxyParamCaption}
-\item[{}]{\$\+Model, }
+\item[{}]{\$\+Model = {\ttfamily NULL}, }
 \item[{}]{\$primary\+Key = {\ttfamily NULL}}
 \end{DoxyParamCaption}
-)}\label{class_linda_model_a776f84c759a8aa1820e5c65719897d8d}
+)}\label{class_linda_model_a390733a9383147df82148a7039976906}
 
 \begin{DoxyParams}[1]{Parameters}
 string & {\em \$\+Model} & The name of the table we are to create an Object Map to \\
@@ -94,7 +108,7 @@ string & {\em \$primary\+Key} & An optional primary key on the table, defaults t
 \end{DoxyParams}
 
 
-Definition at line 28 of file Linda\+Model.\+php.
+Definition at line 29 of file Linda\+Model.\+php.
 
 
 
@@ -106,12 +120,12 @@ Definition at line 28 of file Linda\+Model.\+php.
 {}
 \end{DoxyParamCaption}
 )}\label{class_linda_model_ab24fa179a41ab9c933c32181e3d3ed84}
-Returns a collections of models representing each active record, retrieved from the last call to \hyperlink{class_linda_model_ac33ee765f5ad9f134540bac393721cfe}{get} \begin{DoxyReturn}{Returns}
-Linda\+Row\+Model\+Collection 
+Returns a collections of models representing each active record, retrieved from the last call to \hyperlink{class_linda_model_ae245ebfad08a4ad7e5196900032eb0af}{get} Retruns N\+U\+L\+L if no records are available \begin{DoxyReturn}{Returns}
+Linda\+Row\+Model\+Collection $\vert$ null 
 \end{DoxyReturn}
 
 
-Definition at line 74 of file Linda\+Model.\+php.
+Definition at line 196 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a5297010b1eb7d2cce1e0f2ad8d6d8336}{}\index{Linda\+Model@{Linda\+Model}!create@{create}}
 \index{create@{create}!Linda\+Model@{Linda\+Model}}
@@ -122,7 +136,32 @@ Definition at line 74 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a5297010b1eb7d2cce1e0f2ad8d6d8336}
 
 
-Definition at line 194 of file Linda\+Model.\+php.
+Definition at line 340 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_ae4874fb37e48bd82b312d994b357fad8}{}\index{Linda\+Model@{Linda\+Model}!distinct@{distinct}}
+\index{distinct@{distinct}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{distinct()}]{\setlength{\rightskip}{0pt plus 5cm}distinct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_ae4874fb37e48bd82b312d994b357fad8}
+Should the data retreival be unique 
+
+Definition at line 183 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_a046b5f5e8b171d4724f2780303239825}{}\index{Linda\+Model@{Linda\+Model}!even@{even}}
+\index{even@{even}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{even()}]{\setlength{\rightskip}{0pt plus 5cm}even (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_a046b5f5e8b171d4724f2780303239825}
+Returns even indexes representing an active record objects, or N\+U\+L\+L if no records where matched \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+
+
+Definition at line 97 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_af008f367d5ca054454dacc1e8830d7fd}{}\index{Linda\+Model@{Linda\+Model}!fetch\+All@{fetch\+All}}
 \index{fetch\+All@{fetch\+All}!Linda\+Model@{Linda\+Model}}
@@ -131,12 +170,12 @@ Definition at line 194 of file Linda\+Model.\+php.
 {}
 \end{DoxyParamCaption}
 )}\label{class_linda_model_af008f367d5ca054454dacc1e8830d7fd}
-Method to fetch all rows from the D\+B into memory, use \hyperlink{class_linda_model_ac33ee765f5ad9f134540bac393721cfe}{get} to retrieve the fields as a collection of Models \begin{DoxyReturn}{Returns}
+Method to fetch all rows from the D\+B into memory, use \hyperlink{class_linda_model_ae245ebfad08a4ad7e5196900032eb0af}{get} to retrieve the fields as a collection of Models \begin{DoxyReturn}{Returns}
 \$this 
 \end{DoxyReturn}
 
 
-Definition at line 47 of file Linda\+Model.\+php.
+Definition at line 58 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_ac73eef9ff76ea330c0dab36ca448b90d}{}\index{Linda\+Model@{Linda\+Model}!first@{first}}
 \index{first@{first}!Linda\+Model@{Linda\+Model}}
@@ -150,21 +189,54 @@ Returns first model representing an active record, or N\+U\+L\+L if no records w
 \end{DoxyReturn}
 
 
-Definition at line 65 of file Linda\+Model.\+php.
+Definition at line 77 of file Linda\+Model.\+php.
 
-\hypertarget{class_linda_model_ac33ee765f5ad9f134540bac393721cfe}{}\index{Linda\+Model@{Linda\+Model}!get@{get}}
+\hypertarget{class_linda_model_ae245ebfad08a4ad7e5196900032eb0af}{}\index{Linda\+Model@{Linda\+Model}!get@{get}}
 \index{get@{get}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{get()}]{\setlength{\rightskip}{0pt plus 5cm}get (
+\subsubsection[{get(\$columns=""$\ast$"")}]{\setlength{\rightskip}{0pt plus 5cm}get (
 \begin{DoxyParamCaption}
-{}
+\item[{}]{\$columns = {\ttfamily \char`\"{}$\ast$\char`\"{}}}
 \end{DoxyParamCaption}
-)}\label{class_linda_model_ac33ee765f5ad9f134540bac393721cfe}
-Fetches data from the table based on the C\+L\+A\+U\+S\+E\+S set, and stores them in memory as distinct object models of each row/record \begin{DoxyReturn}{Returns}
+)}\label{class_linda_model_ae245ebfad08a4ad7e5196900032eb0af}
+Fetches data from the table based on the C\+L\+A\+U\+S\+E\+S set, and stores them in memory as distinct object models of each row/record 
+\begin{DoxyParams}{Parameters}
+{\em \$columns} & array Optional columns to fetch daata from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
 \$this 
 \end{DoxyReturn}
 
 
-Definition at line 168 of file Linda\+Model.\+php.
+Definition at line 296 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_a70a0fe08035189260c72e32a9e20d30c}{}\index{Linda\+Model@{Linda\+Model}!get\+Values@{get\+Values}}
+\index{get\+Values@{get\+Values}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{get\+Values()}]{\setlength{\rightskip}{0pt plus 5cm}get\+Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_a70a0fe08035189260c72e32a9e20d30c}
+Returns the values in the internal relst set as an array \begin{DoxyReturn}{Returns}
+array() $\vert$ N\+U\+L\+L 
+\end{DoxyReturn}
+
+
+Definition at line 132 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_aa21c070bc4453dc79caa7f30a53ea7a2}{}\index{Linda\+Model@{Linda\+Model}!get\+Values\+As\+Object@{get\+Values\+As\+Object}}
+\index{get\+Values\+As\+Object@{get\+Values\+As\+Object}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{get\+Values\+As\+Object()}]{\setlength{\rightskip}{0pt plus 5cm}get\+Values\+As\+Object (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_aa21c070bc4453dc79caa7f30a53ea7a2}
+Returns the values in the internal result set as an atd\+Class object \begin{DoxyReturn}{Returns}
+std\+Class() $\vert$ N\+U\+L\+L 
+\end{DoxyReturn}
+
+
+Definition at line 150 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a208a1a59285ee5a95a90c5328f3ee31e}{}\index{Linda\+Model@{Linda\+Model}!inner\+\_\+join@{inner\+\_\+join}}
 \index{inner\+\_\+join@{inner\+\_\+join}!Linda\+Model@{Linda\+Model}}
@@ -177,7 +249,49 @@ Definition at line 168 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a208a1a59285ee5a95a90c5328f3ee31e}
 
 
-Definition at line 158 of file Linda\+Model.\+php.
+Definition at line 274 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_ac90cadb327363232bb2d83a4f8ebd613}{}\index{Linda\+Model@{Linda\+Model}!last@{last}}
+\index{last@{last}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{last()}]{\setlength{\rightskip}{0pt plus 5cm}last (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_ac90cadb327363232bb2d83a4f8ebd613}
+Returns the last model representing an active record, or N\+U\+L\+L if no records where matched \begin{DoxyReturn}{Returns}
+\hyperlink{class_linda_row_model}{Linda\+Row\+Model} 
+\end{DoxyReturn}
+
+
+Definition at line 87 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_a666c4ea82d473f0e68ad97e3f33d1e83}{}\index{Linda\+Model@{Linda\+Model}!odd@{odd}}
+\index{odd@{odd}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{odd()}]{\setlength{\rightskip}{0pt plus 5cm}odd (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_a666c4ea82d473f0e68ad97e3f33d1e83}
+Returns odd indexes representing an active record objects, or N\+U\+L\+L if no records where matched \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+
+
+Definition at line 114 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_a357721c0ac543c54de90e0355b7fa8ca}{}\index{Linda\+Model@{Linda\+Model}!random@{random}}
+\index{random@{random}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{random()}]{\setlength{\rightskip}{0pt plus 5cm}random (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_a357721c0ac543c54de90e0355b7fa8ca}
+Returns the collection of object row modelsin a random order, or N\+U\+L\+L if no records are available \begin{DoxyReturn}{Returns}
+array() 
+\end{DoxyReturn}
+
+
+Definition at line 168 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_aff9a1fb07dca963c2c9a8ffe66b45ded}{}\index{Linda\+Model@{Linda\+Model}!remove@{remove}}
 \index{remove@{remove}!Linda\+Model@{Linda\+Model}}
@@ -188,7 +302,18 @@ Definition at line 158 of file Linda\+Model.\+php.
 )}\label{class_linda_model_aff9a1fb07dca963c2c9a8ffe66b45ded}
 
 
-Definition at line 210 of file Linda\+Model.\+php.
+Definition at line 356 of file Linda\+Model.\+php.
+
+\hypertarget{class_linda_model_a25419fa27bd8ae0cbb5a8e8022166c37}{}\index{Linda\+Model@{Linda\+Model}!reset\+Schema@{reset\+Schema}}
+\index{reset\+Schema@{reset\+Schema}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{reset\+Schema()}]{\setlength{\rightskip}{0pt plus 5cm}reset\+Schema (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_linda_model_a25419fa27bd8ae0cbb5a8e8022166c37}
+Reset the internal Schema, after performing operations that J\+O\+I\+N\+S with other, the internal table schema is modified to accomodate columns from the joined tables this method therefore restores the schema to the original table specified in the constructor this is necessary if, new updates to the table are to be sucesfull, and to avoid ambigous column errors 
+
+Definition at line 286 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a637f52fa554aa09e732a30691d68e172}{}\index{Linda\+Model@{Linda\+Model}!save@{save}}
 \index{save@{save}!Linda\+Model@{Linda\+Model}}
@@ -210,7 +335,7 @@ $\vert$\$this
 \end{DoxyReturn}
 
 
-Definition at line 87 of file Linda\+Model.\+php.
+Definition at line 209 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a6b574d6569f95f11d7b1ba119185ac6d}{}\index{Linda\+Model@{Linda\+Model}!set@{set}}
 \index{set@{set}!Linda\+Model@{Linda\+Model}}
@@ -221,7 +346,7 @@ Definition at line 87 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a6b574d6569f95f11d7b1ba119185ac6d}
 
 
-Definition at line 114 of file Linda\+Model.\+php.
+Definition at line 237 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a65cd50a6fdf5ce1f4a0e45ab930af5fa}{}\index{Linda\+Model@{Linda\+Model}!skip@{skip}}
 \index{skip@{skip}!Linda\+Model@{Linda\+Model}}
@@ -232,7 +357,7 @@ Definition at line 114 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a65cd50a6fdf5ce1f4a0e45ab930af5fa}
 
 
-Definition at line 181 of file Linda\+Model.\+php.
+Definition at line 327 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a33ab6a5b47dfbefa83546cab6734f017}{}\index{Linda\+Model@{Linda\+Model}!take@{take}}
 \index{take@{take}!Linda\+Model@{Linda\+Model}}
@@ -243,20 +368,21 @@ Definition at line 181 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a33ab6a5b47dfbefa83546cab6734f017}
 
 
-Definition at line 188 of file Linda\+Model.\+php.
+Definition at line 334 of file Linda\+Model.\+php.
 
-\hypertarget{class_linda_model_a7acfd032bb2a094c5e81d0183f713991}{}\index{Linda\+Model@{Linda\+Model}!where@{where}}
+\hypertarget{class_linda_model_ae3e762679001a1b37d112d30b8b2996c}{}\index{Linda\+Model@{Linda\+Model}!where@{where}}
 \index{where@{where}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{where(\$col, \$op, \$val)}]{\setlength{\rightskip}{0pt plus 5cm}where (
+\subsubsection[{where(\$col, \$op, \$val, \$join\+\_\+table\+\_\+index=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}where (
 \begin{DoxyParamCaption}
 \item[{}]{\$col, }
 \item[{}]{\$op, }
-\item[{}]{\$val}
+\item[{}]{\$val, }
+\item[{}]{\$join\+\_\+table\+\_\+index = {\ttfamily NULL}}
 \end{DoxyParamCaption}
-)}\label{class_linda_model_a7acfd032bb2a094c5e81d0183f713991}
+)}\label{class_linda_model_ae3e762679001a1b37d112d30b8b2996c}
 
 
-Definition at line 124 of file Linda\+Model.\+php.
+Definition at line 247 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a6978f186be10e963c0bbec845bad0347}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+in@{where\+\_\+in}}
 \index{where\+\_\+in@{where\+\_\+in}!Linda\+Model@{Linda\+Model}}
@@ -268,31 +394,7 @@ Definition at line 124 of file Linda\+Model.\+php.
 )}\label{class_linda_model_a6978f186be10e963c0bbec845bad0347}
 
 
-Definition at line 140 of file Linda\+Model.\+php.
-
-\hypertarget{class_linda_model_a89f82f99daba9a8cc4c4f5756f05054c}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+in\+\_\+numeric@{where\+\_\+in\+\_\+numeric}}
-\index{where\+\_\+in\+\_\+numeric@{where\+\_\+in\+\_\+numeric}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{where\+\_\+in\+\_\+numeric(\$col, \$val)}]{\setlength{\rightskip}{0pt plus 5cm}where\+\_\+in\+\_\+numeric (
-\begin{DoxyParamCaption}
-\item[{}]{\$col, }
-\item[{}]{\$val}
-\end{DoxyParamCaption}
-)}\label{class_linda_model_a89f82f99daba9a8cc4c4f5756f05054c}
-
-
-Definition at line 152 of file Linda\+Model.\+php.
-
-\hypertarget{class_linda_model_aadb1463eecf640b9480079f5a0862ed3}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+in\+\_\+numeric\+\_\+or@{where\+\_\+in\+\_\+numeric\+\_\+or}}
-\index{where\+\_\+in\+\_\+numeric\+\_\+or@{where\+\_\+in\+\_\+numeric\+\_\+or}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{where\+\_\+in\+\_\+numeric\+\_\+or(\$col, \$val)}]{\setlength{\rightskip}{0pt plus 5cm}where\+\_\+in\+\_\+numeric\+\_\+or (
-\begin{DoxyParamCaption}
-\item[{}]{\$col, }
-\item[{}]{\$val}
-\end{DoxyParamCaption}
-)}\label{class_linda_model_aadb1463eecf640b9480079f5a0862ed3}
-
-
-Definition at line 146 of file Linda\+Model.\+php.
+Definition at line 263 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_af2cd4e8ab564012941e2e5837a64419a}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+in\+\_\+or@{where\+\_\+in\+\_\+or}}
 \index{where\+\_\+in\+\_\+or@{where\+\_\+in\+\_\+or}!Linda\+Model@{Linda\+Model}}
@@ -304,20 +406,21 @@ Definition at line 146 of file Linda\+Model.\+php.
 )}\label{class_linda_model_af2cd4e8ab564012941e2e5837a64419a}
 
 
-Definition at line 134 of file Linda\+Model.\+php.
+Definition at line 257 of file Linda\+Model.\+php.
 
-\hypertarget{class_linda_model_a4c127fc509d13b318bc343c4753617ea}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+or@{where\+\_\+or}}
+\hypertarget{class_linda_model_a521053bce6277525c2429b30db0b083e}{}\index{Linda\+Model@{Linda\+Model}!where\+\_\+or@{where\+\_\+or}}
 \index{where\+\_\+or@{where\+\_\+or}!Linda\+Model@{Linda\+Model}}
-\subsubsection[{where\+\_\+or(\$col, \$op, \$val)}]{\setlength{\rightskip}{0pt plus 5cm}where\+\_\+or (
+\subsubsection[{where\+\_\+or(\$col, \$op, \$val, \$join\+\_\+table\+\_\+index=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}where\+\_\+or (
 \begin{DoxyParamCaption}
 \item[{}]{\$col, }
 \item[{}]{\$op, }
-\item[{}]{\$val}
+\item[{}]{\$val, }
+\item[{}]{\$join\+\_\+table\+\_\+index = {\ttfamily NULL}}
 \end{DoxyParamCaption}
-)}\label{class_linda_model_a4c127fc509d13b318bc343c4753617ea}
+)}\label{class_linda_model_a521053bce6277525c2429b30db0b083e}
 
 
-Definition at line 129 of file Linda\+Model.\+php.
+Definition at line 252 of file Linda\+Model.\+php.
 
 
 
@@ -327,7 +430,7 @@ Definition at line 129 of file Linda\+Model.\+php.
 \subsubsection[{\$model\+Name}]{\setlength{\rightskip}{0pt plus 5cm}\$model\+Name\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_model_ac2d5e104b8970095b9463776a94eede0}
 
 
-Definition at line 20 of file Linda\+Model.\+php.
+Definition at line 21 of file Linda\+Model.\+php.
 
 \hypertarget{class_linda_model_a736ca8a8aaf094b1747b04f00333732c}{}\index{Linda\+Model@{Linda\+Model}!\$table\+Column\+Schema@{\$table\+Column\+Schema}}
 \index{\$table\+Column\+Schema@{\$table\+Column\+Schema}!Linda\+Model@{Linda\+Model}}
@@ -350,8 +453,15 @@ Definition at line 18 of file Linda\+Model.\+php.
 
 Definition at line 19 of file Linda\+Model.\+php.
 
+\hypertarget{class_linda_model_aa95536b6b03272be51030ebe03626f38}{}\index{Linda\+Model@{Linda\+Model}!\$virtual\+Model\+Primary\+Key\+Column\+Index@{\$virtual\+Model\+Primary\+Key\+Column\+Index}}
+\index{\$virtual\+Model\+Primary\+Key\+Column\+Index@{\$virtual\+Model\+Primary\+Key\+Column\+Index}!Linda\+Model@{Linda\+Model}}
+\subsubsection[{\$virtual\+Model\+Primary\+Key\+Column\+Index}]{\setlength{\rightskip}{0pt plus 5cm}\$virtual\+Model\+Primary\+Key\+Column\+Index\hspace{0.3cm}{\ttfamily [protected]}}\label{class_linda_model_aa95536b6b03272be51030ebe03626f38}
+
+
+Definition at line 20 of file Linda\+Model.\+php.
+
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Apache24/htdocs/easygo/process/\+Linda/\hyperlink{_linda_model_8php}{Linda\+Model.\+php}\end{DoxyCompactItemize}
+C\+:/\+Apache24/htdocs/\+Linda/\hyperlink{_linda_model_8php}{Linda\+Model.\+php}\end{DoxyCompactItemize}

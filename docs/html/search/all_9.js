@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['last',['last',['../class_linda_model.html#ac90cadb327363232bb2d83a4f8ebd613',1,'LindaModel']]],
   ['linda',['Linda',['../class_linda.html',1,'']]],
   ['linda_2einc',['Linda.inc',['../_linda_8inc.html',1,'']]],
   ['linda_2ephp',['Linda.php',['../_linda_8php.html',1,'']]],
@@ -11,5 +12,6 @@ var searchData=
   ['lindamodel',['LindaModel',['../class_linda_model.html',1,'']]],
   ['lindamodel_2ephp',['LindaModel.php',['../_linda_model_8php.html',1,'']]],
   ['lindarowmodel',['LindaRowModel',['../class_linda_row_model.html',1,'']]],
-  ['lindarowmodel_2ephp',['LindaRowModel.php',['../_linda_row_model_8php.html',1,'']]]
+  ['lindarowmodel_2ephp',['LindaRowModel.php',['../_linda_row_model_8php.html',1,'']]],
+  ['linda_20is_20an_20active_2drecord_20based_20_20orm_20for_20php',['Linda is an Active-record based  ORM for PHP',['../md__c_1__apache24_htdocs__linda__r_e_a_d_m_e.html',1,'']]]
 ];
