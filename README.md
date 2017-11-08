@@ -7,8 +7,6 @@ The first thing in setting up Linda is editing the Linda.inc file, this file con
 parameters/constants.
 The file contains the following constants, edit to your needs
 
-`* Linda doesn't currently work well with aggregate Primary keys `
-
 ```php
 define('LINDA_DB_HOST', 'hostname');
 define('LINDA_DB_TYPE', 'dbtype' ); 
@@ -27,6 +25,8 @@ First create a LindaModel instance which accepts the table name as its construct
 
 ## All records
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("`employees");   
 $l->fetchAll();  //this retrieves all rows from the database and stores them in memory
 ```
@@ -58,8 +58,11 @@ $l->save();   //by now all address columns in the address table, would have been
 Updates can alsobe performed on selected colums using the **#set** method
 
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("employees");    database
-$l->where("emp_no", ">", 20000)
+$l->where("emp_no", ">", 20000
+  ->get()
   ->set([
       'gender' => "M",
       'last_name' => "Bar"
@@ -93,6 +96,8 @@ like **WHERE** clauses, **WHERE IN**, **JOINS** etc, the LindaModel class provid
 
 ### WHERE CLAUSE
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("employees");    database
 $l->where("emp_no", ">", 20000); //this basically would apply an SQL where clause similar to ... WHERE(`emp_no` < 300)
 ```
@@ -101,6 +106,8 @@ After using a **CLAUSE** the #get method is used to retrieve the matched rows in
 
 so the full example for the where clause would be 
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("employees");   
 $rows = $l->where("emp_no", ">", 20000)
         ->get()                          //fetch rows into memory
@@ -117,6 +124,8 @@ etc
 # Multiple clauses and more..
 Multiple calls to a #where method would get AND'ed togethere, as in the following example
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("employees");   
 $rows = $l->where("emp_no", ">", 20000)
         ->where("gender","=", "F")
@@ -131,6 +140,8 @@ SELECT * FROM `employees` WHERE( `emp_no` > 20000 ) AND ( `gender` = 'F' ) LIMIT
 To Compare **WHERE** clauses OR' wise
 use the #where_or method, this method ensures that the next CLAUSE is comopared OR' wise
 ```php
+use solutionstack\Linda\LindaModel;
+
 $l = new LindaModel("employees");   
 $rows = $l->where_or("emp_no", ">", 10001)
         ->where("emp_no", "<", 10010)
@@ -143,6 +154,8 @@ $rows = $l->where_or("emp_no", ">", 10001)
  ```
  **Linda** also supports **where_in** clauses
  ```php
+ use solutionstack\Linda\LindaModel;
+ 
  $l = new LindaModel("employees");   
 $rows = $l->whereOr("emp_no", "=", 10011)
         ->whereIn("emp_no", [10010,10013,10024])
@@ -158,6 +171,8 @@ SELECT * FROM `employees` WHERE( `emp_no` = 10011 ) AND `emp_no` IN (10010,10013
  **whereIn** are compared AND'wise independent of whether one uses **#whereOr** previously (as seen above)
  To get **whereIn** to compare OR'wise use **#whereInOr** as the following example illustrates 
   ```php
+  use solutionstack\Linda\LindaModel;
+  
  $l = new LindaModel("employees");   
 $rows = $l->where("emp_no", "=", 10011)
         ->whereInOr("emp_no", [10010,10013,10024])
@@ -171,6 +186,8 @@ SELECT * FROM `employees` WHERE( `emp_no` = 10011 ) OR `emp_no` IN (10010,10013,
 There are also complimentary **#whereNotIn** and **#whereNotInOr** methods. eg
 illustrates 
   ```php
+  use solutionstack\Linda\LindaModel;
+  
  $l = new LindaModel("employees");   
 $rows = $l->whereNotIn("emp_no", "select `emp_no` from `employees` where `emp_no` < 10010")      //yes sub-queries are allowed
         ->get()                          
@@ -222,6 +239,7 @@ When fetching specific columns the PRIMARY_KEY is always fetchedalsong side cust
 # PAGINATION
 LindaModel supports two methods **#take()** and **#skip()** for paginating reslts
 ```php
+use solutionstack\Linda\LindaModel;
 
 $l = new LindaModel("salaries");   
 $l->whereIn("salary", [60117, 603317, 30127]) 
