@@ -1,6 +1,5 @@
-# Linda is an Active-record based  ORM for PHP
-
-Its built over PHP's PDO, so enabling multi database access, and safe transactions.
+# Linda is a lightweight  ORM for PHP
+It features a simple and fluent interface that can easily handle DB related tasks fro small to medium back-end PHP applications. It has an intentional no fuss setup so can get up and running literally in minut
 
 
 # Using Linda
@@ -8,50 +7,68 @@ The first thing in setting up Linda is editing the Linda.inc file, this file con
 parameters/constants.
 The file contains the following constants, edit to your needs
 
+`* Linda doesn't currently work well with aggregate Primary keys `
 
-`define('LINDA_DB_HOST', 'hostname');
-define('LINDA_DB_TYPE', 'dbtype' ); //mysql, *currently supports only mysql*
+```php
+define('LINDA_DB_HOST', 'hostname');
+define('LINDA_DB_TYPE', 'dbtype' ); 
 define('LINDA_DB_NAME', 'dbname');
 define('LINDA_DB_USER', 'user' );
-define('LINDA_DB_PASSW', 'password' );`
-
-After this step, simply begin using the LindaModel class which contains the ORM interface.<br/>
-For the examples here i'll be using the freely available sakila database.
-
-My test file exists in the same folder as the Linda classes, so'ill just include the LindaModel file
-```php
-require_once realpath(dirname(__FILE__)) ."/".'LindaModel.php';
+define('LINDA_DB_PASSW', 'password' );
 ```
-Lets look at performing a select operation
-```php
-//First create a LindaModel instance and send the table name as its constructor argument
-$l = new LindaModel("address");   //the address table is from the open-source sakila database
 
+
+## next
+Autoload the  LindaModel.php file or require/include it
+
+# \#API 
+Lets look at performing a select operation
+First create a LindaModel instance which accepts the table name as its constructor argument, the phpunit test files use the open source employee database dump files, available here [Employee database](https://dev.mysql.com/doc/employee/en/)
+
+## All records
+```php
+$l = new LindaModel("`employees");   
 $l->fetchAll();  //this retrieves all rows from the database and stores them in memory
 ```
+The above fetches all rows and stors them as row-mapped objects in memory ready for access and updating
+
 Each row returned is represented as an object with getter and setter features, as LindaModel implements an ActiveRecord interface
-To work with this row models, you need to first retrve the models into a variable...
+
+# Working with live data
+Once the records are avialable in memory we can retrieve them into variables
 
 ```php
 //using the #collection method, i can do..
-$rows = $l->collection(); //returns collection of models in an array, returns null if an empty set was returned from the DB
-
-//and you could access them as maybe..
-foreach($rows as $rows) echo $rows->address ."<br/>"; //this would print out the value of each address column
-
-//that simple
-//so if i wanted to change the address on each column in the DB table (since all columns where returned), i'lll simply
-//set the new values on each row model (see note on primary keys below)
-foreach($rows as $rows)$rows->address = "New Address to Set";
-
-//when setting column values on a row model, its initially set only in Memory, you commit back into the table by using the save
-//method
-$l->save();   //by now all address columns in the address table, would have been updated
-
-
+$rows = $l->collection(); //returns collection of all row objects in an array, returns null if an empty set was returned from the DB
 ```
-After using fetchAll() as above say we didnt want to retrieve the entire row models with #collection
-<br/>other methods exists including... first(), last(), even(), odd(), random();  
+## accesing row data
+```php
+foreach($rows as $rows) echo $rows->address ."<br/>"; //this would print out the value of each address column
+```
+## updating row data
+```php
+//now lets change the gender column on all rows to 'M' 
+foreach($rows as $rows)$rows->address = "New Address to Set";
+```
+ After updating column values on a row object, its initially set only in Memory, you commit back into the table by calling the save method
+```php
+$l->save();   //by now all address columns in the address table, would have been updated
+```
+### More updates..
+Updates can alsobe performed on selected colums using the **#set** method
+
+```php
+$l = new LindaModel("employees");    database
+$l->where("emp_no", ">", 20000)
+  ->set([
+      'gender' => "M",
+      'last_name' => "Bar"
+      ])
+      ->save(); //updates the gender and last name columns for the retrieved rows
+```
+## Methods for retrieving row objects
+In the above say we didnt want to retrieve the entire row models into a variable with #collection
+other methods exists including... first(), last(), even(), odd(), random();  
 They all return null if no results where retrieved from the table
 ```php
 $l->first(); //retuns the object model for first row of the collection
@@ -59,157 +76,156 @@ $l->last(); //retuns the object model for last row of the collection
 $l->even(); //retuns the collection of even rows object models
 $l->odd(); //retuns the collection of odd rows object models
 $l->random(); //like #collection but the row models are sorted in a random order
-
-//others include
-$l->count(); //count all rows on the table
+```
+## And other utility methods
+```php
+$l->count(); //count all rows on the table (retrieved or not)
 $l->numRows(); // indicating the number of rows retrieved or affected by the last operation
 $l->hasErrors(); // if the last operation raised an Exception
-
+$l->getLastError();//get the last error string if any
+$l-> getLastQuery(); //get the last executed query
 ```
 
-In the above examples we use fetchAll() to first retrieve all rows of the table as objects in memory<br/>
+# CLAUSES
+In the above examples we use #fetchAll() to first retrieve all rows of the table as objects in memory.
 This isnt what you do in most cases as data retrieval from tables are usually filtered by clauses
-like WHERE clauses, WHERE IN, JOINS etc, the LindaModel class provides for an increasing number of this clauses
+like **WHERE** clauses, **WHERE IN**, **JOINS** etc, the LindaModel class provides for an increasing number of this clauses
 
-# WHERE CLAUSE
+### WHERE CLAUSE
 ```php
-//in theaddress table we used above, lets apply some where clauses
-$l = new LindaModel("address");   //the address table is from the open-source sakila database
-$l->where("city_id", "<", 300); //this basically would apply an SQL where clause similar to ... WHERE(`city_id` < 300)
+$l = new LindaModel("employees");    database
+$l->where("emp_no", ">", 20000); //this basically would apply an SQL where clause similar to ... WHERE(`emp_no` < 300)
+```
+####
+After using a **CLAUSE** the #get method is used to retrieve the matched rows into memory, as opposed to #fetchAll which just loads in all the rows
 
-$l->get(); //after using a clause, use #get(), to fetch the matching row models into memory, after which you can use #collection, #first() etc to fetch the row-models u need
-
-//#get also take an optional argument containing just the coulmns to retrieve instead of retrieving all columns
-// get(["column1", "column2",...]);
-
-//so say i wanted to update a column named foo on the address table for each row where the city_id column value < 300
-//i'll do it this way
-$l = new LindaModel("address");  
-$l->where("city_id", "<", 300); 
-
-$rows = $l->get()->collection();
-
-foreach($rows as $rows) $row->foo = "new value";
-
-//then commit changes to the table
-$l->save(); //done
+so the full example for the where clause would be 
+```php
+$l = new LindaModel("employees");   
+$rows = $l->where("emp_no", ">", 20000)
+        ->get()                          //fetch rows into memory
+        ->collection();                  // get row objects that where fetched as a collection
 
 ```
-# A note on Updates and Deletes
-Note that when updating or deleting columns, a unique index is usually needed to reference each column, usually this is the tables primary key.
-You can specify the primary key as the second argument to the LindaModel constructor..like
- 
+
+The second parameter in a **where** method call takes any standard MySQL operator
+* =
+* \>
+* LIKE
+etc
+
+# Multiple clauses and more..
+Multiple calls to a #where method would get AND'ed togethere, as in the following example
 ```php
-$l = new LindaModel("address","pri_key_column_name");
+$l = new LindaModel("employees");   
+$rows = $l->where("emp_no", ">", 20000)
+        ->where("gender","=", "F")
+        ->get()                          
+        ->collection();  
 ```
-else <b>LindaModel</b> class uses the first column of the table as the primary key, which might not always be accurate, so always specify a primary key if update operations are going to be performed
-
-
-
-#Multiple where clauses can be specified
-
-```php
-$l = new LindaModel("address");  
-$l->where("city_id", "<", 300)
-  ->where("address", "LIKE", "%street");
-
-
-$rows = $l->get()->collection();
-```
-Multiple where clauses are related using AND, the ABOVE would translate to something like 
-
+The above would generate/execute the following SQL statement
 ```sql
-
-... WHERE (`city_id` < 300) AND (`address` LIKE '%street)...
+SELECT * FROM `employees` WHERE( `emp_no` > 20000 ) AND ( `gender` = 'F' ) LIMIT 0, 1000;
 ```
-If u need to relate multiple <b>WHERE</b> clauses OR wise, use
-
+#### OR'ed where clauses
+To Compare **WHERE** clauses OR' wise
+use the #where_or method, this method ensures that the next CLAUSE is comopared OR' wise
 ```php
-
-$l = new LindaModel("address");  
-$l->where_or("city_id", "<", 300)
-  ->where("address", "LIKE", "%street"); //if theres another where clause after this, it would be related AND- wise, or u can use #where_or
-  ```
-  
-  # WHERE IN CLAUSE
-  the <b>where_in</b> and <b>where_in_or</b> methods provides means to apply WHERE IN clauses to your table operations
-  
+$l = new LindaModel("employees");   
+$rows = $l->where_or("emp_no", ">", 10001)
+        ->where("emp_no", "<", 10010)
+        ->get()                          
+        ->collection();  
+```
+##### That would execute the query
+```sql
+ SELECT * FROM `employees` WHERE( `emp_no` = 10011 ) OR ( `emp_no` = 10010 ) LIMIT 0, 1000;
+ ```
+ **Linda** also supports **where_in** clauses
+ ```php
+ $l = new LindaModel("employees");   
+$rows = $l->whereOr("emp_no", "=", 10011)
+        ->whereIn("emp_no", [10010,10013,10024])
+        ->get()                          
+        ->collection();  
+```
+would generate
+```sql
+SELECT * FROM `employees` WHERE( `emp_no` = 10011 ) AND `emp_no` IN (10010,10013,10024) LIMIT 0, 1000;
+```
+ ##### which should return an empty set        
+ # Note*
+ **whereIn** are compared AND'wise independent of whether one uses **#whereOr** previously (as seen above)
+ To get **whereIn** to compare OR'wise use **#whereInOr** as the following example illustrates 
   ```php
-//in theaddress table we used above, lets apply some where clauses
-$l = new LindaModel("address");   //the address table is from the open-source sakila database
-$l->where_in("city_id", ["300, 400, 500"]); //wher the city_id is within that range
-
+ $l = new LindaModel("employees");   
+$rows = $l->where("emp_no", "=", 10011)
+        ->whereInOr("emp_no", [10010,10013,10024])
+        ->get()                          
+        ->collection();  
 ```
-<b>where_in_or</b> differs significantly, for <b>where_or</b><br/>
-For where_in_or you are specifying that an OR comes before the where_in CLAUSE, if multiple clauses exixts
-
-<br/><br/>so as an example
-
-```php
-$l = new LindaModel("address");   //the address table is from the open-source sakila database
-$l->where_in_or("city_id", ["300", "400", "500"]) //wher the city_id is within that range)
-  ->where("city_id","<" ,100); //wher the city_id is within that range)
-
-$rows = $l->get()->collection();
-```
-
-would translate to
-
+would execute the SQL statement...
 ```sql
-SELECT * FROM `address` WHERE( city_id < 100 ) OR city_id IN ('300', '400', '500') LIMIT 0, 1000;
+SELECT * FROM `employees` WHERE( `emp_no` = 10011 ) OR `emp_no` IN (10010,10013,10024) LIMIT 0, 1000;
 ```
-You'll notice that even though the <b>where_in</b> clause came first, the <b> where clause</b> was processed first<br/>
-This is a design decision, as thus all WHERE clauses would be processed before WHERE IN's, irrespective of the order the methods where called, you can also pass a sub-query string as the second value of a <b> where_in</b> method call
-  
+There are also complimentary **#whereNotIn** and **#whereNotInOr** methods. eg
+illustrates 
+  ```php
+ $l = new LindaModel("employees");   
+$rows = $l->whereNotIn("emp_no", "select `emp_no` from `employees` where `emp_no` < 10010")      //yes sub-queries are allowed
+        ->get()                          
+        ->collection();   
+```
+Would generate the following SQL
+```sql
+SELECT * FROM `employees` WHERE `emp_no` NOT IN (select `emp_no` from `employees` where `emp_no` < 10010) 
+```
 
-# INNER JOIN CLAUSE
-Inner Joins are a common way to retrieve related data from multiple table and the <b> LindaModel</b> class provides a convinient method
- to perform such joins<br/>
+# A note on Updates and Deletes
+Linda automatically detects the **PRIMARY_KEY** on the table if one is avaialable.
+If not you'l need to specify what colum, to use as a key before updates would suceed.
+The key is specified as the second argument to the constructor **only when a default PRI_KEY doesn't exists else it's ignored**
+ 
+```php
+$l = new LindaModel("address","unique_key_column_name");
+```
+
+ 
+
+# INNER JOIN
+Inner Joins are a common way to retrieve related data from multiple table and the  LindaModel class provides a convinient method to perform such joins
  The INNER JOIn method signature is
- <b> inner_join($table, $conditional_column_a, $conditional_column_b)</b><br/>
- where <b>$table</b> is the table you want to JOIN with<br/>
-      <b> $conditional_column_a</b> is column on the current table you are operating on<br/>
-      <b> $conditional_column_b</b> is the column to match on the JOIN'ed table<br/>
+ ` innerJoin($table, $conditional_column_a, $conditional_column_b)`
+ where **$table** is the table you want to JOIN with.
+      **$conditional_column_a** is column on the current table you are operating on
+      **$conditional_column_b** is the column to match on the JOIN'ed table
       
+Using the **#innerJoin** method      
 ```php
-$l = new LindaModel("address");  
-$l->where("city_id","<" ,100) //wher the city_id is within that range)
- ->inner_join("city", "city_id", "city_id");
+ $l = new LindaModel("employees");   
+$rows = $l->innerJoin("salaries", "emp_no", "emp_no")
+        ->whereIn("T1.emp_no", "select `emp_no` from `employees` where `emp_no` < 10010")
+        ->get(["T2.salary"])                          
+        ->collection();  
 
- 
-$rows = $l->get()->collection();
 ```
-In the above an SQL query sililar to
+### The above would generate and execute the following
 ```sql
-SELECT * FROM `address` AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id WHERE( T1.city_id < 100 ) LIMIT 0, 1000;
+SELECT T1.emp_no,T2.salary FROM `employees` AS T1 INNER JOIN `salaries` AS T2 ON T1.emp_no = T2.emp_no WHERE T1.emp_no IN (select `emp_no` from `employees` where `emp_no` < 10010) LIMIT 0, 1000;
 ```
-would be executed, multiple inner joins are also supported
+It is important to note that joined table are aliased as **T.x** starting from **T1** representing the main table.
+The above examplealso showcases an important feature where we can fetch only values from specific columns as seen in the **#get** method call.
+When fetching specific columns the PRIMARY_KEY is always fetchedalsong side custom columns
 
-```php
-$l = new LindaModel("address");  
-$l->where("city_id","<" ,100) //wher the city_id is within that range)
- ->where("county_id", ">", 10, 3)
- ->inner_join("city", "city_id", "city_id");
- ->inner_join("county", "county_id", "county_id"
- 
-$rows = $l->get()->collection();
-```
-On the second call to where, the third argument, is the index of the join table the where clause shoule associate with
-Which means the second where clause should evaluate the column on the third joined table. In a join'ed statement,
-The base table is taken as the first table i.e T1, the others, T2. , T3. ...
-```sql
-SELECT *  FROM `address`  AS T1 INNER JOIN `city` AS T2 ON T1.city_id = T2.city_id  INNER JOIN `county` AS T3 ON T1.county_id = T3.county_id  WHERE( T1.city_id < 100 ) AND ( T3.county_id > 10 ) LIMIT 0, 1000;
-```
-As you can see the second where statement evaluated to T3.county_id, since the county table is the third table in the Join and
-we specified the join index for the where clause as 3 above
 
 
 # PAGINATION
-LindaModel supports two methods take() and skip() for paginating reslts
+LindaModel supports two methods **#take()** and **#skip()** for paginating reslts
 ```php
-$l = new LindaModel("address");   
-$l->where_in_or("city_id", ["300", "400", "500"]) //wher the city_id is within that range)
-  ->where("city_id","<" ,100) //wher the city_id is within that range)
+
+$l = new LindaModel("salaries");   
+$l->whereIn("salary", [60117, 603317, 30127]) 
+  ->where("emp_no","<" ,10031) 
   ->take(10)
   ->skip(4);
 $rows = $l->get()->collection();
@@ -217,7 +233,7 @@ $rows = $l->get()->collection();
 <br/>
 Would execute the Statement
 ```sql
-SELECT * FROM `address` WHERE( city_id < 100 ) OR city_id IN (300,400,500) LIMIT 4, 10;
+SELECT * FROM `salaries` WHERE ( `emp_no` < 10031 ) AND `salary` IN (60117,603317,30127) LIMIT 4, 10;
 ```
 
 # Inserting rows
@@ -228,7 +244,7 @@ $l = new LindaModel("address");
 $l->create(["val1", "val2",...]);
 ```
 
-To insert column data that takes a MySql <b>DATE</b> or <b>DATETIME</b> use the string <b>NOW()</b> or <b>TIME()</b>
+To insert column data that takes a MySql **DATE** or **DATETIME** use the string **NOW()** or **TIME()**
 ```php
 $l = new LindaModel("address");   
 $l->create(["NOW()", "TIME()",...]);
@@ -236,10 +252,15 @@ $l->create(["NOW()", "TIME()",...]);
 
 
 # Removing rows
-To remove rows from the table after fetching the object models using either <b>fetchAll()</b> or <b>get()</b>
-simply call <b> remove()</b> to delete those rows from a table
+To remove rows from the table after fetching the object models using either **#fetchAll()** or **#get()**
+simply call **#remove()** to delete those rows from a table
+```php
+$l = new LindaModel("employees");   
+$rows = $l->where("emp_no", ">", 20000)
+        ->get()                          //fetch rows into memory
+        ->remove();                     //remove rows from table    
 
-<br/>
+```
 
 # DISTINCT rows
 To ensure the returned result set/models contains unique, values for the columns, use 
@@ -252,7 +273,4 @@ $l->where("city_id","<" ,100) //wher the city_id is within that range)
   ->distinct() //ensure rows column values are unique
   ->get(["address"]); //we are getting just this column data
 ```
-
-<br/>
-<br/>
 
