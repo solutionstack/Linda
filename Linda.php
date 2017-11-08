@@ -1,69 +1,111 @@
 <?php
 
-require_once realpath(dirname(__FILE__)) . "/" . 'Linda.inc';
+namespace solutionstack\Linda;
+
+require_once \realpath(\dirname(__FILE__)) . "/" . 'Linda.inc';
 
 /**
- * 
- * @brief Linda is a Database Abstraction Layer for PHP Built on top PDO.
- * @author Olubodun Agbalaya.
+ *
+ * @brief Linda is an Object Oriented ORM for PHP Built on top PDO, it currently supports MySql.
+ * @author    Olubodun Agbalaya (s.stackng@gmail.com)
+ * @version    GIT: 1.0.0
+ * @copyright 2017 Olubodun Agbalaya
+ * @license MIT License
+ * @link       https://github.com/solutionstack/Linda
  */
 class Linda {
 
-    public $LINDA_ERROR = NULL;
-    protected $DB_LINK;
-    protected $TABLE_MODEL;
-    public $CURRENT_QUERY;
-    protected $MODEL_SCHEMA = array();
-    protected $DEFAULT_LIMIT = 1000;
-    protected $DEFAULT_START_INDEX = 0;
-    protected $DISTINCT = FALSE;
-    protected $resultObject = NULL;
+    /** Holds last error raised */
+    protected $lindaError = null;
+    protected $dbLink;
+    protected $tableModel;
+
+    /** Holds last run query */
+    protected $currentQuery;
+
+    /** Holds column names for current schema @var array */
+    protected $modelSchema = array();
+    protected $defaultLimit = 1000;
+    protected $defaultStartIndex = 0;
+
+    /** Apply MySQL DSTINCT to query @var boolean */
+    protected $distinctResult = false;
+    protected $resultObject = null;
+
+    /** Number of rows returned or affected by last ops */
     protected $lastAffectedRowCount = 0;
     protected $queryConfig = array();
+    protected $defaultPrimaryKeyColumn = null;
+    protected $isFectchOps = null;
 
-    const Linda_DB_HOST = LINDA_DB_HOST;
-    const Linda_DB_NAME = LINDA_DB_NAME;
-    const Linda_DB_TYPE = LINDA_DB_TYPE;
-    const Linda_DB_USER = LINDA_DB_USER;
-    const Linda_DB_PASSW = LINDA_DB_PASSW;
+    /** configured in Linda.inc */
+    const LINDA_DB_HOST = LINDA_DB_HOSTC;
 
-    public function __construct() {
+    /** configured in Linda.inc */
+    const LINDA_DB_NAME = LINDA_DB_NAMEC;
+
+    /** configured in Linda.inc */
+    const LINDA_DB_TYPE = LINDA_DB_TYPEC;
+
+    /** configured in Linda.inc */
+    const LINDA_DB_USER = LINDA_DB_USERC;
+
+    /** configured in Linda.inc */
+    const LINDA_DB_PASSW = LINDA_DB_PASSWC;
+
+    public function __construct()
+    {
 
         $this->initConnnection();
     }
 
     /**
      * @ignore
-     * @internal  
+     * @internal
      */
-    public function setTable($tableName) {
+    protected function setTable($tableName)
+    {
 
-
-        if (is_string($tableName)) {
-            $this->TABLE_MODEL = $tableName;
+        if (\is_string($tableName)) {
+            $this->tableModel = $tableName;
         }
     }
 
     /**
+     * Fetches the table schema (columns) and finds the primary key if available
      * @ignore
-     * @internal 
+     * @internal
      */
     //+========================================================================================
-    protected function parseModel() {
+    protected function parseModel()
+    {
 
-        $this->MODEL_SCHEMA = []; //always reset;
+        $this->modelSchema = []; //always reset;
 
-        $sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table";
+        $sql = "SELECT COLUMN_NAME,COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table AND TABLE_SCHEMA = :schema";
         try {
-            $core = $this->DB_LINK;
+            $core = $this->dbLink;
             $stmt = $core->prepare($sql);
-            $stmt->bindValue(':table', $this->TABLE_MODEL, PDO::PARAM_STR);
+            $stmt->bindValue(':table', $this->tableModel, \PDO::PARAM_STR);
+            $stmt->bindValue(':schema', self::LINDA_DB_NAME, \PDO::PARAM_STR);
             $stmt->execute();
 
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $this->MODEL_SCHEMA[] = $row['COLUMN_NAME'];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC))
+            {
+                $this->modelSchema[] = $row['COLUMN_NAME'];
+
+                //detect primary key
+                if (isset($row['COLUMN_KEY']) && $row['COLUMN_KEY'] === "PRI") {
+
+                    $this->defaultPrimaryKeyColumn = $row['COLUMN_NAME'];
+                }
             }
-            return $this->MODEL_SCHEMA;
+
+            if (!count($this->modelSchema)) {
+
+                throw new Exception("Schemea *" . $this->tableModel . "* not valid or doesn't exist");
+            }
+            return $this->modelSchema;
         } catch (PDOException $pe) {
             trigger_error('Could not connect to MySQL database. ' . $pe->getMessage(), E_USER_ERROR);
         }
@@ -72,17 +114,17 @@ class Linda {
 //+=========================================================================================================
     /**
      * @ignore
-     * @internal 
+     * @internal
      */
-    private function initConnnection() {
+    private function initConnnection()
+    {
         try {
-            $this->DB_LINK = new PDO(self::Linda_DB_TYPE . ':host=' . self::Linda_DB_HOST . ';dbname=' . self::Linda_DB_NAME, self::Linda_DB_USER, self::Linda_DB_PASSW, array(PDO::ATTR_PERSISTENT => true));
+            $this->dbLink = new \PDO(self::LINDA_DB_TYPE . ':host=' . self::LINDA_DB_HOST . ';dbname=' . self::LINDA_DB_NAME, self::LINDA_DB_USER, self::LINDA_DB_PASSW, array(\PDO::ATTR_PERSISTENT => true));
+            $this->dbLink->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-            $this->DB_LINK->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            return TRUE;
-        } catch (PDOException $pe) {
-            $this->LINDA_ERROR = "DB_CONNECT_ERROR";
+            return true;
+        } catch (\PDOException $pe) {
+            $this->lindaError = "DB_CONNECT_ERROR";
             throw $pe;
         }
     }
@@ -93,11 +135,11 @@ class Linda {
      * The get method fetches data from the table
      * @param array() | string $feilds An associative array containing fields to get from the table, or the string *
      * @param array() $queryConfig A configuration array, that contains option for the get operation
-     * 
-     * @ 
+     *
+     * <pre>
      *  $queryConfig = array(
-     *                      
-     *                     "whereGroup" => array(  
+     *
+     *                     "whereGroup" => array(
      *                       [
      *                           "actor_id"=>array("value"=>5, "operator"=>"="),
      *                          "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
@@ -110,41 +152,44 @@ class Linda {
      *
      *                     ] ),
      *
-     *                     
      *
-     * 
+     *
+     *
      *                      "where_in"=>array(
      *                             fieldName => "id",
      *                             options => " 10, 15, 22,
      *                               query => "",
      *                              operator = > "AND"
-     * 
+     *
      *                          ),
-     *                    
+     *
      *                     "innerJoinGroup" => array(
      *                       [
      *                       table => "table_name",
-     *                       conditional_column_a => "column name" 
-     *                       conditional_column_b => "column name" 
+     *                       conditional_column_a => "column name"
+     *                       conditional_column_b => "column name"
      *                       ],
      *                       [
      *                     table => "table_name",
-     *                       conditional_column => "column name" 
+     *                       conditional_column => "column name"
      *                       ]
-     *       
-     * 
+     *
+     *
      *                     ) ,
-     *                          
+     *
      *                      "limit" =>[
      *                               index => 2,
      *                               count =>18
-     *                              
+     *
      *                             ],
-     * 
+     *
      *                )
+     * </pre>
      */
-    public function fetch($fields, $queryConfig = array()) {
+    protected function fetch($fields, $queryConfig = array())
+    {
 
+        $this->isFectchOps = true;
         $this->resultObject = null;
         $this->queryBuilder("select", $fields, $queryConfig);
 
@@ -158,18 +203,21 @@ class Linda {
      * Update fields in the DB
 
      * @param Array $fields is an associative array containing values to set
-     * @example 
+     * <pre>
      * $fields = array(
      *                        id= "1",
      *                        email = "example.example.org
      *                    )
      *  using NOW() or TIME() as values, inserts the date/time
+     * </pre>
      * @param type $queryConfig see #insert for structure of the queryConfig parameter
 
      *
      */
-    public function update($fields, $queryConfig) {
-        $this->resultObject = NULL;
+    protected function update($fields, $queryConfig)
+    {
+        $this->isFectchOps = false;
+        $this->resultObject = null;
 
         $this->queryBuilder("update", $fields, $queryConfig);
         $this->runQuery();
@@ -179,16 +227,18 @@ class Linda {
 
     //+=========================================================================================================
     /**
-     *  put inserts data into the table
+     *  Inserts data into the table
      * @param Array $fields An associative array, containing column names that matches the actual table
      * @param Array $values An associative array, values to be inserted per column, using NOW() or TIME(), inserts the date/time
      * in either YMD format or YMD H:m:s format
      * @param type $fields
      * @param type $queryConfig
      */
-    public function put($fields, $values) {
+    protected function put($fields, $values)
+    {
+        $this->isFectchOps = false;
 
-        $this->resultObject = NULL;
+        $this->resultObject = null;
         $this->createInsert($fields, $values);
 
         $this->runQuery();
@@ -199,58 +249,71 @@ class Linda {
     /**
      *  Deletes data from a table
 
-     * @param type $queryConfig, see #insert for structure of the queryConfig parameter
-     * 
+     * @param array $queryConfig See #insert for structure of the queryConfig parameter
+     *
      */
-    public function delete($queryConfig) {
+    protected function delete($queryConfig)
+    {
+        $this->isFectchOps = false;
         $this->resultObject = null;
         $this->queryBuilder("delete", null, $queryConfig);
 
         $this->runQuery();
-
-
 
         return $this;
     }
 
     //+======================================================+
     /**
-     * 
-     * @internal 
+     *
+     * @internal
      * @ignore
      */
-    protected function sanitize($inp) {//escape values for database query
-        if (is_array($inp))
-            return array_map(__METHOD__, $inp);
-
-
-        if (!empty($inp) && is_string($inp)) {
-            return str_replace(array('\\', "\0", "\n", "\r", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', '\\"', '\\Z'), $inp);
+    protected function sanitize($inp)
+    {
+//escape values for database query
+        if (\is_array($inp)) {
+            return \array_map(__METHOD__, $inp);
         }
 
-        return trim(strip_tags(stripslashes(htmlentities($inp, ENT_QUOTES, 'UTF-8'))));
+        if (!empty($inp) && \is_string($inp)) {
+            return \str_replace(array('\\', "\0", "\n", "\r", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', '\\"', '\\Z'), $inp);
+        }
+
+        return \trim(\strip_tags(\stripslashes(\htmlentities($inp, ENT_QUOTES, 'UTF-8'))));
     }
 
     //+======================================================+
-//*argument $inserts is an associative array of column names and value-data 
-    protected function createInsert($fields, $inserts) {
+    //*argument $inserts is an associative array of column names and value-data
+    protected function createInsert($fields, $inserts)
+    {
+
         //call our custom escape function on the data-values
 
-        $values = array_map(array($this, "sanitize"), array_values($inserts));
-        $values = array_map(array($this, "string_or_int"), array_values($inserts));
-        $keys = array_keys($inserts);
+        $values = \array_map(array($this, "sanitize"), \array_values($inserts));
+        $values = \array_map(array($this, "string_or_int"), \array_values($inserts));
+        // $keys   = \array_keys($inserts);
 
-        $this->CURRENT_QUERY = "INSERT INTO `" . $this->TABLE_MODEL . "` (" . implode(',', $fields) . ") VALUES (" . implode(", ", $values) . ")";
+        $this->currentQuery = "INSERT INTO `" . $this->tableModel . "` (" . \implode(',', $fields) . ") VALUES (" . \implode(", ", $values) . ")";
     }
 
     //+==================================================================+
     //this method checks if a value is a string and quotes it if it is
-    protected function string_or_int($val) {
+    protected function stringOrInt($val, $key = '')
+    {
 
-        if (!is_numeric($val) || "+" === substr($val, 0, 1)) {
+        if (!\is_numeric($val) || "+" === \substr($val, 0, 1)) {
+            //if it not numeric
 
-            if ($val !== NULL)
-                return "'" . $val . "'"; //add quotes
+            if (!empty($val)) { //if its not null
+                return "'" . $val . "'";
+            }
+            //add quotes
+
+            if (empty($val) && !\is_string($key)) {
+                //null colums
+                return "" . null . "";
+            }
         }
 
         return $val;
@@ -258,30 +321,34 @@ class Linda {
 
     //+=========================================================================================================
     /**
-     * 
-     * @internal 
+     *
+     * @internal
      * @ignore
      */
-    protected function queryBuilder($mode, $fields, $queryConfig) {
+    protected function queryBuilder($mode, $fields, $queryConfig)
+    {
+        $this->currentQuery = "";
 
-        switch ($mode) {
+        switch ($mode)
+        {
 
             case "select":
 
-                $inner_join_prefix = ""; //to be set fot table 1 if we have a join
 
+                $this->currentQuery .= " SELECT " . ($this->distinctResult ? "distinctResult " : "") . (\is_string($fields) ? "* " : \implode(",", $fields)) . " FROM `" . $this->tableModel . "` ";
 
-                $this->CURRENT_QUERY .= " SELECT " . ($this->DISTINCT ? "DISTINCT " : "") . ( is_string($fields) ? "* " : implode(",", $fields)) . " FROM `" . $this->TABLE_MODEL . "` ";
-
-                //handle joins  
+                //handle joins
                 $join_count = 0; //
-                foreach ($queryConfig as $index => $item) {//loop through each inner join array argument
-                    if (FALSE !== strpos($index, "innerJoinGroup")) {
+                foreach ($queryConfig as $index => $item)
+                {
+//loop through each inner join array argument
+                    if (false !== \strpos($index, "innerJoinGroup")) {
 
-                        $this->CURRENT_QUERY .= " AS T" . ( ++$join_count);
+                        $this->currentQuery .= " AS T" . ( ++$join_count);
 
-                        foreach ($item as $key => $val) {
-                            $this->CURRENT_QUERY .= " INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
+                        foreach ($item as $key => $val)
+                        {
+                            $this->currentQuery .= " INNER JOIN `" . $val['table'] . "` AS T" . ( ++$join_count) . " ON T1." . $val['conditional_column_a'] . " = T" . ($join_count) . "." . $val['conditional_column_b'] . " ";
                         }
                     }
                 }
@@ -289,125 +356,155 @@ class Linda {
                 //handle where clause
                 $where_clause_counter = 1;
                 $in_where_clause = 1;
-                $inner_join_prefix_where = "T1."; //table prefix:  if we have table joins, columns in where clauses are always prefixed with the main table i.e T1
 
-                foreach ($queryConfig as $index => $item) {//loop through each where Groups
-                    if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
-                        if ($where_clause_counter++ === 1)
-                            $this->CURRENT_QUERY .= " WHERE(";
+                foreach ($queryConfig as $index => $item)
+                {
+//loop through each where Groups
+                    if (false !== \strpos($index, "whereGroup")) {
+                        //HANDLE WHERE CLUASE
+                        if ($where_clause_counter++ === 1) {
+                            $this->currentQuery .= " WHERE (";
+                        }
 
-                        foreach ($item as $key => $whereGroupIndex) {//loop through each where Groups
+                        foreach ($item as $key => $whereGroupIndex)
+                        {
+//loop through each where Groups
                             $nextComparisonOp = isset($whereGroupIndex["nextOp"]) ? $whereGroupIndex["nextOp"] : "AND";
                             if ($in_where_clause > 1) {
                                 $in_where_clause = 1;
                             }
 
-                            foreach ($whereGroupIndex as $key2 => $val2) {//loop through each whereGroups
+                            foreach ($whereGroupIndex as $key2 => $val2)
+                            {
+//loop through each whereGroups
                                 if ($key2 !== "comparisonOp" && $key2 !== "nextOp" && $key2 !== "join_index") {
-                                    if ($in_where_clause++ > 1)
-                                        $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
+                                    if ($in_where_clause++ > 1) {
+                                        $this->currentQuery .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
+                                    }
 
-                                    if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " "
-
-                                                //if we have inner joins, we check if they have set a joined table index to use as the where column prefix
-                                                . ($join_count ? ($whereGroupIndex['join_index'] !== NULL ? "T" . $whereGroupIndex['join_index'] . "." : $inner_join_prefix_where) : "")
-
+                                    if ($key2 !== "operator") { //this key shouldnt be added as a value
+                                        $this->currentQuery .= " "
 
                                                 //add the column name and comparison operator
-                                                . $key2 . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " "
+                                                . "`" . $key2 . "`" . " " . (isset($val2['operator']) ? $val2['operator'] : "=") . " "
 
                                                 //add the column value we are comparing with
-                                                . $this->sanitize($this->string_or_int($val2 ['value']));
-                                };
+                                                . $this->sanitize($this->stringOrInt($val2['value']));
+                                    }
+                                }
                             }
 
-                            $this->CURRENT_QUERY .= " )";
-                            if (next($item))
-                                $this->CURRENT_QUERY .= " " . $nextComparisonOp . " (";
+                            $this->currentQuery .= " )";
+                            if (\next($item)) {
+                                $this->currentQuery .= " " . $nextComparisonOp . " (";
+                            }
                         }
                     }
                 }
-
 
                 //handle where_in_*
                 if (isset($queryConfig['where_in'])) {
 
                     $where_operator = isset($queryConfig['where_in']['operator']) ? " " . $queryConfig['where_in']['operator'] . " " : " AND ";
 
+                    if ($where_clause_counter++ > 1) {
+
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
+                                (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                    } else {
+
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
+                                (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                    }
+                }
+                //handle where_not_in_*
+                if (isset($queryConfig['where_not_in'])) {
+
+                    $where_operator = isset($queryConfig['where_not_in']['operator']) ? " " . $queryConfig['where_not_in']['operator'] . " " : " AND ";
 
                     if ($where_clause_counter++ > 1) {
 
-                        $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
-                                (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    }
-                    else {
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
+                    } else {
 
-                        $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
-                                (isset($queryConfig['where_in']['query']) ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
                     }
                 }
-
-
 
                 if (isset($queryConfig['limit'])) {
-                    $this->CURRENT_QUERY .= " LIMIT " . $queryConfig['limit']['index'];
-                    $this->CURRENT_QUERY .= ",  " . $queryConfig['limit']['count'];
-                }
-                else {
-                    $this->CURRENT_QUERY .= " LIMIT " . $this->DEFAULT_START_INDEX;
-                    $this->CURRENT_QUERY .= ", " . $this->DEFAULT_LIMIT;
+                    $this->currentQuery .= " LIMIT " . $queryConfig['limit']['index'];
+                    $this->currentQuery .= ",  " . $queryConfig['limit']['count'];
+                } else {
+                    $this->currentQuery .= " LIMIT " . $this->defaultStartIndex;
+                    $this->currentQuery .= ", " . $this->defaultLimit;
                 }
 
-                $this->CURRENT_QUERY .= ";";
+                $this->currentQuery .= ";";
 
                 break;
 
             case "update":
 
                 $update_column_count = 1;
-                $this->CURRENT_QUERY = "UPDATE `" . $this->TABLE_MODEL . "` SET `";
+                $this->currentQuery = "UPDATE `" . $this->tableModel . "` SET `";
 
+                foreach ($fields as $key => $val)
+                {
 
-                foreach ($fields as $key => $val) {
+                    if ($update_column_count++ > 1) {
+                        $this->currentQuery .= ",`";
+                    }
+                    //seperate the next row feild/value
 
-                    if ($update_column_count++ > 1)
-                        $this->CURRENT_QUERY .= ",`"; //seperate the next row feild/value
-
-                    if (is_array($val))
-                        $this->CURRENT_QUERY .= $key . "` = (" . $val[0] . " )";
-                    else
-                        $this->CURRENT_QUERY .= $key . "` = " . $this->sanitize($this->string_or_int(($val))) . " ";
+                    if (\is_array($val)) {
+                        $this->currentQuery .= $key . "` = (" . $val[0] . " )";
+                    } else {
+                        $this->currentQuery .= $key . "` = " . $this->sanitize($this->stringOrInt($val, $key, true)) . " ";
+                    }
                 }
-
 
                 //handle where clause
                 $where_clause_counter = 1;
                 $in_where_clause = 1;
-                foreach ($queryConfig as $index => $item) {//loop through each where Groups
-                    if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
-                        if ($where_clause_counter++ === 1)
-                            $this->CURRENT_QUERY .= " WHERE(";
+                foreach ($queryConfig as $index => $item)
+                {
+//loop through each where Groups
+                    if (false !== \strpos($index, "whereGroup")) {
+                        //HANDLE WHERE CLUASE
+                        if ($where_clause_counter++ === 1) {
+                            $this->currentQuery .= " WHERE (";
+                        }
 
-                        foreach ($item as $key => $whereGroupIndex) {//loop through each where Groups
+                        foreach ($item as $key => $whereGroupIndex)
+                        {
+//loop through each where Groups
                             $nextComparisonOp = isset($whereGroupIndex["nextOp"]) ? $whereGroupIndex["nextOp"] : "AND";
                             if ($in_where_clause > 1) {
                                 $in_where_clause = 1;
                             }
 
-                            foreach ($whereGroupIndex as $key2 => $val2) {//loop through each whereGroups
+                            foreach ($whereGroupIndex as $key2 => $val2)
+                            {
+//loop through each whereGroups
                                 if ($key2 !== "comparisonOp" && $key2 !== "nextOp") {
-                                    if ($in_where_clause++ > 1)
-                                        $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
 
-                                    if ($key2 !== "operator") //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
-                                };
+//add comparison (defaults to AND)
+                                    if ($in_where_clause++ > 1) {
+                                        $this->currentQuery .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
+                                    }
+
+                                    if ($key2 !== "operator") { //this key shouldnt be added as a value
+                                        $this->currentQuery .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->stringOrInt($val2['value']));
+                                    }
+                                }
                             }
 
-                            $this->CURRENT_QUERY .= " )";
-                            if (next($item))
-                                $this->CURRENT_QUERY .= " " . $nextComparisonOp . " (";
+                            $this->currentQuery .= " )";
+                            if (\next($item)) {
+                                $this->currentQuery .= " " . $nextComparisonOp . " (";
+                            }
                         }
                     }
                 }
@@ -416,62 +513,78 @@ class Linda {
                 if (isset($queryConfig['where_in'])) {
                     $where_operator = isset($queryConfig['where_in']['operator']) ? " " . $queryConfig['where_in']['operator'] . " " : " AND ";
 
-
                     if ($where_clause_counter++ > 1) {
 
-                        $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    }
-                    else {
+                    } else {
 
-                        $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
                                 ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
                     }
                 }
+                //handle where_not_in_*
+                if (isset($queryConfig['where_not_in'])) {
 
-                $this->CURRENT_QUERY .= " ;";
+                    $where_operator = isset($queryConfig['where_not_in']['operator']) ? " " . $queryConfig['where_not_in']['operator'] . " " : " AND ";
 
+                    if ($where_clause_counter++ > 1) {
 
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
+                    } else {
 
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
+                    }
+                }
 
+                $this->currentQuery .= " ;";
 
                 break;
             case "delete":
 
-                $delete_column_count = 1;
-                $this->CURRENT_QUERY = "DELETE FROM `" . $this->TABLE_MODEL . "` ";
-                $this->CURRENT_QUERY .= "";
+                $this->currentQuery = "DELETE FROM `" . $this->tableModel . "` ";
+                $this->currentQuery .= "";
 
                 //handle where clause
                 $where_clause_counter = 1;
                 $in_where_clause = 1;
-                foreach ($queryConfig as $index => $item) {//loop through each where Groups
-                    if (FALSE !== strpos($index, "whereGroup")) { //HANDLE WHERE CLUASE 
-                        if ($where_clause_counter++ === 1) {
-                            $this->CURRENT_QUERY .= " WHERE(";
+                foreach ($queryConfig as $index => $item)
+                {
+//loop through each where Groups
+                    if (false !== \strpos($index, "whereGroup")) {
+                        //HANDLE WHERE CLUASE
+                        if ($where_clause_counter ++ === 1) {
+                            $this->currentQuery .= " WHERE(";
                         }
 
-                        foreach ($item as $key => $whereGroupIndex) {//loop through each where Groups
+                        foreach ($item as $key => $whereGroupIndex)
+                        {
+//loop through each where Groups
                             $nextComparisonOp = isset($whereGroupIndex["nextOp"]) ? $whereGroupIndex["nextOp"] : "AND";
                             if ($in_where_clause > 1) {
                                 $in_where_clause = 1;
                             }
 
-                            foreach ($whereGroupIndex as $key2 => $val2) {//loop through each whereGroups
+                            foreach ($whereGroupIndex as $key2 => $val2)
+                            {
+//loop through each whereGroups
                                 if ($key2 !== "comparisonOp" && $key2 !== "nextOp") {
                                     if ($in_where_clause++ > 1) {
-                                        $this->CURRENT_QUERY .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
+                                        $this->currentQuery .= isset($whereGroupIndex['comparisonOp']) ? " " . $whereGroupIndex['comparisonOp'] . " " : " AND ";
                                     }
 
-                                    if ($key2 !== "operator") { //this key shouldnt be added as a value
-                                        $this->CURRENT_QUERY .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->string_or_int($val2 ['value']));
+                                    if ($key2 !== "operator") {
+                                        //this key shouldnt be added as a value
+                                        $this->currentQuery .= " `" . $key2 . "` " . (isset($val2['operator']) ? $val2['operator'] : "=") . " " . $this->sanitize($this->stringOrInt($val2['value']));
                                     }
                                 }
                             }
 
-                            $this->CURRENT_QUERY .= " )";
-                            if (next($item)) {
-                                $this->CURRENT_QUERY .= " " . $nextComparisonOp . " (";
+                            $this->currentQuery .= " )";
+                            if (\next($item)) {
+                                $this->currentQuery .= " " . $nextComparisonOp . " (";
                             }
                         }
                     }
@@ -482,24 +595,38 @@ class Linda {
 
                     $where_operator = isset($queryConfig['where_in']['operator']) ? $queryConfig['where_in']['operator'] : " AND ";
 
+                    if ($where_clause_counter++ > 1) {
+
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
+                                ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                    } else {
+
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_in']['fieldName'] . "` IN (" .
+                                ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                    }
+                }
+
+                //handle where_not_in_*
+                if (isset($queryConfig['where_not_in'])) {
+
+                    $where_operator = isset($queryConfig['where_not_in']['operator']) ? " " . $queryConfig['where_not_in']['operator'] . " " : " AND ";
 
                     if ($where_clause_counter++ > 1) {
 
-                        $this->CURRENT_QUERY .= $where_operator . " " . $queryConfig['where_in']['fieldName'] . " IN (" .
-                                ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
-                    }
-                    else {
+                        $this->currentQuery .= $where_operator . " `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
+                    } else {
 
-                        $this->CURRENT_QUERY .= " WHERE " . $queryConfig['where_in']['fieldName'] . " IN (" .
-                                ($queryConfig['where_in']['query'] ? $queryConfig['where_in']['query'] : $queryConfig['where_in']['options']) . ")";
+                        $this->currentQuery .= " WHERE `" . $queryConfig['where_not_in']['fieldName'] . "` NOT IN (" .
+                                (isset($queryConfig['where_not_in']['query']) ? $queryConfig['where_not_in']['query'] : $queryConfig['where_not_in']['options']) . ")";
                     }
                 }
 
                 if (isset($queryConfig['LIMIT'])) {
 
-                    $this->CURRENT_QUERY .= " LIMIT " . (int) $queryConfig['LIMIT'];
+                    $this->currentQuery .= " LIMIT " . (int) $queryConfig['LIMIT'];
                 }
-                $this->CURRENT_QUERY .= ";";
+                $this->currentQuery .= ";";
 
                 break;
         }
@@ -509,269 +636,144 @@ class Linda {
     //+===========================================================================================
     //run the query and set the return object
     /**
-     * @internal 
+     * @internal
      * @ignore
      * @return $this
      */
-    public function runQuery() {
-        $this->CURRENT_QUERY = str_replace("NOW()", date("Y-m-d"), $this->CURRENT_QUERY);
-        $this->CURRENT_QUERY = str_replace("TIME()", date("Y-m-d H:i:s"), $this->CURRENT_QUERY);
-        $this->LINDA_ERROR = "";
+    protected function runQuery()
+    {
+        $this->currentQuery = \str_replace("NOW()", \date("Y-m-d"), $this->currentQuery);
+        $this->currentQuery = \str_replace("TIME()", \date("Y-m-d H:i:s"), $this->currentQuery);
+        $this->lindaError = "";
         $this->lastAffectedRowCount = 0;
 
-// echo "<br/><br/>".$this->CURRENT_QUERY."<br/><br/>";
+        // echo "<br/><br/>" . $this->currentQuery . "<br/><br/>";
         $stmnt;
 
-
         try {
-            if (($stmnt = $this->DB_LINK->prepare($this->CURRENT_QUERY))) {
+            if (($stmnt = $this->dbLink->prepare($this->currentQuery))) {
 
                 if (!$stmnt->execute()) {
-                    $this->LINDA_ERROR = "ERROR_EXECUTING_QUERY";
-                    $this->resultObject = NULL;
+                    $this->lindaError = "ERROR_EXECUTING_QUERY";
+                    $this->resultObject = null;
                 }
 
                 if ($stmnt->rowCount()) {
                     $this->lastAffectedRowCount = $stmnt->rowCount();
                 }
 
+                if ($this->isFectchOps)
+                    $this->resultObject = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
 
-                $this->resultObject = $stmnt->fetchAll(PDO::FETCH_ASSOC);
-
-
-                if (FALSE === $this->resultObject) {
-                    $this->LINDA_ERROR = "ERROR_EXECUTING_QUERY";
-                    $this->resultObject = NULL;
+                if (false === $this->resultObject) {
+                    $this->lindaError = "ERROR_EXECUTING_QUERY";
+                    $this->resultObject = null;
                 }
 
                 //set the number of rows returned for select ops
-                if (!$this->lastAffectedRowCount && count($this->resultObject)) {
-                    $this->lastAffectedRowCount = count($this->resultObject);
+                if (!$this->lastAffectedRowCount && \count($this->resultObject)) {
+                    $this->lastAffectedRowCount = \count($this->resultObject);
                 }
 
-                if (count($this->resultObject) || $this->lastAffectedRowCount) {
+                if (\count($this->resultObject) || $this->lastAffectedRowCount) {
                     
-                }
-                else {
-                    $this->resultObject = NULL;
+                } else {
+                    $this->resultObject = null;
                 }
             }
         } catch (PDOException $e) {
 
-            $this->LINDA_ERROR = $e->getMessage();
-            $this->resultObject = NULL;
-            // echo $this->LINDA_ERROR;
+            $this->lindaError = $e->getMessage();
+            $this->resultObject = null;
+
+             //echo $this->lindaError;
         }
-        $this->DEFAULT_LIMIT = 1000;
-        $this->DEFAULT_START_INDEX = 0;
-        $this->DISTINCT = FALSE;
+
+        //after a query, reset these vars
+        $this->defaultLimit = 1000;
+        $this->defaultStartIndex = 0;
+        $this->distinctResult = false;
+
+        $this->queryConfig = array();
         return $this;
-    }
-
-    //+===================================================================================================
-    /**
-     * Counts the total number of rows in the table
-     * @return integer The total row count
-     */
-    public function count() {
-        $this->CURRENT_QUERY = "SELECT COUNT(*) AS DAL_counter FROM " . $this->TABLE_MODEL . ";";
-        $this->runQuery();
-
-
-        return $this->getAll()[0]['DAL_counter'];
-    }
-
-    //+===================================================================================================
-    /**
-     * Count the number of rows matching a value in a field, this method executes a query directly on the table and doesn't
-     *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to count values from 
-     * @param string $val value to be matched
-     * @param string $operator Optional operator to be used default in matching defaults to equals (=), other candidates are ( <, > , <>) 
-     * @return integer The number of rows matching the value
-     */
-    public function countMatching($columnName, $val, $operator = "=") {
-        $this->CURRENT_QUERY = "SELECT COUNT(*) AS DAL_counter FROM " . $this->TABLE_MODEL . " WHERE " . $columnName . " " . $operator . " " . $val . ";";
-        $this->runQuery();
-
-
-        return $this->getAll()[0]['DAL_counter'];
     }
 
     //+===================================================================================================
     /**
      *  Returns the maximum value on a field, this method executes a query directly on the table and doesnt
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to get the minimum value from 
+     * @param string $columnName field to get the minimum value from
      *  @return integer
      */
-    public function maxInColumn($columnName) {
+    protected function maxInColumn($columnName)
+    {
 
-        $this->CURRENT_QUERY = "SELECT MAX(" . $columnName . ") AS DAL_max FROM " . $this->TABLE_MODEL;
+        $this->currentQuery = "SELECT MAX(" . $columnName . ") AS linda_min FROM " . $this->tableModel;
         $this->runQuery();
 
-
-        return $this->getAll()[0]['DAL_max'];
+        return $this->getAll()[0]['linda_min'];
     }
 
     //+===================================================================================================
     /**
-     *  Returns row containing the maximum value of a particular column, this method executes a query directly on the table and doesnt
+     * Fetches row(s) containing the maximum value of a particular column, this method executes a query directly on the table and doesnt
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to get the maximum value from    
-     * @return array() 
+     * @param string $fieldName field to get the maximum value from
+     * @return array()
      */
-    public function maxRow($fieldName) {
+    protected function maxRow($fieldName)
+    {
 
-        $this->CURRENT_QUERY = "SELECT * FROM " . $this->TABLE_MODEL . " WHERE " . $fieldName . " = (SELECT MAX(" . $fieldName . ") FROM " . $this->TABLE_MODEL . ")";
+        $this->currentQuery = "SELECT * FROM " . $this->tableModel . " WHERE " . $fieldName . " = (SELECT MAX(" . $fieldName . ") FROM " . $this->tableModel . ")";
         $this->runQuery();
 
-        return $this->getAll()[0];
+        return $this;
     }
 
     //+===================================================================================================
     /**
      *  Returns the minimum value on a field, this method executes a query directly on the table and doesnt
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to get the minimum value from 
+     * @param string $columnName field to get the minimum value from
      *  @return integer
      */
-    public function min_in_column($columnName) {
+    protected function minInColumn($columnName)
+    {
 
-        $this->CURRENT_QUERY = "SELECT MIN(" . $columnName . ") AS Linda_min FROM " . $this->TABLE_MODEL;
+        $this->currentQuery = "SELECT MIN(" . $columnName . ") AS linda_min FROM " . $this->tableModel;
         $this->runQuery();
 
-        return $this->getAll()[0]['Linda_min'];
+        return $this->getAll()[0]['linda_min'];
     }
 
     //+===================================================================================================
     /**
-     *  Returns row containing the maximum value of a particular column,, this method executes a query directly on the table and doesnt
+     *  Fetches row(s) containing the maximum value of a particular column,, this method executes a query directly on the table and doesnt
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to get the minimum value from 
+     * @param string $columnName field to get the minimum value from
      * @return array()
      */
-    public function minRow($columnName) {
+    protected function minRow($columnName)
+    {
 
-        $this->CURRENT_QUERY = "SELECT * FROM " . $this->TABLE_MODEL . " WHERE " . $columnName . " = (SELECT MIN(" . $columnName . ") FROM " . $this->TABLE_MODEL . ")";
+        $this->currentQuery = "SELECT * FROM " . $this->tableModel . " WHERE " . $columnName . " = (SELECT MIN(" . $columnName . ") FROM " . $this->tableModel . ")";
         $this->runQuery();
 
-        return $this->getAll()[0];
-    }
-
-    //+===================================================================================================
-    /**
-     *  Returns the sum of values on a field/column, this method executes a query directly on the table and doesnt
-     *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
-     * @param string $columnName field to get the minimum value from 
-     * 
-     */
-    public function sum($columnName) {
-
-        $this->CURRENT_QUERY = "SELECT SUM(" . $columnName . ") AS DAL_sum FROM " . $this->TABLE_MODEL;
-        $this->runQuery();
-
-        return $this->getAll()[0]['DAL_sum'];
-    }
-
-    //+===================================================================================================
-    /**
-     *  Returns the entire result set as an array
-     *  @retun array()
-     */
-    public function getAll() {
-
-        if (count($this->resultObject)) {
-
-
-            return $this->resultObject;
-        }
-        return NULL;
-    }
-
-    //+===================================================================================================
-    /**
-     *  Returns the row at a particular index in the result set
-     * @return integer
-     */
-    public function getRowAtIndex($index) {
-
-        if ($this->resultObject && count($this->resultObject) >= $index) {
-            return $this->resultObject[$index];
-        }
+        return $this;
     }
 
     /**
      *  Returns the total number of rows in the result set, or the numbers of rows affected by the last update/delete operation
      * @return integer
      */
-    public function numRows() {
+    protected function numRows()
+    {
 
         return $this->lastAffectedRowCount;
     }
 
-    /**
-     *  Returns the first row in the result set
-     * @return array()
-     */
-    public function peek() {
-
-        if (count($this->resultObject)) {
-            return $this->resultObject(0);
-        }
-    }
-
-    /**
-     *  Returns the last row in the result set
-     * @return array()
-     */
-    public function tail() {
-
-        if (count($this->resultObject)) {
-            return $this->resultObject(count($this->resultObject) - 1);
-        }
-    }
-
-    /**
-     *  Returns even indexes from the stored result set
-     * @return array()
-     */
-    public function even() {
-        $resultArray = array();
-        if (count($this->resultObject)) {
-
-            for ($i = 0; $i < count($this->resultObject); $i++) {
-                if ($i % 2 === 0) {
-                    $resultArray[] = $this->resultObject[$i];
-                }
-            }
-        }
-        return $resultArray;
-    }
-
-    /**
-     *  Returns odd indexes from the stored result set
-     * @return array()
-     */
-    public function odd() {
-
-        $resultArray = array();
-        if ($this->resultObject) {
-
-            for ($i = 0; $i < count($this->resultObject); $i++) {
-                if ($i & 2 !== 0) {
-                    $resultArray[] = $this->resultObject[$i];
-                }
-            }
-        }
-        return $resultArray;
-    }
-
-    public function hasErrors() {
-        return ($this->LINDA_ERROR && strpos("SQLSTATE[HY000]: General error", $this->LINDA_ERROR) === FALSE);
-    }
-
-    public function __destruct() {
+    public function __destruct()
+    {
         
     }
 

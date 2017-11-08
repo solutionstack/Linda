@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<phpunit 
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    backupStaticAttributes="true"
+    processIsolation="false"
+    forceCoversAnnotation = "true"
+ 
+>
+    <!-- ... -->
+  
+    <testsuites>
+        <testsuite name="Linda ORM Tests">
+            <directory >./</directory>
+        </testsuite>
+    </testsuites>
+  
+    <php>
+        <includePath>.</includePath>
+        <server name="SERVER_NAME" value="www.example.local"/>
+        <server name="HTTP_USER_AGENT" value="mozilla"/>
+        <server name="HTTPS" value="On"/>
+ 
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./App</directory>
+  
+            <exclude>
+                <file>./smartloader.php</file>
+                <file>./LindaTest.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+       
+        <log type="coverage-html" target="build/logs/coverage.html" lowUpperBound="35"
+             highLowerBound="70"/>
+        <log type="coverage-clover" target="/tmp/coverage.xml"/>
+
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+</phpunit>
+

@@ -1,53 +1,59 @@
 <?php
 
-require_once realpath(dirname(__FILE__)) . "/" . 'Linda.php';
-require_once realpath(dirname(__FILE__)) . "/" . 'LindaRowModel.php';
+namespace solutionstack\Linda;
 
-/**
+require_once \realpath(\dirname(__FILE__)) . "/" . 'Linda.php';
+require_once \realpath(\dirname(__FILE__)) . "/" . 'LindaRowModel.php';
 
- * @brief LindaModel is an Active-record based ORM, 
- * it facilitates the creation and use of business 
- * objects whose data requires persistent storage to a database. 
- * It is an implementation of the Active Record pattern 
- * which itself is a description of an Object Relational Mapping system.
+/*
+ * @brief LindaModel is an Object Oriented Mapper (ORM) for PHP/MySql, providing a super simple interface,
+ * when working with mysql tables
+ *
  * @author Olubodun Agbalaya.
  */
+
 class LindaModel extends Linda {
 
     protected $tableColumnSchema;
     protected $virtualModelCollection = array();
-    protected $virtualModelPrimaryKey;
+    protected $virtualModelPrimaryKey = null;
     protected $virtualModelPrimaryKeyColumnIndex;
     protected $modelName;
+    protected $modelJoined = false;
 
     /**
      * @param string $Model The name of the table we are to create an Object Map to
-     * @param string $primaryKey An optional primary key on the table, defaults to the first column
-     * 
-     * 
+     * @param string $Key An optional key on the table, to be used for updates, defaults to the primary key if present
+     *
+     *
      */
-    public function __construct($Model = NULL, $primaryKey = NULL) {
+    public function __construct($Model, $Key = null)
+    {
+
+        if (!$Model || empty($Model)) {
+
+            throw new \InvalidArgumentException("Class " . __CLASS__ . ": expects at least one string argument");
+        }
 
         parent::__construct();
 
-        if (NULL !== $Model) {
-            $this->setTable($Model);
+        if (null !== $Model) {
+            $this->setTable($Model); //basically just the table name
 
             $this->tableColumnSchema = $this->parseModel();
             $this->modelName = $Model;
         }
 
-        if ($primaryKey !== NULL) {
-            $this->virtualModelPrimaryKey = $primaryKey; //store the primary key
-            //get the column index on the table for this primary key
-            $keyColumnIndex = array_search($primaryKey, $this->tableColumnSchema);
+        if ($this->defaultPrimaryKeyColumn || $Key !== null) {
+            //store the primary key
+            $this->virtualModelPrimaryKey = $Key ? $Key : $this->defaultPrimaryKeyColumn;
 
-            if (FALSE === $keyColumnIndex)
-                throw new Exception('Primary Key ' . $primaryKey . "  not found!");
+            //get the column index on the table for this primary key
+            if (false === ($keyColumnIndex = \array_search($this->virtualModelPrimaryKey, $this->tableColumnSchema))) {
+                throw new Exception('Primary Key ' . $Key . "  not found!");
+            }
 
             $this->virtualModelPrimaryKeyColumnIndex = $keyColumnIndex;
-        }else {
-            $this->virtualModelPrimaryKeyColumnIndex = 0; //default to colum 0 for primary key
         }
     }
 
@@ -55,137 +61,212 @@ class LindaModel extends Linda {
      * Method to fetch all rows from the DB into memory, use #get to retrieve the fields as a collection of Models
      * @return $this
      */
-    public function fetchAll() {
+    public function fetchAll()
+    {
         $this->virtualModelCollection = array();
 
         $this->fetch("*");
 
-
-        if ($this->getAll())
-            for ($i = 0; $i < count($this->resultObject); $i++) {
+        if (($c = \count($this->resultObject))) {
+            for ($i = 0; $i < $c; $i++)
+            {
 
                 $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
-            };
+            }
+        }
+
 
         return $this;
+    }
+
+    //+===================================================================================================
+    /**
+     *  Returns the sum of values on a field/column, this method executes a query directly on the table and doesn't
+     *  work on the retrieved/stored data
+     * @param string $columnName field to get the minimum value from
+     *
+     */
+    public function sum($columnName)
+    {
+
+        $this->currentQuery = "SELECT SUM(" . $columnName . ") AS linda_sum_rows_on_column FROM " . $this->modelName;
+        $this->runQuery();
+
+        return $this->getAll()[0]['linda_sum_rows_on_column'];
+    }
+
+    /**
+     * Returns first model representing an active record, or NULL if no records where matched
+     * @return LindaRowModel
+     * @deprecated since version 1.0.0
+     */
+    public function first()
+    {
+
+        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[0] : null;
+    }
+
+    /**
+     * Returns the last model representing an active record, or NULL if no records where matched
+     * @return LindaRowModel
+     * @deprecated since version 1.0.0
+     */
+    public function last()
+    {
+
+        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[\count($this->virtualModelCollection) - 1] : null;
     }
 
     /**
      * Returns first model representing an active record, or NULL if no records where matched
      * @return LindaRowModel
      */
-    public function first() {
-
-
-        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[0] : NULL;
+    public function peek()
+    {
+        return $this->first();
     }
 
     /**
      * Returns the last model representing an active record, or NULL if no records where matched
      * @return LindaRowModel
      */
-    public function last() {
+    public function tail()
+    {
 
+        return $this->last();
+    }
 
-        return $this->virtualModelCollection && isset($this->virtualModelCollection[0]) ? $this->virtualModelCollection[count($this->virtualModelCollection) - 1] : NULL;
+    //+===================================================================================================
+    /**
+     * Counts the total number of rows in the table
+     * @return integer The total row count
+     */
+    public function count()
+    {
+        $this->currentQuery = "SELECT COUNT(*) AS linda_total_rows_counter FROM " . $this->modelName . ";";
+        $this->runQuery();
+
+        return $this->getAll()[0]['linda_total_rows_counter'];
+    }
+
+    //+===================================================================================================
+    /**
+     * Count the number of rows matching a value in a field, this method executes a query directly on the table and doesn't
+     *  work on the retrieved/stored data 
+     * @param string $columnName field to count values from
+     * @param string $val value to be matched
+     * @param string $operator Optional operator to be used default in matching defaults to equals (=), other candidates are ( <, > , <>)
+     * @return integer The number of rows matching the value
+     */
+    public function countMatching($columnName, $val, $operator = "=")
+    {
+        $this->currentQuery = "SELECT COUNT(*) AS linda_matching_rows_counter " . $this->modelName . " WHERE " . $columnName . " " . $operator . " " . $val . ";";
+        $this->runQuery();
+
+        return $this->getAll()[0]['linda_matching_rows_counter'];
     }
 
     /**
      *  Returns even indexes  representing an active record objects, or NULL if no records where matched
      * @return array()
      */
-    public function even() {
+    public function even()
+    {
         $resultArray = array();
-        if (count($this->virtualModelCollection)) {
+        if (($len = \count($this->virtualModelCollection))) {
 
-            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+            for ($i = 0; $i < $len; $i++)
+            {
                 if ($i % 2 === 0) {
                     $resultArray[] = $this->virtualModelCollection[$i];
                 }
             }
         }
-        return count($resultArray) ? $resultArray : NULL;
+        return count($resultArray) ? $resultArray : null;
     }
 
     /**
      *  Returns odd indexes  representing an active record objects, or NULL if no records where matched
      * @return array()
      */
-    public function odd() {
+    public function odd()
+    {
 
         $resultArray = array();
-        if (count($this->virtualModelCollection)) {
+        if (($len = \count($this->virtualModelCollection))) {
 
-            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+            for ($i = 0; $i < $len; $i++)
+            {
                 if ($i & 2 !== 0) {
                     $resultArray[] = $this->virtualModelCollection[$i];
                 }
             }
         }
-        return count($resultArray) ? $resultArray : NULL;
+        return \count($resultArray) ? $resultArray : null;
     }
 
     /**
-     *  Returns the values in the internal relst set as an array
+     *  Returns the values in the internal result set as an array
      * @return array() | NULL
      */
-    public function getValues() {
+    public function getValues()
+    {
 
-
-        if (count($this->virtualModelCollection)) {
-            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+        if (\count($this->virtualModelCollection)) {
+            for ($i = 0; $i < \count($this->virtualModelCollection); $i++)
+            {
 
                 $resultArray[] = $this->virtualModelCollection[$i]->getValues();
             }
             return $resultArray;
         }
 
-        return NULL;
+        return null;
     }
 
     /**
      *  Returns the values in the internal result set as an atdClass object
      * @return stdClass() | NULL
      */
-    public function getValuesAsObject() {
+    public function getValuesAsObject()
+    {
 
-
-        if (count($this->virtualModelCollection)) {
-            for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+        if (\count($this->virtualModelCollection)) {
+            for ($i = 0; $i < \count($this->virtualModelCollection); $i++)
+            {
 
                 $resultArray[] = $this->virtualModelCollection[$i]->getValuesAsObject();
             }
             return $resultArray;
         }
 
-        return NULL;
+        return null;
     }
 
     /**
      *  Returns the collection of object row modelsin a random order, or NULL if no records are available
      * @return array()
      */
-    public function random() {
+    public function random()
+    {
 
+        if (\count($this->virtualModelCollection)) {
 
-        if (count($this->virtualModelCollection)) {
-
-            shuffle($this->virtualModelCollection);
+            \shuffle($this->virtualModelCollection);
             return $this->virtualModelCollection;
         }
-        return NULL;
+        return null;
     }
 
     /**
      *  Should the data retreival be unique
-     * 
+     *
      */
-    public function distinct() {
+    public function distinct()
+    {
 
-
-        $this->DISTINCT = true;
+        $this->distinctResult = true;
         return $this;
-        ;
     }
 
     /**
@@ -193,99 +274,149 @@ class LindaModel extends Linda {
      * Retruns NULL if no records are available
      * @return LindaRowModelCollection | null
      */
-    public function collection() {
+    public function collection()
+    {
 
-
-        return count($this->virtualModelCollection) ? $this->virtualModelCollection : NULL;
+        return \count($this->virtualModelCollection) ? $this->virtualModelCollection : null;
     }
 
     /**
      * Saves data back into the table
      * @return LindaRowModel
-     * 
-     * @param type $new_flag An optional primary key parameter, to use in Identfying the row to save data into
+     *
+     * @param type $new_flag An optional primary key parameter, to use in identifying the row to save data into
      * @return \LindaRowModel|$this
      */
-    public function save($new_flag = NULL) {
+    public function save()
+    {
 
-        //the primary we
-        //use when inserting
-        $PK = NULL === $this->virtualModelPrimaryKey ? $this->tableColumnSchema[0] : $this->virtualModelPrimaryKey;
+        if ($this->modelJoined) {
+            throw Exception("Can\'t update JOINED schema "); //don't update if we have been previously joined
+        }
 
+        if (!$this->virtualModelPrimaryKey) {
+            throw new Exception('No Key found, cannot update table -> (' . $this->modelName . "). ");
+        }
 
-        for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+        for ($i = 0; $i < \count($this->virtualModelCollection); $i++)
+        {
 
             $fieldsData = $this->virtualModelCollection[$i]->getValues();
-            $filedsName = $this->tableColumnSchema;
+            $fieldsName = $this->tableColumnSchema;
 
-            $tableData = array_combine($filedsName, $fieldsData);
-
+            $tableData = \array_combine($fieldsName, $fieldsData);
 
             $this->update($tableData, array(
                 "whereGroup" => array(
                     [
-                        $PK => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex])
-                    ]
-                )
+                        $this->virtualModelPrimaryKey => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex]),
+                    ],
+                ),
             ));
         }
 
         return $this;
     }
 
-    //update properties on the row model
-    public function set($data = array()) {
-        for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+//
+    /**
+     * Update/set properties on the row model, this sets data on the database columns.<br/>
+     * The string NOW() and TIME() can be used to insert PHP date values, the formats used are <br/>
+     * <code> date("Y-m-d")</code> and <code> date("Y-m-d H:i:s")</code> respectively 
+     * call #save when done to commit the data.
+     * <pre>
+     *   <code>
+     *     the format of the argument, is an array with name-value pairs representing column names and values
+     *     //eg
+     *     $data = array( "age"=>2, update_timestamp=>"TIME()");
+     *    </code>
+     * 
+     * 
+     * </pre>
+     * @param type $data array containing data to set on the row-model
+     * @return $this
+     */
+    public function set($data = array())
+    {
+        for ($i = 0; $i < \count($this->virtualModelCollection); $i++)
+        {
 
-            for ($j = 0; $j < count($data); $j++)
-                $this->virtualModelCollection[$i]->{array_keys($data)[$j]} = array_values($data)[$j];
+            for ($j = 0; $j < \count($data); $j++)
+            {
+
+                $this->virtualModelCollection[$i]->{\array_keys($data)[$j]} = \array_values($data)[$j];
+            }
         }
 
         return $this;
     }
 
-    public function where($col, $op, $val, $join_table_index = NULL) {
-        $this->queryConfig["whereGroup"][] = [$col => ["value" => $val, "operator" => $op], "nextOp" => "AND", "join_index" => $join_table_index];
+    public function where($col, $op, $val)
+    {
+        $this->queryConfig["whereGroup"][] = [$col => ["value" => $val, "operator" => $op], "nextOp" => "AND"];
         return $this;
     }
 
-    public function where_or($col, $op, $val, $join_table_index = NULL) {
-        $this->queryConfig["whereGroup"][] = [$col => ["value" => $val, "operator" => $op], "nextOp" => "OR", "join_index" => $join_table_index];
+    public function whereOr($col, $op, $val)
+    {
+        $this->queryConfig["whereGroup"][] = [$col => ["value" => $val, "operator" => $op], "nextOp" => "OR"];
         return $this;
     }
 
-    public function where_in_or($col, $val) {
-        $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . implode(",", $val) . "", "operator" => "OR"];
+    public function whereInOr($col, $val)
+    {
+        if (\is_string($val) && 0 === \stripos(\trim($val), "select")) {
+            //they want to perform a sub-query
+            $this->queryConfig["where_in"] = ["fieldName" => $col, "query" => $val, "operator" => "OR"];
+        } else {
+            $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . \implode(",", $val) . "", "operator" => "OR"];
+        }
 
         return $this;
     }
 
-    public function where_in($col, $val) {
+    public function whereIn($col, $val)
+    {
 
-        if (0 === stripos(trim($val), "select")) { //they want to perform a sub-query
+        if (\is_string($val) && 0 === \stripos(\trim($val), "select")) {
+            //they want to perform a sub-query
             $this->queryConfig["where_in"] = ["fieldName" => $col, "query" => $val, "operator" => "AND"];
-        }
-        else {
-            $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . implode(",", $val) . "", "operator" => "AND"];
+        } else {
+            $this->queryConfig["where_in"] = ["fieldName" => $col, "options" => "" . \implode(",", $val) . "", "operator" => "AND"];
         }
         return $this;
     }
 
-    public function inner_join($table, $conditional_column_a, $conditional_column_b) {
+    public function whereNotIn($col, $val)
+    {
+
+        if (\is_string($val) && 0 === \stripos(\trim($val), "select")) {
+            //they want to perform a sub-query
+            $this->queryConfig["where_not_in"] = ["fieldName" => $col, "query" => $val, "operator" => "AND"];
+        } else {
+            $this->queryConfig["where_not_in"] = ["fieldName" => $col, "options" => "" . \implode(",", $val) . "", "operator" => "AND"];
+        }
+        return $this;
+    }
+
+    public function whereNotInOr($col, $val)
+    {
+
+        if (\is_string($val) && 0 === \stripos(\trim($val), "select")) {
+            //they want to perform a sub-query
+            $this->queryConfig["where_not_in"] = ["fieldName" => $col, "query" => $val, "operator" => "OR"];
+        } else {
+            $this->queryConfig["where_not_in"] = ["fieldName" => $col, "options" => "" . \implode(",", $val) . "", "operator" => "AND"];
+        }
+        return $this;
+    }
+
+    public function innerJoin($table, $conditional_column_a, $conditional_column_b)
+    {
+        $this->modelJoined = true;
         $this->queryConfig["innerJoinGroup"][] = ["table" => $table, "conditional_column_a" => $conditional_column_a, "conditional_column_b" => $conditional_column_b];
 
         return $this;
-    }
-
-    /**
-     * Reset the internal Schema, after performing operations that JOINS with other, the internal table schema is modified to
-     * accomodate columns from the joined tables this method therefore restores the schema to the original table
-     * specified in the constructor this is necessary if, new updates to the table are to be sucesfull, and to avoid
-     * ambigous  column errors
-     */
-    public function resetSchema() {
-
-        $this->tableColumnSchema = $this->parseModel();
     }
 
     /**
@@ -293,112 +424,210 @@ class LindaModel extends Linda {
      * @param $columns array Optional columns to fetch daata from
      * @return $this
      */
-    public function get($columns = "*") {
+    public function get($columns = "*")
+    {
 
         $this->virtualModelCollection = [];
 
         if ($columns !== "*") {
             $this->tableColumnSchema = $columns; //they sent custom column schema to fetch
+            //if we are getting a custom column list,
+            // always get the PRIMARY/ID column along
+            if ($this->virtualModelPrimaryKey && false === \array_search($this->virtualModelPrimaryKey, $this->tableColumnSchema)) {
+
+                $this->virtualModelPrimaryKeyColumnIndex = 0; //we'll be adding the key to the top of the array
+
+                \array_unshift($this->tableColumnSchema, $this->virtualModelPrimaryKey);
+                \array_unshift($columns, "T1." . $this->virtualModelPrimaryKey);
+            }
         }
         $this->fetch($columns, $this->queryConfig);
 
-        if (!$this->resultObject)
-            return $this;
+        if (!$this->resultObject) {
 
-        //after getting the results from the DB before we create row-models, we need to check if the DB operation had Joins
-        //in which case we need to alter the table schema to include the joined columns
-        if (array_key_exists("innerJoinGroup", $this->queryConfig)) {
-            $this->tableColumnSchema = array_keys($this->resultObject[0]);
+            $this->tableColumnSchema = \array_merge([], $this->modelSchema); //reset
+            return $this;
         }
 
         //if we have results, populate the virtualModelCollection
 
-        for ($i = 0; $i < count($this->resultObject); $i++) {
+        for ($i = 0; $i < \count($this->resultObject); $i++)
+        {
 
             $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
-        };
+        }
 
+        //$this->tableColumnSchema = array_merge([], $this->modelSchema); //reset
+        return $this;
+    }
 
+//+===================================================================================================
+    /**
+     * Fetches row(s) containing the maximum value of a particular column.
+     * As usual use #collection, #first, #last etc. to get the returned row models
+     * @param string $fieldName field to get the maximum value from
+     * @return array()
+     */
+    public function maxRow($fieldName)
+    {
 
+        $this->virtualModelCollection = array();
+        parent::maxRow($fieldName);
+
+        //if we have results, populate the virtualModelCollection
+
+        for ($i = 0; $i < \count($this->resultObject); $i++)
+        {
+
+            $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
+        }
+    }
+
+//+===================================================================================================
+    /**
+     *  Fetches row(s) containing the maximum value of a particular column;
+     *  As usual use #collection, #first, #last etc. to get the returned row models
+     *  @param string $fieldName field to get the maximum value from
+     * @return array()
+     */
+    public function minRow($fieldName)
+    {
+
+        $this->virtualModelCollection = array();
+        parent::minRow($fieldName);
+
+        //if we have results, populate the virtualModelCollection
+
+        for ($i = 0; $i < \count($this->resultObject); $i++)
+        {
+
+            $this->virtualModelCollection[] = new LindaRowModel($this->tableColumnSchema, $this->resultObject[$i]);
+        }
+    }
+
+//+===================================================================================================
+    /**
+     *  Returns the minimum value on a field, this method executes a query directly on the table and doesn't
+     *  work on the retrieved/stored data
+     * @param string $columnName field to get the minimum value from
+     *  @return integer | NULL
+     */
+    public function minInColumn($columnName)
+    {
+
+        return parent::minInColumn($columnName) || null;
+    }
+
+//+===================================================================================================
+    /**
+     *  Returns the minimum value on a field, this method executes a query directly on the table and doesn't
+     *  work on the retrieved/stored data 
+     * @param string $columnName field to get the minimum value from
+     *  @return integer | NULL
+     */
+    public function maxInColumn($columnName)
+    {
+
+        return parent::maxInColumn($columnName) || null;
+    }
+
+//+===================================================================================================
+
+    /**
+     *
+     * @param type $num integer number of rows to skip
+     * @return $this
+     */
+    public function skip($num = 0)
+    {
+
+        $this->defaultStartIndex = (int) $num;
 
         return $this;
     }
 
-    public function skip($param) {
+    //+===================================================================================================
+    /**
+     *
+     * @param type $num integer number of rows to take
+     * @return $this
+     */
+    public function take($num = 1000)
+    {
 
-        $this->DEFAULT_START_INDEX = (int) $param;
-
+        $this->defaultLimit = (int) $num;
         return $this;
     }
 
-    public function take($param) {
+//+===================================================================================================
+    public function create($values)
+    {
 
-        $this->DEFAULT_LIMIT = (int) $param;
-        return $this;
-    }
-
-    public function create($values) {
-
-
-        $values = array_map(array($this, "sanitize"), array_values($values));
-        $values = array_map(array($this, "string_or_int"), array_values($values));
+        $values = \array_map(array($this, "sanitize"), \array_values($values));
+        $values = \array_map(array($this, "string_or_int"), \array_values($values));
         //  $keys = array_keys($inserts);
 
-        $this->CURRENT_QUERY = "INSERT INTO `" . $this->TABLE_MODEL . "` (`" . implode('`,`', $this->tableColumnSchema) . "`) VALUES (" . implode(", ", $values) . ")";
-
+        $this->currentQuery = "INSERT INTO `" . $this->modelName . "` (`" . \implode('`,`', $this->tableColumnSchema) . "`) VALUES (" . \implode(", ", $values) . ")";
 
         $this->runQuery();
-        $this->CURRENT_QUERY = "";
+        $this->currentQuery = "";
 
         return $this;
     }
 
-    public function remove() {
+//+===================================================================================================
+    /**
+     * Removes rows from the table, this method removes rows that where returned during the last #fetchAll or #get operation
+     * @return $this
+     */
+    public function remove()
+    {
 
-        //the primary we
-        //use when inserting
-        $PK = NULL === $this->virtualModelPrimaryKey ? $this->tableColumnSchema[0] : $this->virtualModelPrimaryKey;
+        if (!$this->virtualModelPrimaryKey) {
+            throw new Exception('No Key found, cannot update table -> (' . $this->modelName . "). ");
+        }
 
-
-        for ($i = 0; $i < count($this->virtualModelCollection); $i++) {
+        for ($i = 0; $i < \count($this->virtualModelCollection); $i++)
+        {
 
             $fieldsData = $this->virtualModelCollection[$i]->getValues();
-            $filedsName = $this->tableColumnSchema;
+            // $filedsName = $this->tableColumnSchema;
 
-            $tableData = array_combine($filedsName, $fieldsData);
-
-
+        
             $this->delete(array(
                 "whereGroup" => array(
                     [
-                        $PK => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex])
-                    ]
-                )
+                        $this->virtualModelPrimaryKey => array("value" => $fieldsData[$this->virtualModelPrimaryKeyColumnIndex]),
+                    ],
+                ),
             ));
         }
+    }
 
-        return $this;
+    /**
+     * Returns true if the last query raised an error/exception
+     * @return boolean
+     */
+    public function hasErrors()
+    {
+        return ($this->lindaError && \strpos("SQLSTATE[HY000]: General error", $this->lindaError) === false);
+    }
+
+    /**
+     * Returns the last error or null
+     */
+    public function getLastError()
+    {
+        return $this->hasErrors() ? $this->lindaError : null;
+    }
+
+    /**
+     * Returns the last executed query 
+     */
+    public function getLastQuery()
+    {
+        return $this->currentQuery;
     }
 
 }
 
-//$m = new LindaModel("actor");
-//$m->fetchAll();
-//
-
-
-//$m->where("last_name","=","bar")
-//        //->where_in("first_name", ["bar", "JOHNNY"])
-//       // ->where_in_numeric("first_name", [1, 2])
-//        ->inner_join("address", "actor_id", "address_id")
-//        ->skip(5)
-//        ->take(50)
-//        ->get()
-//        ->remove();
-//print_r($m->collection());
-
-
-//drop
-//new
-//skip
-//take

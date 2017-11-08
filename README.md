@@ -8,14 +8,12 @@ The first thing in setting up Linda is editing the Linda.inc file, this file con
 parameters/constants.
 The file contains the following constants, edit to your needs
 
-```php
-define('LINDA_DB_HOST', 'hostname');
-define('LINDA_DB_TYPE', 'dbtype' ); //mysql, pgsql etc
+
+`define('LINDA_DB_HOST', 'hostname');
+define('LINDA_DB_TYPE', 'dbtype' ); //mysql, *currently supports only mysql*
 define('LINDA_DB_NAME', 'dbname');
 define('LINDA_DB_USER', 'user' );
-define('LINDA_DB_PASSW', 'password' );
-
-```
+define('LINDA_DB_PASSW', 'password' );`
 
 After this step, simply begin using the LindaModel class which contains the ORM interface.<br/>
 For the examples here i'll be using the freely available sakila database.

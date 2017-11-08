@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>Linda</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">Linda</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/solutionstack.html">\solutionstack</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">68</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1473544997"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1473544997" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1330502783"></a>
+                                <a href="../namespaces/solutionstack.html" style="margin-left: 30px; padding-left: 0">solutionstack</a>
+            </div>
+            <div id="namespace-1330502783" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1048069584"></a>
+                                <a href="../namespaces/solutionstack.Linda.html" style="margin-left: 30px; padding-left: 0">Linda</a>
+            </div>
+            <div id="namespace-1048069584" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/solutionstack.Linda.Linda.html">Linda</a></li>
+                                                    <li class="class"><a href="../classes/solutionstack.Linda.LindaModel.html">LindaModel</a></li>
+                                                    <li class="class"><a href="../classes/solutionstack.Linda.LindaRowModel.html">LindaRowModel</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/solutionstack.Linda.html">\solutionstack\Linda</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\solutionstack\Linda</small>LindaModel</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_maxInColumn" class="">maxInColumn()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_maxRow" class="">maxRow()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_minInColumn" class="">minInColumn()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_minRow" class="">minRow()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method___destruct" class="">__destruct()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_fetchAll" class="">fetchAll()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_sum" class="">sum()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_first" class="deprecated">first()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_last" class="deprecated">last()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_peek" class="">peek()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_tail" class="">tail()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_count" class="">count()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_countMatching" class="">countMatching()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_even" class="">even()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_odd" class="">odd()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_getValues" class="">getValues()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_getValuesAsObject" class="">getValuesAsObject()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_random" class="">random()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_distinct" class="">distinct()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_collection" class="">collection()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_save" class="">save()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_set" class="">set()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_where" class="">where()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_whereOr" class="">whereOr()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_whereInOr" class="">whereInOr()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_whereIn" class="">whereIn()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_innerJoin" class="">innerJoin()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_get" class="">get()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_skip" class="">skip()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_take" class="">take()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_create" class="">create()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_remove" class="">remove()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_hasErrors" class="">hasErrors()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_getLastError" class="">getLastError()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#method_getLastQuery" class="">getLastQuery()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#constant_LINDA_DB_HOST" class="">LINDA_DB_HOST</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#constant_LINDA_DB_NAME" class="">LINDA_DB_NAME</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#constant_LINDA_DB_TYPE" class="">LINDA_DB_TYPE</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#constant_LINDA_DB_USER" class="">LINDA_DB_USER</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#constant_LINDA_DB_PASSW" class="">LINDA_DB_PASSW</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_parseModel" class="">parseModel()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_fetch" class="">fetch()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_update" class="">update()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_put" class="">put()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_delete" class="">delete()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_createInsert" class="">createInsert()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_stringOrInt" class="">stringOrInt()</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#method_numRows" class="">numRows()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_lindaError" class="">$lindaError</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_dbLink" class="">$dbLink</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_tableModel" class="">$tableModel</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_currentQuery" class="">$currentQuery</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_modelSchema" class="">$modelSchema</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_defaultLimit" class="">$defaultLimit</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_defaultStartIndex" class="">$defaultStartIndex</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_distinctResult" class="">$distinctResult</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_resultObject" class="">$resultObject</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_lastAffectedRowCount" class="">$lastAffectedRowCount</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_queryConfig" class="">$queryConfig</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.Linda.html#property_defaultPrimaryKeyColumn" class="">$defaultPrimaryKeyColumn</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#property_tableColumnSchema" class="">$tableColumnSchema</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#property_virtualModelCollection" class="">$virtualModelCollection</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#property_virtualModelPrimaryKey" class="">$virtualModelPrimaryKey</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#property_virtualModelPrimaryKeyColumnIndex" class="">$virtualModelPrimaryKeyColumnIndex</a><br />
+                                                                    <a href="../classes/solutionstack.Linda.LindaModel.html#property_modelName" class="">$modelName</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/LindaModel.html"><div class="path-wrapper">LindaModel.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/solutionstack.Linda.Linda.html">\solutionstack\Linda\Linda</a></div>
+                                                                                                    <div class="namespace-wrapper">\solutionstack\Linda\LindaModel</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LINDA_DB_HOST" name="constant_LINDA_DB_HOST" class="anchor"></a>
+            <article id="constant_LINDA_DB_HOST" class="constant">
+                <h3 class="">LINDA_DB_HOST</h3>
+                <pre class="signature">LINDA_DB_HOST</pre>
+                <p><em>configured in Linda.inc</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LINDA_DB_NAME" name="constant_LINDA_DB_NAME" class="anchor"></a>
+            <article id="constant_LINDA_DB_NAME" class="constant">
+                <h3 class="">LINDA_DB_NAME</h3>
+                <pre class="signature">LINDA_DB_NAME</pre>
+                <p><em>configured in Linda.inc</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LINDA_DB_TYPE" name="constant_LINDA_DB_TYPE" class="anchor"></a>
+            <article id="constant_LINDA_DB_TYPE" class="constant">
+                <h3 class="">LINDA_DB_TYPE</h3>
+                <pre class="signature">LINDA_DB_TYPE</pre>
+                <p><em>configured in Linda.inc</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LINDA_DB_USER" name="constant_LINDA_DB_USER" class="anchor"></a>
+            <article id="constant_LINDA_DB_USER" class="constant">
+                <h3 class="">LINDA_DB_USER</h3>
+                <pre class="signature">LINDA_DB_USER</pre>
+                <p><em>configured in Linda.inc</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LINDA_DB_PASSW" name="constant_LINDA_DB_PASSW" class="anchor"></a>
+            <article id="constant_LINDA_DB_PASSW" class="constant">
+                <h3 class="">LINDA_DB_PASSW</h3>
+                <pre class="signature">LINDA_DB_PASSW</pre>
+                <p><em>configured in Linda.inc</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lindaError" name="property_lindaError" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$lindaError</h3>
+                <pre class="signature">$lindaError : </pre>
+                <p><em>Holds last error raised</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_dbLink" name="property_dbLink" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$dbLink</h3>
+                <pre class="signature">$dbLink : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tableModel" name="property_tableModel" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$tableModel</h3>
+                <pre class="signature">$tableModel : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_currentQuery" name="property_currentQuery" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$currentQuery</h3>
+                <pre class="signature">$currentQuery : </pre>
+                <p><em>Holds last run query</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_modelSchema" name="property_modelSchema" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$modelSchema</h3>
+                <pre class="signature">$modelSchema : </pre>
+                <p><em>Holds column names for current schema</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_defaultLimit" name="property_defaultLimit" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$defaultLimit</h3>
+                <pre class="signature">$defaultLimit : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_defaultStartIndex" name="property_defaultStartIndex" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$defaultStartIndex</h3>
+                <pre class="signature">$defaultStartIndex : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_distinctResult" name="property_distinctResult" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$distinctResult</h3>
+                <pre class="signature">$distinctResult : </pre>
+                <p><em>Apply MySQL DSTINCT to query</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_resultObject" name="property_resultObject" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$resultObject</h3>
+                <pre class="signature">$resultObject : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lastAffectedRowCount" name="property_lastAffectedRowCount" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$lastAffectedRowCount</h3>
+                <pre class="signature">$lastAffectedRowCount : </pre>
+                <p><em>Number of rows returned or affected by last ops</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_queryConfig" name="property_queryConfig" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$queryConfig</h3>
+                <pre class="signature">$queryConfig : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_defaultPrimaryKeyColumn" name="property_defaultPrimaryKeyColumn" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$defaultPrimaryKeyColumn</h3>
+                <pre class="signature">$defaultPrimaryKeyColumn : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tableColumnSchema" name="property_tableColumnSchema" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$tableColumnSchema</h3>
+                <pre class="signature">$tableColumnSchema : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_virtualModelCollection" name="property_virtualModelCollection" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$virtualModelCollection</h3>
+                <pre class="signature">$virtualModelCollection : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_virtualModelPrimaryKey" name="property_virtualModelPrimaryKey" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$virtualModelPrimaryKey</h3>
+                <pre class="signature">$virtualModelPrimaryKey : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_virtualModelPrimaryKeyColumnIndex" name="property_virtualModelPrimaryKeyColumnIndex" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$virtualModelPrimaryKeyColumnIndex</h3>
+                <pre class="signature">$virtualModelPrimaryKeyColumnIndex : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_modelName" name="property_modelName" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$modelName</h3>
+                <pre class="signature">$modelName : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$Model</span>, string  <span class="argument">$Key = null</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$Model </td>
+                                <td><p>The name of the table we are to create an Object Map to</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$Key </td>
+                                <td><p>An optional key on the table, to be used for updates, defaults to the primary key if present</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_maxInColumn" name="method_maxInColumn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">maxInColumn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">maxInColumn(string  <span class="argument">$columnName</span>) </pre>
+                <p><em>Returns the minimum value on a field, this method executes a query directly on the table and doesn&#039;t
+ work on the retrieved/stored data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$columnName </td>
+                                <td><p>field to get the minimum value from
+@return integer | NULL</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_maxRow" name="method_maxRow" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">maxRow()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">maxRow(string  <span class="argument">$fieldName</span>) : \solutionstack\Linda\array()</pre>
+                <p><em>Fetches row(s) containing the maximum value of a particular column.</em></p>
+                <p>As usual use #collection, #first, #last etc. to get the returned row models</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$fieldName </td>
+                                <td><p>field to get the maximum value from</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_minInColumn" name="method_minInColumn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">minInColumn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">minInColumn(string  <span class="argument">$columnName</span>) </pre>
+                <p><em>Returns the minimum value on a field, this method executes a query directly on the table and doesn&#039;t
+ work on the retrieved/stored data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$columnName </td>
+                                <td><p>field to get the minimum value from
+@return integer | NULL</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_minRow" name="method_minRow" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">minRow()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">minRow(  <span class="argument">$fieldName</span>) : \solutionstack\Linda\array()</pre>
+                <p><em>Fetches row(s) containing the maximum value of a particular column;
+ As usual use #collection, #first, #last etc. to get the returned row models</em></p>
+                <p>@param string $fieldName field to get the maximum value from</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$fieldName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___destruct" name="method___destruct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__destruct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__destruct() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fetchAll" name="method_fetchAll" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">fetchAll()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fetchAll() : $this</pre>
+                <p><em>Method to fetch all rows from the DB into memory, use #get to retrieve the fields as a collection of Models</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_sum" name="method_sum" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">sum()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">sum(string  <span class="argument">$columnName</span>) </pre>
+                <p><em>Returns the sum of values on a field/column, this method executes a query directly on the table and doesn&#039;t
+ work on the retrieved/stored data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$columnName </td>
+                                <td><p>field to get the minimum value from</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_first" name="method_first" class="anchor"></a>
+            <article class="method">
+                <h3 class="public deprecated">first()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">first() : \solutionstack\Linda\LindaRowModel</pre>
+                <p><em>Returns first model representing an active record, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/solutionstack.Linda.LindaRowModel.html">\solutionstack\Linda\LindaRowModel</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    since version 1.0.0
+                </aside>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_last" name="method_last" class="anchor"></a>
+            <article class="method">
+                <h3 class="public deprecated">last()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">last() : \solutionstack\Linda\LindaRowModel</pre>
+                <p><em>Returns the last model representing an active record, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/solutionstack.Linda.LindaRowModel.html">\solutionstack\Linda\LindaRowModel</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    since version 1.0.0
+                </aside>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_peek" name="method_peek" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">peek()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">peek() : \solutionstack\Linda\LindaRowModel</pre>
+                <p><em>Returns first model representing an active record, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/solutionstack.Linda.LindaRowModel.html">\solutionstack\Linda\LindaRowModel</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_tail" name="method_tail" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">tail()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">tail() : \solutionstack\Linda\LindaRowModel</pre>
+                <p><em>Returns the last model representing an active record, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/solutionstack.Linda.LindaRowModel.html">\solutionstack\Linda\LindaRowModel</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_count" name="method_count" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">count()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">count() : integer</pre>
+                <p><em>Counts the total number of rows in the table</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>The total row count</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_countMatching" name="method_countMatching" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">countMatching()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">countMatching(string  <span class="argument">$columnName</span>, string  <span class="argument">$val</span>, string  <span class="argument">$operator = &quot;=&quot;</span>) : integer</pre>
+                <p><em>Count the number of rows matching a value in a field, this method executes a query directly on the table and doesn&#039;t
+ work on the retrieved/stored data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$columnName </td>
+                                <td><p>field to count values from</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$val </td>
+                                <td><p>value to be matched</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$operator </td>
+                                <td><p>Optional operator to be used default in matching defaults to equals (=), other candidates are ( &lt;, &gt; , <>)</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>The number of rows matching the value</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_even" name="method_even" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">even()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">even() : \solutionstack\Linda\array()</pre>
+                <p><em>Returns even indexes  representing an active record objects, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_odd" name="method_odd" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">odd()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">odd() : \solutionstack\Linda\array()</pre>
+                <p><em>Returns odd indexes  representing an active record objects, or NULL if no records where matched</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getValues" name="method_getValues" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getValues()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getValues() : \solutionstack\Linda\array()</pre>
+                <p><em>Returns the values in the internal result set as an array</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                            &mdash; <p>| NULL</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getValuesAsObject" name="method_getValuesAsObject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getValuesAsObject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getValuesAsObject() : \solutionstack\Linda\stdClass()</pre>
+                <p><em>Returns the values in the internal result set as an atdClass object</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\stdClass()
+                                            &mdash; <p>| NULL</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_random" name="method_random" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">random()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">random() : \solutionstack\Linda\array()</pre>
+                <p><em>Returns the collection of object row modelsin a random order, or NULL if no records are available</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\array()
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_distinct" name="method_distinct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">distinct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">distinct() </pre>
+                <p><em>Should the data retreival be unique</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_collection" name="method_collection" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">collection()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">collection() : \solutionstack\Linda\LindaRowModelCollection</pre>
+                <p><em>Returns a collections of models representing each active record, retrieved from the last call to #get
+Retruns NULL if no records are available</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \solutionstack\Linda\LindaRowModelCollection
+                                            &mdash; <p>| null</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save" name="method_save" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save() : \solutionstack\Linda\LindaRowModel</pre>
+                <p><em>Saves data back into the table</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/solutionstack.Linda.LindaRowModel.html">\solutionstack\Linda\LindaRowModel</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set" name="method_set" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set(\solutionstack\Linda\type  <span class="argument">$data = array()</span>) : $this</pre>
+                <p><em>Update/set properties on the row model, this sets data on the database columns.&lt;br/&gt;
+The string NOW() and TIME() can be used to insert PHP date values, the formats used are &lt;br/&gt;
+&lt;code&gt; date(&quot;Y-m-d&quot;)&lt;/code&gt; and &lt;code&gt; date(&quot;Y-m-d H:i:s&quot;)&lt;/code&gt; respectively
+call #save when done to commit the data.</em></p>
+                <pre>
+  <code>
+    the format of the argument, is an array with name-value pairs representing column names and values
+    //eg
+    $data = array( "age"=>2, update_timestamp=>"TIME()");
+   </code>
+
+</pre>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\solutionstack\Linda\type</td>
+                                <td>$data </td>
+                                <td><p>array containing data to set on the row-model</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_where" name="method_where" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">where()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">where(  <span class="argument">$col</span>,   <span class="argument">$op</span>,   <span class="argument">$val</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$col </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$op </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$val </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_whereOr" name="method_whereOr" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">whereOr()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">whereOr(  <span class="argument">$col</span>,   <span class="argument">$op</span>,   <span class="argument">$val</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$col </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$op </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$val </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_whereInOr" name="method_whereInOr" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">whereInOr()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">whereInOr(  <span class="argument">$col</span>,   <span class="argument">$val</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$col </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$val </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_whereIn" name="method_whereIn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">whereIn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">whereIn(  <span class="argument">$col</span>,   <span class="argument">$val</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$col </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$val </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_innerJoin" name="method_innerJoin" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">innerJoin()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">innerJoin(  <span class="argument">$table</span>,   <span class="argument">$conditional_column_a</span>,   <span class="argument">$conditional_column_b</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$table </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$conditional_column_a </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$conditional_column_b </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get" name="method_get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get(  <span class="argument">$columns = &quot;*&quot;</span>) : $this</pre>
+                <p><em>Fetches data from the table based on the CLAUSES set, and stores them in memory as distinct object models of each row/record</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$columns </td>
+                                <td><p>array Optional columns to fetch daata from</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_skip" name="method_skip" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">skip()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">skip(\solutionstack\Linda\type  <span class="argument">$num</span>) : $this</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\solutionstack\Linda\type</td>
+                                <td>$num </td>
+                                <td><p>integer number of rows to skip</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_take" name="method_take" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">take()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">take(\solutionstack\Linda\type  <span class="argument">$num = 1000</span>) : $this</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\solutionstack\Linda\type</td>
+                                <td>$num </td>
+                                <td><p>integer number of rows to take</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create" name="method_create" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">create()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create(  <span class="argument">$values</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$values </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove" name="method_remove" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove() : $this</pre>
+                <p><em>Removes rows from the table, this method removes rows that where returned during the last #fetchAll or #get operation</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hasErrors" name="method_hasErrors" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hasErrors()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hasErrors() : boolean</pre>
+                <p><em>Returns true if the last query raised an error/exception</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLastError" name="method_getLastError" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLastError()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLastError() </pre>
+                <p><em>Returns the last error or null</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLastQuery" name="method_getLastQuery" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLastQuery()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLastQuery() </pre>
+                <p><em>Returns the last executed query</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_parseModel" name="method_parseModel" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">parseModel()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">parseModel() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fetch" name="method_fetch" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">fetch()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fetch(  <span class="argument">$fields</span>, \solutionstack\Linda\array()  <span class="argument">$queryConfig = array()</span>) </pre>
+                <p><em>The get method fetches data from the table</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$fields </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\solutionstack\Linda\array()</td>
+                                <td>$queryConfig </td>
+                                <td><p>A configuration array, that contains option for the get operation</p>
+<pre>
+ $queryConfig = array(
+
+                    "whereGroup" => array(
+                      [
+                          "actor_id"=>array("value"=>5, "operator"=>"="),
+                         "last_name"=>array("value"=>"'%ER", "operator"=>"LIKE"),
+                         "comparisonOp"=>"AND",
+                         "nextOp"=>"OR"
+                       ],
+
+                    [
+          "actor_id"=>array("value"=>"last_name", "operator"=>"LIKE")
+
+                    ] ),
+
+                     "where_in"=>array(
+                            fieldName => "id",
+                            options => " 10, 15, 22,
+                              query => "",
+                             operator = > "AND"
+
+                         ),
+
+                    "innerJoinGroup" => array(
+                      [
+                      table => "table_name",
+                      conditional_column_a => "column name"
+                      conditional_column_b => "column name"
+                      ],
+                      [
+                    table => "table_name",
+                      conditional_column => "column name"
+                      ]
+
+                    ) ,
+
+                     "limit" =>[
+                              index => 2,
+                              count =>18
+
+                            ],
+
+               )
+</pre></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update" name="method_update" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">update()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update(Array  <span class="argument">$fields</span>, \solutionstack\Linda\type  <span class="argument">$queryConfig</span>) </pre>
+                <p><em>Update fields in the DB</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$fields </td>
+                                <td><p>is an associative array containing values to set</p>
+<pre>
+$fields = array(
+                       id= "1",
+                       email = "example.example.org
+                   )
+ using NOW() or TIME() as values, inserts the date/time
+</pre></td>
+                            </tr>
+                                                    <tr>
+                                <td>\solutionstack\Linda\type</td>
+                                <td>$queryConfig </td>
+                                <td><p>see #insert for structure of the queryConfig parameter</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_put" name="method_put" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">put()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">put(\solutionstack\Linda\type  <span class="argument">$fields</span>, Array  <span class="argument">$values</span>) </pre>
+                <p><em>Inserts data into the table</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\solutionstack\Linda\type</td>
+                                <td>$fields </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>Array</td>
+                                <td>$values </td>
+                                <td><p>An associative array, values to be inserted per column, using NOW() or TIME(), inserts the date/time
+in either YMD format or YMD H:m:s format</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete" name="method_delete" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">delete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete(array  <span class="argument">$queryConfig</span>) </pre>
+                <p><em>Deletes data from a table</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$queryConfig </td>
+                                <td><p>See #insert for structure of the queryConfig parameter</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createInsert" name="method_createInsert" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">createInsert()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createInsert(  <span class="argument">$fields</span>,   <span class="argument">$inserts</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$fields </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$inserts </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_stringOrInt" name="method_stringOrInt" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">stringOrInt()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">stringOrInt(  <span class="argument">$val</span>,   <span class="argument">$key = &#039;&#039;</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$val </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$key </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_numRows" name="method_numRows" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">numRows()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">numRows() : integer</pre>
+                <p><em>Returns the total number of rows in the result set, or the numbers of rows affected by the last update/delete operation</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/solutionstack.Linda.Linda.html"><div class="path-wrapper">\solutionstack\Linda\Linda</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">LindaModel.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/LindaModel.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/solutionstack.html">\solutionstack</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on November 7th, 2017 at 11:35.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

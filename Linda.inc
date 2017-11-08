@@ -1,11 +1,10 @@
-
 <?php
 
-define('LINDA_DB_HOST', 'localhost');
-define('LINDA_DB_TYPE', 'mysql' ); //or set to value pgsql etc
-define('LINDA_DB_NAME', '_delinquent');
-define('LINDA_DB_USER', 'delinquent_user' );
-define('LINDA_DB_PASSW', 'delinquent_admin' );
+namespace solutionstack\Linda;
 
-
+\define('LINDA_DB_HOSTC', 'localhost');
+\define('LINDA_DB_TYPEC', 'mysql' ); //or set to value pgsql etc
+\define('LINDA_DB_NAMEC', 'employees');
+\define('LINDA_DB_USERC', 'root' );
+\define('LINDA_DB_PASSWC', 'admin' );
 
