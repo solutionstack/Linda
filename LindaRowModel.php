@@ -52,7 +52,7 @@ class LindaRowModel
 
     public function getValuesAsObject()
     {
-        $r = new stdClass();
+        $r = new \stdClass();
 
         foreach ($this->model_fields as $key => $value) {
             $r->{$key} = $value;
@@ -63,6 +63,8 @@ class LindaRowModel
 
     public function __destruct()
     {
+        $this->model_fields   = array();
+        $this->altered_fields = array();
 
     }
 
