@@ -8,8 +8,8 @@ require_once \realpath(\dirname(__FILE__)) . "/" . 'Linda.inc';
  *
  * @brief      Linda is an Object Oriented ORM for PHP Built on top PDO, it currently supports MySql.
  * @author     Olubodun Agbalaya (s.stackng@gmail.com)
- * @version    GIT: 1.0.0
- * @copyright  2017 Olubodun Agbalaya
+ * @version    GIT: 1.1.0
+ * @copyright  2018 Olubodun Agbalaya
  * @license    MIT License
  * @link       https://github.com/solutionstack/Linda
  */
@@ -309,7 +309,7 @@ class Linda
         //call our custom escape function on the data-values
 
         $values = \array_map(array($this, "sanitize"), \array_values($inserts));
-        $values = \array_map(array($this, "string_or_int"), \array_values($inserts));
+        $values = \array_map(array($this, "stringOrInt"), \array_values($inserts));
         // $keys   = \array_keys($inserts);
 
         $this->currentQuery = "INSERT INTO `" . $this->tableModel . "` (" . \implode(',', $fields) . ") VALUES ("
@@ -738,7 +738,13 @@ class Linda
             $this->lindaError = $e->getMessage();
             $this->resultObject = null;
 
-            //echo $this->lindaError;
+            echo $this->lindaError;
+        }
+        catch(\Error $e){
+            $this->lindaError = $e->getMessage();
+            $this->resultObject = null;
+
+            echo $this->lindaError;
         }
 
         //after a query, reset these vars
@@ -758,6 +764,7 @@ class Linda
      *  work on the retrieved/stored data - so you must have set the table using the #setTable method, prior to calling
      *
      * DO NOT CALL DIRECTLY, CALLED BY LindaModel::maxRow
+     *
      * @param string $fieldName field to get the maximum value from
      *
      * @return array()
@@ -783,6 +790,7 @@ class Linda
      * @param string $columnName field to get the minimum value from
      *
      * DO NOT CALL DIRECTLY, CALLED BY LindaModel::minRow
+     *
      * @return array()
      */
     protected function minRow_($columnName)

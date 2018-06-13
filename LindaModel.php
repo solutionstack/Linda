@@ -4,8 +4,10 @@ namespace solutionstack\Linda;
 
 //use solutionstack\Linda\LindaRowModel;
 
-require_once \realpath(\dirname(__FILE__)) . "/" . 'Linda.php';
-require_once \realpath(\dirname(__FILE__)) . "/" . 'LindaRowModel.php';
+if ( ! class_exists("Linda")) {//if it hasn't been autoloaded
+    require_once \realpath(\dirname(__FILE__)) . "/" . 'Linda.php';
+    require_once \realpath(\dirname(__FILE__)) . "/" . 'LindaRowModel.php';
+}
 
 /*
  * @brief LindaModel is an Object Oriented Mapper (ORM) for PHP/MySql, providing a super simple interface,
@@ -51,7 +53,7 @@ class LindaModel extends Linda
             //store the primary key
             $this->virtualModelPrimaryKey = $Key ? $Key : $this->defaultPrimaryKeyColumn;
 
-            //get the column index on the table for this primary key
+            //get the column index on the table for this primary key column
             if (false === ($keyColumnIndex = \array_search($this->virtualModelPrimaryKey, $this->tableColumnSchema))) {
                 throw new Exception('Primary Key ' . $Key . "  not found!");
             }
@@ -272,7 +274,6 @@ class LindaModel extends Linda
      *
      * @return LindaRowModel
      *
-     * @param type $new_flag An optional primary key parameter, to use in identifying the row to save data into
      *
      * @return \LindaRowModel|$this
      */
@@ -284,7 +285,7 @@ class LindaModel extends Linda
         }
 
         if ( ! $this->virtualModelPrimaryKey) {
-            throw new Exception('No Key found, cannot update table -> (' . $this->modelName . "). ");
+            throw new Exception('No Key/Pkey found, cannot update table -> (' . $this->modelName . "). ");
         }
 
         for ($i = 0; $i < \count($this->virtualModelCollection); $i++) {
@@ -639,18 +640,61 @@ class LindaModel extends Linda
         return $this;
     }
 
+    /**
+     * Add row(s) to the underlying table
+     *
+     * @param array $customSchema custom list of columns to insert data into, by default uses the full table column list
+     * @param array $values       An multi-dimensional array containing row(s) to insert
+     *
+     * @return $this
+     */
+
 //+===================================================================================================
-    public function create($values)
+    public function create($values, $customSchema = null)
     {
+        //print_r($values);
+        $data = array();
 
-        $values = \array_map(array($this, "sanitize"), \array_values($values));
-        $values = \array_map(array($this, "string_or_int"), \array_values($values));
-        //  $keys = array_keys($inserts);
+        //sanitize each sub-array
+        foreach ($values as $val) {
+            \array_unshift(
+                $data,
+                \array_map(
+                    array($this, "stringOrInt"),
+                    \array_map(array($this, "sanitize"), $val)
+                )
+            );
+        }
 
-        $this->currentQuery = "INSERT INTO `" . $this->modelName . "` (`" . \implode('`,`', $this->tableColumnSchema)
-            . "`) VALUES (" . \implode(", ", $values) . ")";
 
-        $this->runQuery();
+        $sql_values = "VALUES";
+
+        // Get array keys
+        $arrayKeys = array_keys($data);
+        // Fetch last array key
+        $lastArrayKey = array_pop($arrayKeys);
+
+        //parse/add each row
+        foreach ($data as $k => $d) {
+            $sql_values .= " (" . \implode(", ", $d) . ")";
+
+            if ($lastArrayKey === $k ) {
+                ;
+            }//no more rows
+            else {
+                $sql_values .= ",";
+            }//rows data seperator
+
+        }
+
+        //did they send custom column list?
+        $sqlSchema = empty($customSchema) ? $this->tableColumnSchema : $customSchema;
+
+        $this->currentQuery = "INSERT INTO `" . $this->modelName . "` (`" . \implode('`,`', $sqlSchema)
+            . "`) " . $sql_values;
+
+      //  echo $this->currentQuery;
+       $this->runQuery();
         $this->currentQuery = "";
 
         return $this;
@@ -721,7 +765,7 @@ class LindaModel extends Linda
     }
 
     /**
-     * Runsa raw SQL query, no attempt is made to check for correctness or errors in the SQL string
+     * Runs a raw SQL query, no attempt is made to check for correctness or errors in the SQL string
      *
      * @param $query sql query to run
      *
@@ -753,3 +797,11 @@ class LindaModel extends Linda
     }
 }
 
+/*
+$m = new LindaModel("func");
+$m->create(
+    array(
+        ["foo7", 2 ],
+        ["foo6", 1]
+    ),['name','ret']
+);*/

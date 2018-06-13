@@ -1,5 +1,6 @@
 # Linda is a lightweight  ORM for PHP
-It features a simple and fluent interface that can easily handle DB related tasks fro small to medium back-end PHP applications. It has an intentional no fuss setup so can get up and running literally in minut
+It features a simple and fluent interface that can easily handle DB related tasks . It has an intentional no fuss setup with nearly zero configuration, so you can get up and running literally in a minute
+##### v1.1
 
 
 # Using Linda
@@ -255,11 +256,34 @@ SELECT * FROM `salaries` WHERE ( `emp_no` < 10031 ) AND `salary` IN (60117,60331
 ```
 
 # Inserting rows
-To insert new rows use the create method, but make sure the argument count matches the number of columns
+To insert new rows use the create method.
 
 ```php
 $l = new LindaModel("address");   
-$l->create(["val1", "val2",...]);
+$l->create(array(
+    ["val1", "val2",...] //colum data for a row
+    )
+    );
+```
+### Inserting multiple rows
+```php
+$l = new LindaModel("address");   
+$l->create(array(
+    ["val1", "val2",...], 
+    ["val1", "val2",...],
+    ["val1", "val2",...])
+    );
+```
+
+### Inserting data on custom columns (i.e The DB would fill in default values for others)
+```php
+$l = new LindaModel("address");   
+$l->create(array(
+    ["val1", "val2"], 
+    ["val1", "val2"],
+    ["val1", "val2"]
+    ),['column1_name','column2_name']
+    );
 ```
 
 To insert column data that takes a MySql **DATE** or **DATETIME** use the string **NOW()** or **TIME()**
