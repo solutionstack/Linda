@@ -1,7 +1,17 @@
 # Linda is a lightweight  ORM for PHP
 It features a simple and fluent interface that can easily handle DB related tasks . It has an intentional no fuss setup with nearly zero configuration, so you can get up and running literally in a minute
-##### v1.1
+#### v1.1
 
+Features
+--------
+
+* Makes simple queries and simple CRUD operations completely painless.
+* Gets out of the way when more complex SQL is required.
+* Built on top of [PDO](http://php.net/pdo).
+* Uses [prepared statements](http://uk.php.net/manual/en/pdo.prepared-statements.php) throughout to protect against [SQL injection](http://en.wikipedia.org/wiki/SQL_injection) attacks.
+* Requires no model classes, no XML configuration and no code generation.
+* Supports collections of models with method chaining to filter or apply actions to multiple results at once.
+* Fast and Small footprint
 
 # Using Linda
 The first thing in setting up Linda is editing the Linda.inc file, this file contains database connection
