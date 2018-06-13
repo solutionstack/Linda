@@ -210,7 +210,7 @@ class Linda
     /**
      * Update fields in the DB
      *
-     * @param Array $fields      is an associative array containing values to set
+     * @param array $fields      is an associative array containing values to set
      *                           <pre>
      *                           $fields = array(
      *                           id= "1",
@@ -218,7 +218,7 @@ class Linda
      *                           )
      *                           using NOW() or TIME() as values, inserts the date/time
      *                           </pre>
-     * @param type  $queryConfig see #insert for structure of the queryConfig parameter
+     * @param array  $queryConfig see #insert for structure of the queryConfig parameter
      *
      *
      * @return Linda
@@ -239,11 +239,9 @@ class Linda
     /**
      *  Inserts data into the table
      *
-     * @param Array $fields An associative array, containing column names that matches the actual table
-     * @param Array $values An associative array, values to be inserted per column, using NOW() or TIME(), inserts the date/time
+     * @param array $fields An associative array, containing column names that matches the actual table
+     * @param array $values An associative array, values to be inserted per column, using NOW() or TIME(), inserts the date/time
      *                      in either YMD format or YMD H:m:s format
-     * @param type  $fields
-     * @param type  $queryConfig
      *
      * @return Linda
      */
@@ -308,8 +306,8 @@ class Linda
 
         //call our custom escape function on the data-values
 
-        $values = \array_map(array($this, "sanitize"), \array_values($inserts));
-        $values = \array_map(array($this, "stringOrInt"), \array_values($inserts));
+        $values = \array_map(array($this, "sanitize"),
+            \array_map(array($this, "stringOrInt"), \array_values($inserts)));
         // $keys   = \array_keys($inserts);
 
         $this->currentQuery = "INSERT INTO `" . $this->tableModel . "` (" . \implode(',', $fields) . ") VALUES ("
