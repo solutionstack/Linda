@@ -315,7 +315,7 @@ $rows = $l->where("emp_no", ">", 20000)
 ```
 
 # DISTINCT rows
-To ensure the returned result set/models contains unique, values for the columns, use 
+To ensure the returned result set/models contains unique, values for the columns, use #distinct
 
 ```php
 $l = new LindaModel("address");   
